@@ -7,7 +7,8 @@ import java.io.ObjectInputStream;
 public class ReadCmd {
 
 	public static void main(String[] args) throws Exception {
-		System.out.println("Model static password: " + Model.password);
+		Model.password = "1234";
+		System.out.println("Model static password: " + Model.password);		
 		
 		InputStream ins = new FileInputStream(WriteCmd.File_Name);
 		ObjectInputStream ois = new ObjectInputStream(ins);
