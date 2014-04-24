@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+            http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+            http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd">
+	<!-- 自动扫描该package并注册成bean -->
+    <context:component-scan base-package="org.jackJew.ioc.beanSinletonPrototype" />
+    <context:component-scan base-package="org.jackJew.AOP" />
+    <context:component-scan base-package="org.jackJew.ioc.spring" />
+    
+    <context:annotation-config /> <!-- actually there's no need to put this definition -->
+    
+    <bean id="placeholderConfig"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+            	<value>classpath:jdbc.properties</value>
+            </list>
+		</property>
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true">
+        <property name="driverClassName">
+        	<value>${jdbc.driverClassName}</value>
+        </property>
+        <property name="url">
+        	<value>${jdbc.url}</value>
+        </property>
+        <property name="username">
+        	<value>${jdbc.username}</value>
+        </property>
+        <property name="password">
+        	<value>${jdbc.password}</value>
+        </property>
+		<property name="maxActive">
+			<value>${jdbc.maxActive}</value>
+		</property>
+    </bean>
+    
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<bean id="transactionService" class="org.jackJew.AOP.transaction.programmatic.TransactionService">
+		<property name="transactionManager" ref="transactionManager" />
+	</bean>
+	
+	<!-- <aop:aspectj-autoproxy /> enables @Aspect and @Pointcut into effects,
+			and also enables spring transaction definition
+			using @Transactional and @Service. -->
+	<aop:aspectj-autoproxy />
+	<tx:annotation-driven />
+	
+	<!--  
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+            <tx:method name="add*" propagation="REQUIRED" />  
+            <tx:method name="delete*" propagation="REQUIRED" />  
+            <tx:method name="update*" propagation="REQUIRES_NEW" />  
+            <tx:method name="add*" propagation="NESTED" /> 
+        </tx:attributes>    
+   </tx:advice>
+   <aop:config>  
+        <aop:pointcut id="allManagerMethod" expression="execution(* com.service.*.*(..))" />  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />  
+   </aop:config>
+    -->
+    
+	<bean id="target" class="org.jackJew.AOP.proxyTest.TargetClass2" />
+	<bean id="beforeAdvice" class="org.jackJew.AOP.proxyTest.BeforeAdvice" />
+
+	<bean id="beforeProxyBean" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="target" />
+		<property name="proxyInterfaces" value="org.jackJew.AOP.proxyTest.Interface1" />
+		<property name="interceptorNames">
+			<list>
+				<value>beforeAdvice</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="bean1" class="org.jackJew.ioc.beanSinletonPrototype.Bean1">
+		<property name="bean2" ref="bean2"/>
+	</bean>
+	<bean id="bean2" class="org.jackJew.ioc.beanSinletonPrototype.Bean2"/>
+	
+	<bean id="staticFactoryBean" class="org.jackJew.AOP.proxyTest.StaticFactoryBeanTest"
+								 factory-method="generateNumber" scope="singleton">
+		<constructor-arg value="A"/>
+	</bean>
+	
+	<bean id="instanceFactoryBean" factory-bean="factoryBean" 
+								   factory-method="getStr" scope="prototype">
+		<constructor-arg value="999"/>
+	</bean>
+	
+	<bean id="methodLookupBean" class="org.jackJew.AOP.proxyTest.SingletonBean"
+								scope="singleton">
+		<lookup-method name="getPrototypeBean" bean="PrototypeBean"/>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="properties" ref="propertiesProviderBean" />
+	</bean>
+		
+	<bean id="sysProps" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetClass" value="java.lang.System" />
+		<property name="targetMethod" value="getProperties" />
+	</bean>
+	
+	<bean id="osVersion" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="targetObject" ref="sysProps" />
+		<property name="targetMethod" value="getProperty" />
+		<property name="arguments" value="os.name" />
+	</bean>
+	
+	<bean id="status" class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+		<property name="staticMethod" value="org.jackJew.AOP.proxyTest.StaticFactoryBeanTest.generateNumber" />
+	</bean>
+	
+	<bean id="jdbcPropertyBean" class="org.jackJew.AOP.proxyTest.JdbcPropertyBean">
+		<property name="driverName" value="${jdbc.driverClassName}"/>
+		<property name="jdbcUrl" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+	</bean>
+	
+</beans>
