@@ -34,8 +34,7 @@ public class ValidService {
 		}
 	}
 	
-	@Transactional(propagation=Propagation.REQUIRED)
-	public void insert(Pojo man){
+	private void insert(Pojo man){
 		dao.insert(man, true);
 	}
 	
