@@ -14,8 +14,8 @@ public class InValidService {
 	@Resource(name="transactionDao")
 	private PojoDao dao;
 	
-	//@Transactional(propagation=Propagation.REQUIRED)  //when try...catch, UnexpectedRollbackException; if not catch then throw ORA-00936 exception.
-	//@Transactional(propagation=Propagation.NESTED)  //when try...catch, only execute correct subpath; if does not catch then throw ORA-00936 exception.
+	//@Transactional(propagation=Propagation.REQUIRED)  //when invoker uses try...catch, UnexpectedRollbackException; if not catch then throw ORA-00936 exception.
+	//@Transactional(propagation=Propagation.NESTED)  //when invoker uses try...catch, only execute correct subpath; if does not catch then throw ORA-00936 exception.
 	@Transactional(propagation=Propagation.REQUIRES_NEW)  //same as NESTED !!!
 	public void insert(Pojo man){
 		dao.insert(man, false);
