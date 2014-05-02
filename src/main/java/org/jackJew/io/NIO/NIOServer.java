@@ -29,6 +29,9 @@ public class NIOServer {
 		this.serverName = name;
 	}
 
+	/**
+	 * start service
+	 */
 	public void startServ(){
 		ServerSocketChannel channel = null;
 		Selector selector = null;
@@ -44,14 +47,14 @@ public class NIOServer {
 				// wait for incomming events
 				selector.select();
 				// there is something to process on selected keys
-				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-				while(keys.hasNext()){
-					SelectionKey key = keys.next();
+				Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
+				while(keysItr.hasNext()){
+					SelectionKey key = keysItr.next();
 					
 					// 由于 select()操作会向 Selector所关联的键集合中添加元素,
 					// 因此，如果不remove掉这个处理过的key，
 					// 它就会在下次调用 select() 方法时仍然保留在集合中
-					keys.remove();
+					keysItr.remove();
 					if(key.isValid()) {
 						handleKey(key, selector);
 					}
@@ -95,7 +98,7 @@ public class NIOServer {
 						System.out.println("receive message: " + rcvContent);
 						channel.register(selector, SelectionKey.OP_WRITE);						
 					} else {
-						System.out.println("server read nothing. " + null + " ends the communication.");
+						System.out.println("server read nothing. will end the communication.");
 						key.cancel();
 					}
 				} catch(IOException cce){
