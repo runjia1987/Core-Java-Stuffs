@@ -22,7 +22,7 @@ public class AnonymousClass {
 		final Object obj = new Object();
 		
 		new AnonymousClass("jack"){	// 匿名内部类，相当于 class Inner extends AnonymousClass { }
-			void anotherMethod(){  // 继承与方法扩展
+			private void anotherMethod(){  // 继承与方法扩展
 				System.out.println(getName());
 				System.out.println(obj);
 			}
