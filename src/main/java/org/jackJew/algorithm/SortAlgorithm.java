@@ -59,7 +59,7 @@ public class SortAlgorithm {
 					j--;
 				if(i < j)
 					array[i] = array[j];
-				while(i < j && array[i] < pivot)	//从左端点向右查找第一个大于参照数的值
+				while(i < j && array[i] < pivot)	//从左端点向右查找第一个大于=参照数的值
 					i++;
 				if(i < j)
 					array[j] = array[i];
