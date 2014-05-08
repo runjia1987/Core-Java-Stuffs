@@ -8,10 +8,13 @@ public class ConsistentHash<T extends Entry> {
 	
 	private final HashProvider hashProvider;
 	
-	private short replicationNumber;
+	private short replicationNumber;  // virtual nodes number for each physical nodes
 	
-	private final SortedMap<Integer, T> circleMap = new TreeMap<Integer, T>();
+	private final SortedMap<Integer, T> circleMap = new TreeMap<Integer, T>();   // server nodes map
 	
+	/**
+	 * for HashProvider function, mD5 or CRC is suggested.
+	 */
 	public ConsistentHash (HashProvider provider, short replicationNumber, List<T> nodes){
 		this.hashProvider = provider;
 		this.replicationNumber = replicationNumber;
@@ -23,7 +26,7 @@ public class ConsistentHash<T extends Entry> {
 
 	public void add(T node) {
 		for(short i = 0; i < replicationNumber; i++) {
-			circleMap.put(hashProvider.hash(node.getKey().toString() + i), node);
+			circleMap.put(hashProvider.hash(node.toString() + i), node);
 		}		
 	}
 	
@@ -31,7 +34,7 @@ public class ConsistentHash<T extends Entry> {
 		if(circleMap.isEmpty()) {
 			return null;
 		} else {
-			int hash = hashProvider.hash(key);
+			int hash = hashProvider.hash(key.toString());
 			if( ! circleMap.containsKey(hash)) {
 				// try to get a sub map with bigger or equal keys
 				SortedMap<Integer, T> tailMap = circleMap.tailMap(hash);
