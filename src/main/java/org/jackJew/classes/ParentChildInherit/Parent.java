@@ -1,5 +1,7 @@
 package org.jackJew.classes.ParentChildInherit;
 
+import java.util.List;
+
 public class Parent {
 	
 	int val = 100;
@@ -30,6 +32,10 @@ public class Parent {
 	 */
 	public void unifiedJob(){
 		dosth();
+	}
+	
+	protected List<?> getList() {
+		return null;
 	}
 
 }

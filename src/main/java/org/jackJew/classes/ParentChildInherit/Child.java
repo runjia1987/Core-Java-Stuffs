@@ -1,6 +1,7 @@
 package org.jackJew.classes.ParentChildInherit;
 
 import java.util.Date;
+import java.util.List;
 
 public class Child extends Parent {
 	
@@ -61,6 +62,11 @@ public class Child extends Parent {
 	
 	static String getStr(){
 		return xyz;
+	}
+
+	@Override
+	protected List<String> getList() {
+		return null;
 	}
 
 }
