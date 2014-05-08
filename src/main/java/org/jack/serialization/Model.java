@@ -12,9 +12,11 @@ public class Model implements java.io.Serializable {
 	
 	private String name = "jack";
 	
-	public static String password = "12345678";
+	public String password = "12345678";
 	
-	//private short value = 127;
+	private short value;
+	
+	private String str;
 	
 	public Model() { }
 	
@@ -30,10 +32,10 @@ public class Model implements java.io.Serializable {
 	
 	private void writeObject(java.io.ObjectOutputStream out) throws IOException {
 		System.out.println("writeObject called.");
-		//out.defaultWriteObject();
-		out.writeInt(id);
-		out.writeUTF(name);
-		out.writeUTF(password);
+		out.defaultWriteObject();
+		//out.writeInt(id);
+		//out.writeUTF(name);
+		//out.writeUTF(password);
 		
 		//out.writeShort(value);
 	}
@@ -41,16 +43,16 @@ public class Model implements java.io.Serializable {
 	private void readObject(java.io.ObjectInputStream in)
     			throws IOException, ClassNotFoundException {
 		System.out.println("readObject called.");
-		//in.defaultReadObject();
-		id = in.readInt();
-		name = in.readUTF();
-		password = in.readUTF();
+		in.defaultReadObject();
+		//id = in.readInt();
+		//name = in.readUTF();
+		//password = in.readUTF();
 		
 		//value = in.readShort();
 	}
 	
 	public String toString() {
-		return this.id + "," + this.name + "," + this.password + ",";// + this.value;
+		return this.id + "," + this.name + "," + this.password + "," + this.str;
 	}
 
 }
