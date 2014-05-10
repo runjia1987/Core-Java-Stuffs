@@ -21,7 +21,6 @@ import java.util.WeakHashMap;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
