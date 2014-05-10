@@ -17,10 +17,11 @@ public class PriorityQueueTest {
 		pq.add(56);
 		pq.add(4);
 		pq.add(-5);
-		// 2 4 100 999 56
+		// add: siftUp,  k = size,  (k-1) >> 1; while loop, find greater than
 		
 		Integer ele = 0;
 		while( (ele = pq.poll()) != null ) {
+			// poll: siftDown,  k = 0 ; (k+1) << 1,while loop, find less than
 			System.out.println(ele);
 		}
 		
