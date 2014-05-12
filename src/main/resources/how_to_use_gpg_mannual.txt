@@ -1,0 +1,23 @@
+ecking the trustdb
+gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
+gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
+gpg: next trustdb check due at 2019-05-07
+pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
+      Key fingerprint = 754C EBB9 39C4 3AF7 7FBD  9D80 A86D 6E1D D4A6 6076
+      uid                  runjia.zrj@alibaba-inc.com (gpg key) <runjia.zrj@alibaba-inc.com>
+      sub   2048g/A1EE181E 2014-05-08 [expires: 2019-05-07]
+      
+      gpg --gen-key
+      
+      gpg --list-keys
+      
+      gpg --delete-secret-keys userID
+      
+      导出公钥命令：
+      gpg -o pubKey.asc --export runjia.zrj
+      
+      公钥加密命令：
+      gpg -e -r runjia.zrj ./file.txt
+      
+      私钥解密命令：
+      gpg  -o output.txt -d file.gpg
