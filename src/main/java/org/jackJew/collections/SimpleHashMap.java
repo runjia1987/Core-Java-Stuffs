@@ -16,6 +16,7 @@ import java.lang.ThreadLocal;
 import java.util.Stack;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Hashtable;
 import java.util.HashMap;
 import java.util.WeakHashMap;
 import java.io.BufferedInputStream;
