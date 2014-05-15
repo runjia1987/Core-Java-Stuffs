@@ -7,7 +7,7 @@ public class MethodExceptionSignature {
 	class Child implements Parent, Parent2{
 		@Override
 		public void print() {
-			// throws Check Exception 都可以忽略
+			// throws InterruptedException 或不声明
 		}
 
 		@Override
