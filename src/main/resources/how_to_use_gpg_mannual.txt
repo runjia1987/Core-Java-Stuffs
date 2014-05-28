@@ -17,9 +17,14 @@ pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
       gpg -o pubKey.asc --export runjia.zrj
       导出私钥命令：
       gpg -o pubKey.asc --export-secret-keys runjia.zrj
+	  
+	  导入密钥命令：
+	  gpg --import key.asc
       
       公钥加密命令：
       gpg -e -r runjia.zrj ./file.txt
       
       私钥解密命令：
       gpg  -o output.txt -d file.gpg
+	  
+require gpg 1.4.16+, to support RSA 2048-bit encrypting.
