@@ -26,7 +26,7 @@ public class TransactionService {
 			definition.setTimeout(5);  // 5s timeout
 			
 			status = transactionManager.getTransaction(definition);
-			
+			// jdbcTemplate or Ibatis SqlMapClient
 			transactionManager.commit(status);
 			
 		} catch(Exception e){
