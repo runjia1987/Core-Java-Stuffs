@@ -1,6 +1,7 @@
 package org.jack.MVEL.test;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -124,6 +125,19 @@ public class MVEL_Test {
 		Serializable expression = MVEL.compileExpression("func(\"ABCDEFGHIJK\");");
 		Object result = MVEL.executeExpression(expression, methodFactory);
 		System.out.println("defFunctionExpression: " + result);
+	}
+	
+	@Test
+	public void dateCompare() throws InterruptedException{
+		Map<String, Date> map = new HashMap<String, Date>();
+		map.put("key1", new Date());
+		Thread.sleep(100);
+		map.put("key2", new Date());
+		
+		Serializable expr = MVEL.compileExpression("key1.compareTo(key2)");
+		Object result = MVEL.executeExpression(expr, map);
+		
+		System.out.println("dateCompare: " + result);  // -1 as expected
 	}
 
 }
