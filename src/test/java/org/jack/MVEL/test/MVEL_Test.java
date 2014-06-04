@@ -25,7 +25,7 @@ public class MVEL_Test {
 	 */
 	@Test
 	public void propertyBeanExpression (){
-		Serializable PropertyExpression1 = MVEL.compileExpression("this.getName().toString()");
+		Serializable PropertyExpression1 = MVEL.compileExpression("this.getName().substring(2)");
 		// this.name.toString()
 		// Note: In situations where the field in the object is public, 
 		// MVEL will still prefer to access the property via it's getter method.
