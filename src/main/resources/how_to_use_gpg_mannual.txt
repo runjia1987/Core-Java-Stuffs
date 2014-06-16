@@ -12,6 +12,7 @@ pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
       gpg --list-keys
       
       gpg --delete-secret-keys userID
+      gpg --delete-keys userID
       
       µ¼³ö¹«Ô¿ÃüÁî£º
       gpg -o pubKey.asc --export runjia.zrj
