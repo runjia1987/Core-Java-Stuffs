@@ -22,6 +22,7 @@ public class ExternalizableClassTest implements Externalizable {
 	private String name;
 
 	public ExternalizableClassTest() {
+		System.out.println("deserialize start..., invoke non-arg constructor(required).");
 		System.out.println(number + "," + name);
 	}
 	
@@ -61,7 +62,7 @@ public class ExternalizableClassTest implements Externalizable {
 		oos.flush();
 		oos.close();
 		
-		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("d:\\data.bin"));
+		ObjectInputStream ois = new ObjectInputStream(new FileInputStream("c:\\data.bin"));
 		ExternalizableClassTest ect2 = (ExternalizableClassTest)ois.readObject();
 		System.out.println(ect2.toString());
 		ois.close();
