@@ -118,12 +118,9 @@ public class MVEL_Test {
 	public void defFunctionExpression() {
 		VariableResolverFactory varFactory = new MapVariableResolverFactory();
 		MVEL.eval("def func(str){ return str.length(); }", varFactory);
-		
-		VariableResolverFactory methodFactory = new MapVariableResolverFactory();
-		methodFactory.setNextFactory(varFactory);
-		
+				
 		Serializable expression = MVEL.compileExpression("func(\"ABCDEFGHIJK\");");
-		Object result = MVEL.executeExpression(expression, methodFactory);
+		Object result = MVEL.executeExpression(expression, varFactory);
 		System.out.println("defFunctionExpression: " + result);
 	}
 	
