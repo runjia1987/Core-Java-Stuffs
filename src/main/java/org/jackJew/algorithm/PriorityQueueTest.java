@@ -22,12 +22,12 @@ public class PriorityQueueTest {
 		pq.add(56);
 		pq.add(4);
 		pq.add(-5);
-		// add: siftUp,  k = size,  (k-1) >> 1; while loop, find greater than
+		// add: siftUp,  k = size,  (k-1) >> 1; while loop, find where greater than its parent, or is the root
 		// add: always maintain the 0-index element as the least by siftUp method.
 		
 		Integer ele = 0;
 		while( (ele = pq.poll()) != null ) {
-			// poll: siftDown,  k = 0 ; (k+1) << 1,while loop, find less than
+			// poll: siftDown,  k = 0 ; (k+1) << 1,while loop, find where less than its children, or is the leaf
 			// poll: always poll the least element by siftDown method before return
 			System.out.println(ele);
 		}
