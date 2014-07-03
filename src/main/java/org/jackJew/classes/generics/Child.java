@@ -1,5 +1,6 @@
 package org.jackJew.classes.generics;
 
+import java.io.Serializable;
 import java.lang.ref.WeakReference;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -20,6 +21,10 @@ public class Child <P extends Collection<Parent>, Q, R> extends Parent{
 	class Superclass <T extends CharSequence> { 
 		  public void m1( T arg) {  } 
 		  public T m2() { return null;  } 
+	}
+	
+	public <C extends java.util.Map<String,? super Serializable>> void publish(C instance) {
+		instance.put("key", "");
 	}
 	
 	class Subclass extends Superclass<String> {
