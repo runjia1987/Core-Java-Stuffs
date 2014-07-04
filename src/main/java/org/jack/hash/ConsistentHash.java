@@ -8,6 +8,9 @@ public class ConsistentHash<T extends Entry> {
 	
 	private final HashProvider hashProvider;
 	
+	/**
+	* balance for allocation of multiple data objectss
+	*/
 	private short replicationNumber;  // virtual nodes number for each physical nodes
 	
 	private final SortedMap<Integer, T> circleMap = new TreeMap<Integer, T>();   // server nodes map
