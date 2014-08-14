@@ -20,10 +20,10 @@ public class Base64Algorithm {
 	 * <br>
 	 * Note: only supporting ascii chars (\u0000 ~ \u00FF) 
 	 */
-	public static char[] encode(byte[] sourceBytess){
-		System.out.println(Arrays.toString(sourceBytess));
+	public static char[] encode(byte[] sourceBytes){
+		System.out.println(Arrays.toString(sourceBytes));
 		
-		int size = sourceBytess.length, i = 0, mod = 0, j = 0, resultSize = (size / 3) * 4;
+		int size = sourceBytes.length, i = 0, mod = 0, j = 0, resultSize = (size / 3) * 4;
 		mod = size % 3;
 		if (mod > 0)
 			resultSize += 4;
@@ -33,10 +33,10 @@ public class Base64Algorithm {
 		while(i < size) {
 			mod = i % 3;
 			if ( i > 0)
-				b1 = sourceBytess[i - 1];
+				b1 = sourceBytes[i - 1];
 			else
-				b1 = sourceBytess[i];
-			b2 = sourceBytess[i];
+				b1 = sourceBytes[i];
+			b2 = sourceBytes[i];
 			
 			int index = 0;
 			switch (mod) {
