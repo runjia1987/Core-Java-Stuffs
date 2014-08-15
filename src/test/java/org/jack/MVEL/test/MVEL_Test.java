@@ -1,6 +1,8 @@
 package org.jack.MVEL.test;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -91,12 +93,19 @@ public class MVEL_Test {
 	 * Java-style import package clause
 	 */
 	@Test
-	public void importPackageExpression(){
-		Serializable PropertyExpression1 = MVEL.compileExpression("import java.util.Date;"
+	public void importPackageExpression() throws ParseException{
+		Serializable propertyExpression1 = MVEL.compileExpression("import java.util.Date;"
 				+ "import java.text.SimpleDateFormat;"
 				+ " return new SimpleDateFormat(\"yyyy-MM-dd HH:mm:ss\").format(new Date());");
-		Object result = MVEL.executeExpression(PropertyExpression1);
+		Object result = MVEL.executeExpression(propertyExpression1);
 		System.out.println("importPackageExpression: " + result);
+		
+		propertyExpression1 = MVEL.compileExpression("import java.util.Date;return dateParam.compareTo(new Date());");
+		Map<String, Object> paramMap = new HashMap<String, Object>(4);
+		paramMap.put("dateParam", new SimpleDateFormat("yyyy-MM-dd").parse("1999-09-09"));
+		Object comparedResult = MVEL.executeExpression(propertyExpression1, paramMap);
+		System.out.println("importPackageExpression: " + comparedResult);
+		
 	}
 	
 	/**
