@@ -50,17 +50,17 @@ public class CountDownLatchClient {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		CountDownLatch startSignal = new CountDownLatch(1);
-		CountDownLatch endSignal = new CountDownLatch(racer_number);
+		CountDownLatch startLatch = new CountDownLatch(1);
+		CountDownLatch endLatch = new CountDownLatch(racer_number);
 		ExecutorService es = Executors.newFixedThreadPool(racer_number); //线程数
 		
 		for(int i=0; i<racer_number; i++)
-			es.submit(new RunJob(startSignal, endSignal));
+			es.submit(new RunJob(startLatch, endLatch));
 		
 		
 		System.out.println("可以开始赛跑了:");
-		startSignal.countDown();
-		endSignal.await();
+		startLatch.countDown();
+		endLatch.await();
 		System.out.println("都跑到了终点, 比赛结束!");
 		es.shutdown();
 		
