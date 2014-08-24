@@ -3,7 +3,7 @@ package org.jackJew.algorithm;
 public class Fibonacci {
 	
 	/**
-	 * recursive computing
+	 * recursive computing, -Xss in control
 	 * @param n
 	 */
 	public long recursive(int n){
