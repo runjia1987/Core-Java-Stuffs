@@ -1,6 +1,5 @@
 package org.jackJew.algorithm;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Random;
 
@@ -47,6 +46,28 @@ public class SortAlgorithm {
 		for(i=0; i<index; i++)
 			array[left+i] = temp[i];
 	}
+	
+	/**
+	 * merge and find out the common elements from two sorted arrays
+	 */
+	public static void mergeCommon(int[] array1, int[] array2){
+		int a1 = 0, a2 = array1.length, b1 = 0 ,b2 = array2.length;
+		int c1, c2;
+		while(a1 < a2 && b1 < b2) {
+			c1 = array1[a1];
+			c2 = array2[b1];
+			if (c1 == c2) {
+				System.out.println(c1);
+				a1++;
+				b1++;
+			} else if( c1 < c2) {
+				a1++;
+			} else {
+				b1++;
+			}
+		}
+	}
+	
 	
 	/**
 	 * 快速排序, ASC
@@ -154,6 +175,10 @@ public class SortAlgorithm {
 		//System.out.println(2.0 / 5.0);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 		System.out.println(sdf.parse("2013-12-16 20:09:33.0"));
+		
+		int[] array1 = {-9, 1, 7, 45, 234, 321}, array2 = {7, 56, 321, 500, 600, 1000, 4500, };
+		mergeCommon(array1, array2);
+		
 	}
 
 }
