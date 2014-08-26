@@ -1,9 +1,15 @@
 package org.jackJew.algorithm;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Stack;
 
+/**
+ * Traverse a binary tree
+ * @author Jack
+ *
+ */
 public class TreeTraversing {
 	
 	private int[] array;
@@ -14,6 +20,7 @@ public class TreeTraversing {
 		private int value;
 		private Node left;
 		private Node right;
+		private Node nextSibling;
 		
 		public Node(){
 			
@@ -22,6 +29,11 @@ public class TreeTraversing {
 		public Node(int value){
 			this.value = value;
 		}
+		
+		@Override
+		public String toString(){
+			return String.valueOf(this.value);
+		}
 	}
 	
 	/**
@@ -29,30 +41,32 @@ public class TreeTraversing {
 	 */
 	public void setUpTree(){
 		int i = 0;
-		int threshold = array.length / 2;
-		Node[] nodeList = new Node[threshold];  // for space efficiency, half of them
-		while( i < array.length / 2 ) {
+		int maxIndex = array.length - 1;
+		LinkedList<Node> nodeList = new LinkedList<Node>();  // for space efficiency, use LinkedList, we use add & delete
+		while( true ) {
 			Node node = null;
 			if ( root == null ){
 				root = new Node(array[i]);
-				nodeList[0] = root;
+				nodeList.add(root);
 				node = root;
 			} else {
-				node = nodeList[i];
+				node = nodeList.getFirst();
 			}
 			System.out.println(i);
 			int leftIndex = (i << 1) + 1, rightIndex = leftIndex + 1;
+			if( leftIndex > maxIndex ) {
+				break;
+			}
 			node.left = new Node(array[leftIndex]);
-			if(leftIndex < threshold){
-				nodeList[leftIndex] = node.left;
-			}
+			nodeList.add(node.left);
 			
-			if (rightIndex < array.length) {
+			if (rightIndex <= maxIndex) {
 				node.right = new Node(array[rightIndex]);
-				if(rightIndex < threshold) {
-					nodeList[rightIndex] = node.right;
-				}
+				nodeList.add(node.right);
+			} else {
+				break;
 			}
+			nodeList.removeFirst();   // delete the first node in list
 			
 			i++;
 		}
@@ -69,10 +83,10 @@ public class TreeTraversing {
 			Node node = stack.pop();
 			System.out.println(node.value);
 			
-			if(node.right != null)
+			if(node.right != null)   // first push right-branch
 				stack.push(node.right);
 			
-			if(node.left != null)
+			if(node.left != null)	 // then push left-branch
 				stack.push(node.left);
 		}
 	}
@@ -96,6 +110,57 @@ public class TreeTraversing {
 	}
 	
 	/**
+	 * create sibling linkes for all nodes in the existing tree, <br>
+	 * based on breadth traversing
+	 */
+	public void createSiblingLinks() {
+		Queue<Node> queue = new LinkedList<Node>();
+		Queue<Node> tempQueue = new LinkedList<Node>();  // hold the siblings nodes
+		queue.add(root);
+		int i = 0, expectedPollCount = 1;
+		while ( ! queue.isEmpty() ){
+			Node node = queue.poll();
+			
+			if ( i == expectedPollCount) {
+				siblingLink(tempQueue);
+				expectedPollCount <<= 1;  // double it
+				i = 0;  // reset it
+				tempQueue.clear();  // empty the temp queue
+			}
+			i++;
+			
+			if(node.left != null) {
+				queue.add(node.left);
+				tempQueue.add(node.left);
+			}
+
+			if(node.right != null) {
+				queue.add(node.right);
+				tempQueue.add(node.right);
+			}
+		}
+		siblingLink(tempQueue);
+	}
+	
+	/**
+	 * link the elements from the most-left to the most-right
+	 * @param queue
+	 */
+	private void siblingLink(Queue<Node> queue){
+		Iterator<Node> itr = queue.iterator();
+		Node n, previous = null;
+		while(itr.hasNext()) {
+			n = itr.next();
+			if ( previous != null ) {
+				previous.nextSibling = n;
+				System.out.print(previous + " sibling is " + n + ", ");
+			}
+			previous = n;			
+		}
+		System.out.println();
+	}
+	
+	/**
 	 * testcase
 	 */
 	public static void main(String[] args){
@@ -114,6 +179,8 @@ public class TreeTraversing {
 		System.out.println("start to depthTraverse a binary tree");
 		tt.depthTraverse();
 		System.out.println("complete to depthTraverse a binary tree");
+		
+		tt.createSiblingLinks();
 		
 	}
 	
