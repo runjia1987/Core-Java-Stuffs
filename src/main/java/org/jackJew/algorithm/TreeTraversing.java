@@ -2,6 +2,7 @@ package org.jackJew.algorithm;
 
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -115,39 +116,39 @@ public class TreeTraversing {
 	 */
 	public void createSiblingLinks() {
 		Queue<Node> queue = new LinkedList<Node>();
-		Queue<Node> tempQueue = new LinkedList<Node>();  // hold the siblings nodes
+		List<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes
 		queue.add(root);
-		int i = 0, expectedPollCount = 1;
+		int times = 0, expectedPollCount = 1;
 		while ( ! queue.isEmpty() ){
 			Node node = queue.poll();
-			
-			if ( i == expectedPollCount) {
-				siblingLink(tempQueue);
-				expectedPollCount <<= 1;  // double it
-				i = 0;  // reset it
-				tempQueue.clear();  // empty the temp queue
-			}
-			i++;
+			times++;			
 			
 			if(node.left != null) {
 				queue.add(node.left);
-				tempQueue.add(node.left);
+				siblingNodes.add(node.left);
 			}
 
 			if(node.right != null) {
 				queue.add(node.right);
-				tempQueue.add(node.right);
+				siblingNodes.add(node.right);
+			}
+			
+			if ( times == expectedPollCount) {
+				siblingLink(siblingNodes);
+				expectedPollCount <<= 1;  // double it
+				times = 0;  // reset it
+				siblingNodes.clear();  // empty the temp queue
 			}
 		}
-		siblingLink(tempQueue);
+		siblingLink(siblingNodes);
 	}
 	
 	/**
 	 * link the elements from the most-left to the most-right
-	 * @param queue
+	 * @param siblingNodes
 	 */
-	private void siblingLink(Queue<Node> queue){
-		Iterator<Node> itr = queue.iterator();
+	private void siblingLink(List<Node> siblingNodes){
+		Iterator<Node> itr = siblingNodes.iterator();
 		Node n, previous = null;
 		while(itr.hasNext()) {
 			n = itr.next();
