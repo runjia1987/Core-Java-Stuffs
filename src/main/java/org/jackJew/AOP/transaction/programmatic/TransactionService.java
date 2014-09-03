@@ -27,14 +27,14 @@ public class TransactionService {
 		TransactionStatus status = transactionManager.getTransaction(definition);
 		
 		try {			
-			// jdbcTemplate or Ibatis SqlMapClient
+			// jdbcTemplate or Ibatis SqlMapClient do sth.
+			
+			transactionManager.commit(status);
 			
 		} catch(DataAccessException e){
 			System.out.println(e.getMessage());
-			transactionManager.rollback(status);			
-			throw e;
+			transactionManager.rollback(status);
 		}
-		transactionManager.commit(status);
 	}
 
 	public PlatformTransactionManager getTransactionManager() {
