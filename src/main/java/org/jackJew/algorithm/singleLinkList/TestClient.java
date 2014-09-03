@@ -20,6 +20,11 @@ public class TestClient {
 		list1.removeAtIndex(3);
 		
 		list1.print();
+		
+		// reverse the list
+		System.out.println("start to reverse...");
+		list1.reverse();
+		list1.print();
 	}
 
 }

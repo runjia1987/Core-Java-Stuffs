@@ -109,5 +109,21 @@ public final class LinkList {
 
 		System.out.println();
 	}
+	
+	public void reverse(){
+		LinkNode current = head, previous = null, temp = null;
+		while( current != null) {
+			temp = current.next;
+			current.next = previous;
+			previous = current;
+			current = temp;			
+		}
+		head.next = null;
+		head = previous;		
+	}
+	
+	public LinkNode getHead(){
+		return this.head;
+	}
 
 }
