@@ -43,15 +43,15 @@ public class Base64Algorithm {
 			int index = 0;
 			switch (mod) {
 				case 0:
-					index = b2 >> 2;
-					resultChars[j++] = Base64Chars.charAt(b2 >> 2);
+					index = (b2 & 0xff) >>> 2;
+					resultChars[j++] = Base64Chars.charAt(index);
 					break;
 				case 1:
-					index = ((b1 & 0x03) << 4) + (b2 >>> 4);
+					index = ((b1 & 0x03) << 4) + ((b2 & 0xff) >>> 4);
 					resultChars[j++] = Base64Chars.charAt(index);
 					break;
 				case 2:
-					index = ((b1 & 0x0f) << 2) + (b2 >>> 6);
+					index = ((b1 & 0x0f) << 2) + ((b2 & 0xff) >>> 6);
 					resultChars[j++] = Base64Chars.charAt(index);
 					index = b2 & 0x3f;
 					resultChars[j++] = Base64Chars.charAt(index);
@@ -97,7 +97,6 @@ public class Base64Algorithm {
 				i1 = 0;
 			else
 				i1 = Base64Chars.indexOf(c1) & 0xff;
-			System.out.println("i1: " + i1);
 			
 			if(i < size - 1 ) {
 				c2 = sourceChars[i + 1];
@@ -105,7 +104,6 @@ public class Base64Algorithm {
 					i2 = 0;
 				else
 					i2 = Base64Chars.indexOf(c2) & 0xff;
-				System.out.println("i2: " + i2);
 			} else
 				i2 = i1;
 			
@@ -124,12 +122,11 @@ public class Base64Algorithm {
 					resultBytes[j++] = (byte) value;
 					break;
 			}
-			System.out.println("value: " + value);
 			i++;
 		}
 		
 		if (exceptionChar == c1) {
-			System.out.println("final char is '=' !");
+			System.out.println("final char is '=' ");
 			if(sourceChars[size - 2] == exceptionChar) {
 				// double '=' trailing
 				j -= 2;
@@ -162,8 +159,12 @@ public class Base64Algorithm {
 		System.out.println(encodedResult);
 		
 		// decode
-		char[] encodedChars = "MTIzNDU2Nzg5c1Mk".toCharArray();
+		char[] encodedChars = "5oiR5pivSmFjaw==".toCharArray();
 		byte[] resultBytes = decode(encodedChars);
+		for (byte b : resultBytes) {
+			System.out.print(b + ",");
+		}
+		System.out.println();
 		System.out.println(new String(resultBytes, EncodingCharset));
 	}
 
