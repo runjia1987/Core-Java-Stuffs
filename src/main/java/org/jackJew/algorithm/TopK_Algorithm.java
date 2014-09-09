@@ -10,19 +10,24 @@ import java.util.Random;
  */
 public class TopK_Algorithm {
 	
-	public int[] createRandomString(int length){
-		int[] array = new int[length];
+	/**
+	 * create a random string array
+	 * @param n length
+	 * @return
+	 */
+	public int[] createRandomString(int n){
+		int[] array = new int[n];
 		int i = 0;
 		Random rand = new Random();
-		while(i < length) {
+		while(i < n) {
 			array[i++] = rand.nextInt(10000);
 		}
 		
 		return array;
 	}
 	
-	public void shiftArray(int[] array, int startIndex, int endIndex, int length){
-		System.arraycopy(array, startIndex, array, endIndex, length);
+	public void shiftArray(int[] array, int srcIndex, int destIndex, int length){
+		System.arraycopy(array, srcIndex, array, destIndex, length);
 	}
 	
 	/**
@@ -31,7 +36,7 @@ public class TopK_Algorithm {
 	 * @param k
 	 */
 	public void getTopKByArray(int[] array, int k){
-		int i = 0, index = 0, max = array.length;
+		int element = 0, index = 0, max = array.length;
 		int[] store =  new int[k];
 		System.arraycopy(array, 0, store, 0, k);
 		index = k;
@@ -53,23 +58,51 @@ public class TopK_Algorithm {
 		
 		// iterator over the rest
 		while( index < max) {
-			i = array[index++];
-			if (i > store[0]) {
-				// switch and shift array
-				
+			element = array[index++];
+			if (element > store[0]) {
+				// replace first node and shift array
+				// find the index
+				int j = 1;
+				while(j < k) {
+					if ( store[j++] > element) {j--;break;}
+				}
+				j--;
+				shiftArray(store, 1, 0, j);
+				store[j] = element;
 			}
 		}
-		// print out the store arrays holding top K elements;
+		// print the store arrays holding top K elements;
 		System.out.println(Arrays.toString(store));
 	}
 	
 	/**
 	 * use min heap and sift up & down to find top k asc
-	 * @param array
-	 * @param k
+	 * <br>
+	 * time cost: n*logK
 	 */
 	public void getTopKByMinHeap(int[] array, int k){
+		int i = 0, index = 0, max = array.length;
+		int[] store = new int[k];
+		// set up k-size array
+		while( i < k){
+			if ( i == 0 ) {
+				store[0] = array[index];
+			} else {
+				siftUp(store, i, array[index]);
+			}
+			i++;
+			index++;
+		}
 		
+		System.out.println(Arrays.toString(store));
+		
+		while (index < max) {
+			int element = array[index++];
+			if ( element > store[0]) {
+				siftDown(store, 0, element);
+			}
+		}
+		System.out.println(Arrays.toString(store));
 	}
 	
 	/**
@@ -77,26 +110,56 @@ public class TopK_Algorithm {
 	 * @param i
 	 * @param element
 	 */
-	public void siftUp(int i, int element){
-		
+	public void siftUp(int[] array, int i, int element){
+		int parent = 0;
+		while(i > 0) {
+			parent = i >>> 1;
+			if (array[parent] <= element) {
+				break;
+			}
+			// parent is greater than children
+			array[i] = array[parent];
+			i = parent;
+		}
+		array[i] = element;
 	}
 	
 	/**
 	 * @see java.util.PriorityQueue#siftDown
+	 * @param array
 	 * @param i
 	 * @param element
-	 * @param max
 	 */
-	public void siftDown(int i, int element, int max){
-		
+	public void siftDown(int[] array, int i, int element){
+		int child1 = 0, child2 = 0;
+		int threshold = array.length >>> 1;
+		while (i < threshold) {
+			child1 = (i << 1) + 1;
+			int childElement = array[child1];
+			child2 = child1 + 1;
+			// find the least child
+			if (child2 < array.length && array[child2] < childElement) {
+				childElement = array[child1 = child2];
+			}
+			if ( element <= childElement) {
+				break;
+			}
+			array[i] = childElement;
+			i = child1;
+		}
+		array[i] = element;
 	}
 	
 	public static void main(String[] args){
 		TopK_Algorithm ta = new TopK_Algorithm();
 		int[] array = ta.createRandomString(100);
 		System.out.println(Arrays.toString(array));
-				
+		
+		// by array
 		ta.getTopKByArray(array, 10);
+		
+		// by min heap
+		ta.getTopKByMinHeap(array, 10);
 	}
 
 }
