@@ -118,7 +118,6 @@ public final class LinkList {
 			previous = current;
 			current = temp;			
 		}
-		head.next = null;
 		head = previous;		
 	}
 	
