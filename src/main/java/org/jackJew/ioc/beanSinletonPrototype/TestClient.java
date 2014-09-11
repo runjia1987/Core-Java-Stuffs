@@ -10,7 +10,12 @@ public class TestClient {
 		// 这一句仅仅是为了获得beanFactory
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		SingletonBean2 singletonBean = factory.getBean(SingletonBean2.class);
+		SingletonBean singletonBean = factory.getBean(SingletonBean.class);
+		System.out.println("singletonBean class： " + singletonBean.getClass());
+		// org.jackJew.ioc.beanSinletonPrototype.SingletonBean$$EnhancerByCGLIB$$e95752e6
+		// @see org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate
+		// <br> and CglibSubClassingInstantiationStrategy
+		
 		singletonBean.setName("单例bean");
 		singletonBean.print();
 		singletonBean.print();

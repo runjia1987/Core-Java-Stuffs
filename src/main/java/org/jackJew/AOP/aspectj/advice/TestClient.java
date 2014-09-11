@@ -2,7 +2,7 @@ package org.jackJew.AOP.aspectj.advice;
 
 import java.util.List;
 
-import org.jackJew.ioc.beanSinletonPrototype.MyTargetBean;
+import org.jackJew.ioc.beanSinletonPrototype.TargetProtoTypeBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -38,7 +38,7 @@ public class TestClient {
 		System.out.println("after AOP advice, list.size is: " + list.size());  // 5
 		
 		
-		MyTargetBean bean1 = (MyTargetBean)context.getBean("myTargetBean");
+		TargetProtoTypeBean bean1 = (TargetProtoTypeBean)context.getBean("myTargetBean");
 		System.out.println(bean1);
 		
 	}

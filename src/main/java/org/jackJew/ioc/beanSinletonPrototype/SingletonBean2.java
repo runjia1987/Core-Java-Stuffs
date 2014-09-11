@@ -10,7 +10,7 @@ public class SingletonBean2 implements BeanFactoryAware {
 	
 	private BeanFactory beanFactory;
 	private String name;
-	private MyTargetBean prototypeBean;
+	private TargetProtoTypeBean prototypeBean;
 	
 	public void setName(String name){
 		this.name = name;
@@ -20,7 +20,7 @@ public class SingletonBean2 implements BeanFactoryAware {
 		System.out.println();
 		
 		//与@Scope(value = "prototype")直接相关, 是否返回新实例
-		this.prototypeBean = this.beanFactory.getBean(MyTargetBean.class);
+		this.prototypeBean = this.beanFactory.getBean(TargetProtoTypeBean.class);
 	}
 	
 	public void print(){		
