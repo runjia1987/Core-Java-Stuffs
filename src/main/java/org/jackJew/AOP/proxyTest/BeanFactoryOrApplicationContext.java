@@ -54,11 +54,16 @@ public class BeanFactoryOrApplicationContext {
 	
 	/**
 	 * 一些内置的BeanPostProcessor, such as:
-	 * <br> AutowiredAnnotationBeanPostProcessor, (handle the @Autowired and @Value)
+	 * <br> AutowiredAnnotationBeanPostProcessor, (handle the @Autowired and @Value, JSR-330 @Inject)
 	 * <br> RequiredAnnotationBeanPostProcessor, (handle @Required)
 	 * <br> CommonAnnotationBeanPostProcessor (
-	 * 							handle the JSR-250/330 annotations parsing, such as:
-	 * <br>						@Component, @Configuration, @PostConstruct, @PreDetroy.)
+	 * 							handle the JSR-250 annotations parsing, such as:
+	 * <br>						@Resource, @PostConstruct, @PreDetroy.)
+	 * <br> All above beanPostProcessors only handle the property-scope annatations.
+	 * -----------------------------------------------------------------------------------------
+	 * 
+	 * <br> Regarding class-scope annotations: @Component, @Service, @Controller, @Repository, 
+	 * <br>	they will be handled by ClasspathScanningCandidateComponentProvider class.
 	 */
 
 }
