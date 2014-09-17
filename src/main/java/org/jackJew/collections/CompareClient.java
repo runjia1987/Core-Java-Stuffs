@@ -63,4 +63,12 @@ class Element<E> implements Comparable<E> {
 			return o == null ? 1 : this.compareTo(o);  // ?三元操作符没有短路功能
 	}
 	
+	public static void main(String[] args) {
+		int i = 100, j = 101;
+		Comparable<Integer> comp_i = (Comparable<Integer>)i;
+		
+		System.out.println(comp_i.compareTo(j));
+		// -1
+	}
+	
 }
