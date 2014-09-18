@@ -10,8 +10,14 @@ import java.util.Arrays;
  */
 public class Base64Algorithm {
 	
-	public final static String EncodingCharset = "UTF-8";
+	public final static String DefaultEncodingCharset = "UTF-8";
 	
+	private String encodingCharset;
+	
+	public void setEncodingCharset(String encodingCharset) {
+		encodingCharset = encodingCharset;
+	}
+
 	public final static String Base64Chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 	
 	/**
@@ -155,7 +161,7 @@ public class Base64Algorithm {
 	public static void main(String[] args) throws Exception {
 		// encode
 		String sourceStr = "MTIzNDU2Nzg5c1Mk";
-		char[] encodedResult = encode(sourceStr.getBytes(EncodingCharset));
+		char[] encodedResult = encode(sourceStr.getBytes(DefaultEncodingCharset));
 		System.out.println(encodedResult);
 		
 		// decode
@@ -165,7 +171,7 @@ public class Base64Algorithm {
 			System.out.print(b + ",");
 		}
 		System.out.println();
-		System.out.println(new String(resultBytes, EncodingCharset));
+		System.out.println(new String(resultBytes, DefaultEncodingCharset));
 	}
 
 }
