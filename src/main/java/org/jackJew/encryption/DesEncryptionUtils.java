@@ -16,7 +16,8 @@ import org.jackJew.algorithm.Base64Algorithm;
 public class DesEncryptionUtils {
 
 	/**
-	 * actually, only the first 8-bytes is used 
+	 * size must be >= 8, <br/>
+	 * actually only the first 8-bytes is used, tailing bytes are ignored
 	 */
 	private final static String sourceKey = "hd7js791bgsks79dn";
 	
@@ -63,7 +64,7 @@ public class DesEncryptionUtils {
 	/**
 	 * encrypt
 	 * @param content
-	 * @param encryptMode CBC(preferred) or ECB(less safety)
+	 * @param encryptMode CBC(preferrable) or ECB(not preferrable regarding safety)
 	 * @return encoded string(base64 transformed)
 	 */
 	public String encrypt(String content, String encryptMode){	
