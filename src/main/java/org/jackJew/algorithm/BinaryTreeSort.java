@@ -10,7 +10,7 @@ package org.jackJew.algorithm;
 public class BinaryTreeSort {
 	
 	/**
-	 * create a a sorted binary tree, LDR incremental
+	 * create a sorted binary tree, LDR sorting incremental
 	 */
 	public int[] createSortedBinaryTree(int maxSize){
 		// TODO

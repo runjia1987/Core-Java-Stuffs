@@ -75,7 +75,8 @@ public class MathSqrt {
 	 * less efficient, takes more time when computing.
 	 */
 	double sqrt2(double d, int scale) {
-		// first listing from 0
+		// first start from 0
+		// try to find an integer value as threshold
 		int i = 0, count = 0;
 		while(true) {
 			long pow = i * i;
@@ -90,8 +91,9 @@ public class MathSqrt {
 			count++;
 			System.out.println(count);
 		}
-		
 		int j = i + 1;
+		// definitely the final result will lay between i and j
+		
 		// use binary search
 		int maxBinarySearchCount = 64;
 		double a = i , b = j, mid = 0d;
