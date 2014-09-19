@@ -21,7 +21,7 @@ public class TestClient {
 			Thread t = new Thread(){
 				public void run(){					
 					try {
-						ConnectionWrapper conW = new ConnectionWrapper(provider);
+						ConnectionWrapper conW = provider.getConnection();
 						conW.queryOperation();
 						conW = null;  // help GC, this is useful
 						

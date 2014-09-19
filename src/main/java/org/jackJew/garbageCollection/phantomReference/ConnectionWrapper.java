@@ -14,11 +14,8 @@ public class ConnectionWrapper {
 
 	private Connection dbConnection;
 	
-	public ConnectionWrapper(ProviderService provider) throws Exception {
-		this.dbConnection = provider.getConnection();
-		
-		ConnectionReference reference = new ConnectionReference(this, provider.getQueue());
-		provider.getReferenceList().add(reference);
+	public ConnectionWrapper(Connection dbConnection) {
+		this.dbConnection = dbConnection;
 	}
 	
 	public Connection getDbConnection() {

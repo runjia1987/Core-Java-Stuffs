@@ -31,11 +31,15 @@ public class ProviderService implements InitializingBean {
 	
 	private DataSource dataSource;
 
-	public Connection getConnection() throws SQLException{
+	public ConnectionWrapper getConnection() throws SQLException{
 		Connection con = dataSource.getConnection();
 		System.out.println("connection " + con + " is retrieved from dataSource.");
 		
-		return con;
+		ConnectionWrapper conW = new ConnectionWrapper(con);
+		ConnectionReference reference = new ConnectionReference(conW, queue);
+		referenceList.add(reference);
+		
+		return conW;
 	}
 
 	/**
