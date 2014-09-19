@@ -39,7 +39,7 @@ public class TopHotK_Algorithm {
 
 		@Override
 		public void run() {
-			
+			// TODO
 		}		
 	}
 	
@@ -52,7 +52,7 @@ public class TopHotK_Algorithm {
 
 		@Override
 		public void run() {
-			
+			// TODO
 		}
 		
 	}
