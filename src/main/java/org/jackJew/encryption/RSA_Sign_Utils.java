@@ -28,7 +28,7 @@ public class RSA_Sign_Utils {
 	/**
 	 * create pub & private from KeyPairGenerator
 	 */
-	public void setUpSecretKeys() throws NoSuchAlgorithmException{
+	public RSA_Sign_Utils() throws NoSuchAlgorithmException{
 		KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(algorithm);
 		kpGenerator.initialize(secretKeyLength);
 		
@@ -39,6 +39,8 @@ public class RSA_Sign_Utils {
 		publicKeyStr = new String(Base64Algorithm.encode(pubKey.getEncoded()));
 		privateKeyStr = new String(Base64Algorithm.encode(privateKey.getEncoded()));
 		
+		System.out.println("created keyPair: public @ " + publicKeyStr
+										+ "\nprivate@" + privateKeyStr);
 	}
 	
 	/**
@@ -49,7 +51,7 @@ public class RSA_Sign_Utils {
 	public String getSign(byte[] data) throws Exception{
 		byte[] privateKeySpecBytes = Base64Algorithm.decode(privateKeyStr.toCharArray());
 		
-		// use PKCS8EncodedKeySpec
+		// use PKCS8EncodedKeySpec to generate private key for signature
 		PKCS8EncodedKeySpec encodedKeySpec = new PKCS8EncodedKeySpec(privateKeySpecBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 		PrivateKey _private = keyFactory.generatePrivate(encodedKeySpec);
@@ -71,7 +73,8 @@ public class RSA_Sign_Utils {
 	 */
 	public boolean verify(String sign, byte[] data) throws Exception {
 		byte[] publicKeySpecBytes = Base64Algorithm.decode(publicKeyStr.toCharArray());
-		// use
+		
+		// use X509EncodedKeySpec to generate public key for decryption
 		X509EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(publicKeySpecBytes);
 		KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
 		PublicKey _public = keyFactory.generatePublic(encodedKeySpec);
@@ -86,9 +89,16 @@ public class RSA_Sign_Utils {
 	}
 	
 	public static void main(String[] args) throws Exception {
-		byte[] contentBytes = "".getBytes(EncodingCharset);
+		byte[] contentBytes = "these are the content,just for test".getBytes(EncodingCharset);
+		RSA_Sign_Utils utils = new RSA_Sign_Utils();
+		String generatedSign = utils.getSign(contentBytes);
 		
+		System.out.println("base64 encoded signature: " + generatedSign);
 		
+		//start kto verify the signature
+		boolean result = utils.verify(generatedSign, contentBytes);
+		
+		System.out.println("verification result: " + result);
 	}
 
 }

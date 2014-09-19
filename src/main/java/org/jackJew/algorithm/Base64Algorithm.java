@@ -27,7 +27,7 @@ public class Base64Algorithm {
 	 * Note: only supporting ascii chars (\u0000 ~ \u00FF) 
 	 */
 	public static char[] encode(byte[] sourceBytes){
-		System.out.println(Arrays.toString(sourceBytes));
+		System.out.println("before encode, the source bytes are: " + Arrays.toString(sourceBytes));
 		
 		int size = sourceBytes.length, i = 0, mod = 0, j = 0, resultSize = (size / 3) * 4;
 		if ( size == 0) throw new IllegalArgumentException("input parameter is empty !");
