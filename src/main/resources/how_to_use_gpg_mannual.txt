@@ -14,18 +14,18 @@ pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
       gpg --delete-secret-keys userID
       gpg --delete-keys userID
       
-      µ¼³ö¹«Ô¿ÃüÁî£º
+      å¯¼å‡ºå…¬é’¥å‘½ä»¤ï¼š
       gpg -o pubKey.asc --export runjia.zrj
-      µ¼³öË½Ô¿ÃüÁî£º
+      å¯¼å‡ºç§é’¥å‘½ä»¤ï¼š
       gpg -o pubKey.asc --export-secret-keys runjia.zrj
 
-	µ¼ÈëÃÜÔ¿ÃüÁî£º
+	å¯¼å…¥å¯†é’¥å‘½ä»¤ï¼š
 	gpg --import key.asc
       
-      ¹«Ô¿¼ÓÃÜÃüÁî£º
+      å…¬é’¥åŠ å¯†å‘½ä»¤ï¼š
       gpg -e -r runjia.zrj ./file.txt
       
-      Ë½Ô¿½âÃÜÃüÁî£º
+      ç§é’¥è§£å¯†å‘½ä»¤ï¼š
       gpg  -o output.txt -d file.gpg
 	  
 require gpg 1.4.16+, to support RSA 2048-bit encrypting.

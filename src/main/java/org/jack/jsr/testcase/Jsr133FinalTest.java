@@ -25,54 +25,47 @@ public class Jsr133FinalTest {
 		
 		private static volatile Singleton instance;
 		
-		/**
-		 * certainly this is not safe, just for example.
-		 * @return
-		 */
-		public static Singleton getIntsance(){
+		public static void createIntsance(){
 			if (instance == null) {
 				instance = new Singleton("a", "b");
-				return instance;
 			}
-			return instance;
 		}
 	}
 	
-	class AccessByGet implements Runnable {
+	class Create implements Runnable {
 
 		@Override
 		public void run() {
-			Singleton s = Singleton.getIntsance();
-			Thread t = Thread.currentThread();
-			System.out.println(t + ", " + s.fieldA);
-			System.out.println(t + ", " + s.fieldB);
+			Singleton.createIntsance();
 		}
 
 	}
 	
-	class AccessDirect implements Runnable {
+	class Access implements Runnable {
 
 		@Override
 		public void run() {
 			Singleton s = Singleton.instance;
-			Thread t = Thread.currentThread();
-			System.out.println(t + ", " + s.fieldA);
-			System.out.println(t + ", " + s.fieldB);
+			if(s != null) {
+				Thread t = Thread.currentThread();
+				System.out.println(t + ", " + s.fieldA);
+				System.out.println(t + ", " + s.fieldB);
+			}
 		}
 		
 	}
 	
 	public static void main(String[] args){
 		Jsr133FinalTest test = new Jsr133FinalTest();
-		Runnable r1 = test.new AccessByGet();
-		Runnable r2 = test.new AccessDirect();
+		Runnable r1 = test.new Create();
+		Runnable r2 = test.new Access();
 		
 		int maxThreadsSize = 20, i = 0;
 		Thread[] threads = new Thread[maxThreadsSize];
 		
 		
 		while(i < maxThreadsSize) {
-			if ( i % 2 == 0) {
+			if ( i == 0) {
 				threads[i++] = new Thread(r1);
 			} else {
 				threads[i++] = new Thread(r2);
@@ -82,6 +75,7 @@ public class Jsr133FinalTest {
 		for (Thread t : threads) {
 			t.start();
 		}
+		
 	}
 
 }

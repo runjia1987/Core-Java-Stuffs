@@ -41,7 +41,7 @@ public class TopK_Algorithm {
 		System.arraycopy(array, 0, store, 0, k);
 		index = k;
 		
-		System.out.println(Arrays.toString(store));
+		System.out.println("the first k elements: " + Arrays.toString(store));
 		// asc sort the store array
 		int a, b;
 		for (a = 0; a < k - 1; a++) {
@@ -54,7 +54,7 @@ public class TopK_Algorithm {
 			store[indexB] = store[a];
 			store[a] = c1;
 		}
-		System.out.println(Arrays.toString(store));
+		System.out.println("after asc sort: " + Arrays.toString(store));
 		
 		// iterator over the rest
 		while( index < max) {
@@ -72,7 +72,7 @@ public class TopK_Algorithm {
 			}
 		}
 		// print the store arrays holding top K elements;
-		System.out.println(Arrays.toString(store));
+		System.out.println("getTopKByArray final result: " + Arrays.toString(store));
 	}
 	
 	/**
@@ -94,7 +94,7 @@ public class TopK_Algorithm {
 			index++;
 		}
 		
-		System.out.println(Arrays.toString(store));
+		System.out.println("k-size heap is setUp: " + Arrays.toString(store));
 		
 		while (index < max) {
 			int element = array[index++];
@@ -102,7 +102,7 @@ public class TopK_Algorithm {
 				siftDown(store, 0, element);
 			}
 		}
-		System.out.println(Arrays.toString(store));
+		System.out.println("getTopKByMinHeap final result: " +Arrays.toString(store));
 	}
 	
 	/**
@@ -152,14 +152,25 @@ public class TopK_Algorithm {
 	
 	public static void main(String[] args){
 		TopK_Algorithm ta = new TopK_Algorithm();
-		int[] array = ta.createRandomString(100);
-		System.out.println(Arrays.toString(array));
+		int[] array = ta.createRandomString(100000);
+		//System.out.println(Arrays.toString(array));
 		
 		// by array
+		long startTime = System.nanoTime();
 		ta.getTopKByArray(array, 10);
+		long endTime = System.nanoTime();
+		System.out.println("getTopKByArray cost: " + (endTime - startTime) + "ns.");
 		
 		// by min heap
+		startTime = System.nanoTime();
 		ta.getTopKByMinHeap(array, 10);
+		endTime = System.nanoTime();
+		System.out.println("getTopKByMinHeap cost: " + (endTime - startTime) + "ns.");
+		
+		/**
+		 * summary:
+		 * from the log, getTopKByMinHeap is about 10% faster than getTopKByArray.
+		 */
 	}
 
 }
