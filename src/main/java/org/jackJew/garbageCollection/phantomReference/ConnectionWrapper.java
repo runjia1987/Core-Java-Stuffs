@@ -1,11 +1,9 @@
 package org.jackJew.garbageCollection.phantomReference;
 
-import java.lang.ref.ReferenceQueue;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.List;
 
 /**
  * jdbc Connection wrapper
@@ -16,18 +14,17 @@ public class ConnectionWrapper {
 
 	private Connection dbConnection;
 	
-	public ConnectionWrapper(Connection dbConnection, ReferenceQueue<ConnectionWrapper> queue,
-				List<ConnectionReference> referenceList) {
-		this.dbConnection = dbConnection;
+	public ConnectionWrapper(ProviderService provider) throws Exception {
+		this.dbConnection = provider.getConnection();
 		
-		ConnectionReference reference = new ConnectionReference(this, queue);
-		referenceList.add(reference);
+		ConnectionReference reference = new ConnectionReference(this, provider.getQueue());
+		provider.getReferenceList().add(reference);
 	}
 	
 	public Connection getDbConnection() {
 		return dbConnection;
 	}
-	
+
 	public void queryOperation() throws Exception {
 		String sql = "select id, password from user_storage where user_name = ?";
 		PreparedStatement psmt = null;
@@ -49,15 +46,4 @@ public class ConnectionWrapper {
 			}
 		}
 	}
-
-	public void cleanUp(){
-		try {
-			this.dbConnection.close();
-			
-			System.out.println(this.dbConnection + " is closed silently.");
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-	}
-
 }

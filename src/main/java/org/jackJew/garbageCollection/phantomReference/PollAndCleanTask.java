@@ -1,7 +1,5 @@
 package org.jackJew.garbageCollection.phantomReference;
 
-import java.lang.ref.ReferenceQueue;
-import java.util.List;
 
 /**
  * task to keep polling the referenceQueue, and do cleanUp stuff.
@@ -13,24 +11,22 @@ import java.util.List;
  */
 public class PollAndCleanTask implements Runnable {
 	
-	private ReferenceQueue<?> queue;
+	private ProviderService provider;
 	
-	private List<ConnectionReference> referenceList;
-	
-	public PollAndCleanTask(ReferenceQueue<?> queue, List<ConnectionReference> referenceList){
-		this.queue = queue;
-		this.referenceList = referenceList;
+	public PollAndCleanTask(ProviderService provider){
+		this.provider = provider;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			ConnectionReference reference = (ConnectionReference) queue.poll();
+			ConnectionReference reference = (ConnectionReference) provider.getQueue().poll();
 			if( reference != null) {
-				reference.getConnectionWrapper().cleanUp();
+				reference.cleanUp();
 				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a connection.");
 				
-				referenceList.remove(reference);
+				provider.getReferenceList().remove(reference);
+				
 			} else {
 				System.out.println("queue is empty");
 				try {

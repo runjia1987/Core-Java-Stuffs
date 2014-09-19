@@ -14,12 +14,27 @@ public class TestClient {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		final ProviderService provider = context.getBean("phantomConnectionProviderService", ProviderService.class);		
 		
-		provider.getConnection().queryOperation();
-		provider.getConnection().queryOperation();
-		provider.getConnection().queryOperation();
+		int i = 0;
+		while (i++ < 10) {
+			// likewise in real occasions, multi - threads simulation.
+			
+			Thread t = new Thread(){
+				public void run(){					
+					try {
+						ConnectionWrapper conW = new ConnectionWrapper(provider);
+						conW.queryOperation();
+						conW = null;  // help GC, this is useful
+						
+						System.gc();
+						
+					} catch (Exception e) {
+						e.printStackTrace();
+					}					
+				}
+			};
+			t.start();
+		}
 		
-		System.gc();
-		Thread.sleep(1000);		
 	}
 
 }

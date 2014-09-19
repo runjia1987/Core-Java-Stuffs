@@ -5,12 +5,13 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 
 /**
- * provider
+ * provider service
  * @author Jack
  *
  */
@@ -26,25 +27,24 @@ public class ProviderService implements InitializingBean {
 	 * This is necessary to ensure that phantom references are not garbage collected
 	 * <br> as long as they have not been handled by the reference queue.
 	 */
-	private List<ConnectionReference> referenceList = new ArrayList<ConnectionReference>();
+	private final List<ConnectionReference> referenceList = new ArrayList<ConnectionReference>();
 	
 	private DataSource dataSource;
 
-	public ConnectionWrapper getConnection() throws SQLException{
+	public Connection getConnection() throws SQLException{
 		Connection con = dataSource.getConnection();
 		System.out.println("connection " + con + " is retrieved from dataSource.");
 		
-		ConnectionWrapper conW = new ConnectionWrapper(con, queue, referenceList);		
-		return conW;
+		return con;
 	}
-	
+
 	/**
 	 * create a thread to keep polling the referenceQueue, do cleanUp stuff.
 	 * <br> 
 	 */
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		PollAndCleanTask task = new PollAndCleanTask(queue, referenceList);
+		PollAndCleanTask task = new PollAndCleanTask(this);
 		
 		Thread thread = new Thread(task, "pollingThread");		
 		thread.start();
@@ -56,4 +56,11 @@ public class ProviderService implements InitializingBean {
 		this.dataSource = dataSource;
 	}
 
+	public ReferenceQueue<ConnectionWrapper> getQueue() {
+		return queue;
+	}
+
+	public List<ConnectionReference> getReferenceList() {
+		return referenceList;
+	}
 }
