@@ -12,15 +12,14 @@ public class TestClient {
 	
 	public static void main(String[] args) throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		ProviderService provider = context.getBean("phantomConnectionProviderService", ProviderService.class);		
+		final ProviderService provider = context.getBean("phantomConnectionProviderService", ProviderService.class);		
 		
-		int i = 0;
-		while (i++ < 10) {
-			PhantomConnection pCon = provider.getConnection();
-			pCon.queryOperation();
-			
-			Thread.sleep(1000);
-		}
+		provider.getConnection().queryOperation();
+		provider.getConnection().queryOperation();
+		provider.getConnection().queryOperation();
+		
+		System.gc();
+		Thread.sleep(1000);		
 	}
 
 }

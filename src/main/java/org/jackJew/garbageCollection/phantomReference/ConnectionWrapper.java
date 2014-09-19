@@ -1,23 +1,27 @@
 package org.jackJew.garbageCollection.phantomReference;
 
-import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
- * jdbc Connection wrapped by PhantomReference
+ * jdbc Connection wrapper
  * @author Jack
  *
  */
-public class PhantomConnection extends PhantomReference<Connection> {
+public class ConnectionWrapper {
 
 	private Connection dbConnection;
 	
-	public PhantomConnection(Connection dbConnection, ReferenceQueue<Connection> queue) {
-		super(dbConnection, queue);		
+	public ConnectionWrapper(Connection dbConnection, ReferenceQueue<ConnectionWrapper> queue,
+				List<ConnectionReference> referenceList) {
+		this.dbConnection = dbConnection;
+		
+		ConnectionReference reference = new ConnectionReference(this, queue);
+		referenceList.add(reference);
 	}
 	
 	public Connection getDbConnection() {

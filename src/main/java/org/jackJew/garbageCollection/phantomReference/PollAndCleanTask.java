@@ -15,20 +15,29 @@ public class PollAndCleanTask implements Runnable {
 	
 	private ReferenceQueue<?> queue;
 	
-	private List<PhantomConnection> connectionList;
+	private List<ConnectionReference> referenceList;
 	
-	public PollAndCleanTask(ReferenceQueue<?> queue, List<PhantomConnection> connectionList){
+	public PollAndCleanTask(ReferenceQueue<?> queue, List<ConnectionReference> referenceList){
 		this.queue = queue;
+		this.referenceList = referenceList;
 	}
 
 	@Override
 	public void run() {
 		while (true) {
-			PhantomConnection pCon = (PhantomConnection) queue.poll();
-			pCon.cleanUp();
-			System.out.println(Thread.currentThread().getName() + " successfully cleanUp a connection.");
-			
-			connectionList.remove(pCon);
+			ConnectionReference reference = (ConnectionReference) queue.poll();
+			if( reference != null) {
+				reference.getConnectionWrapper().cleanUp();
+				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a connection.");
+				
+				referenceList.remove(reference);
+			} else {
+				System.out.println("queue is empty");
+				try {
+					Thread.sleep(2000);
+				} catch (InterruptedException e) {
+				}
+			}
 		}
 	}
 
