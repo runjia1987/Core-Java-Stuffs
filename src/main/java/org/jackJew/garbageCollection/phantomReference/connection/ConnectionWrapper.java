@@ -1,4 +1,4 @@
-package org.jackJew.garbageCollection.phantomReference;
+package org.jackJew.garbageCollection.phantomReference.connection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,6 +22,9 @@ public class ConnectionWrapper {
 		return dbConnection;
 	}
 
+	/**
+	 * here we do not close the connection, just for test phantomReference. Not advised !!!
+	 */
 	public void queryOperation() throws Exception {
 		String sql = "select id, password from user_storage where user_name = ?";
 		PreparedStatement psmt = null;

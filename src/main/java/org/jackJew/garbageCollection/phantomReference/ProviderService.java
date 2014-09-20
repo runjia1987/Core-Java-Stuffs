@@ -1,11 +1,9 @@
 package org.jackJew.garbageCollection.phantomReference;
 
 import java.lang.ref.ReferenceQueue;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
@@ -21,25 +19,23 @@ public class ProviderService implements InitializingBean {
 	 * Before a connection object will be garbage collected,
 	 * <br> its phantom reference will be enqueued into the associated reference queue.
 	 */
-	private final ReferenceQueue<ConnectionWrapper> queue = new ReferenceQueue<ConnectionWrapper>();
+	private final ReferenceQueue<ResourceWrapper> queue = new ReferenceQueue<ResourceWrapper>();
 	
 	/**
 	 * This is necessary to ensure that phantom references are not garbage collected
 	 * <br> as long as they have not been handled by the reference queue.
 	 */
-	private final List<ConnectionReference> referenceList = new ArrayList<ConnectionReference>();
+	private final List<Cleanable> referenceList = new ArrayList<Cleanable>();
 	
 	private DataSource dataSource;
 
-	public ConnectionWrapper getConnection() throws SQLException{
-		Connection con = dataSource.getConnection();
-		System.out.println("connection " + con + " is retrieved from dataSource.");
+	public ResourceWrapper getResource() throws SQLException{
+		ResourceWrapper resourceW = new ResourceWrapper();
 		
-		ConnectionWrapper conW = new ConnectionWrapper(con);
-		ConnectionReference reference = new ConnectionReference(conW, queue);
+		Cleanable reference = new PhantomResourceReference(resourceW, queue);
 		referenceList.add(reference);
 		
-		return conW;
+		return resourceW;
 	}
 
 	/**
@@ -60,11 +56,12 @@ public class ProviderService implements InitializingBean {
 		this.dataSource = dataSource;
 	}
 
-	public ReferenceQueue<ConnectionWrapper> getQueue() {
+	public ReferenceQueue<ResourceWrapper> getQueue() {
 		return queue;
 	}
 
-	public List<ConnectionReference> getReferenceList() {
+	public List<Cleanable> getReferenceList() {
 		return referenceList;
 	}
+
 }

@@ -1,20 +1,22 @@
-package org.jackJew.garbageCollection.phantomReference;
+package org.jackJew.garbageCollection.phantomReference.connection;
 
 import java.lang.ref.PhantomReference;
 import java.lang.ref.ReferenceQueue;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import org.jackJew.garbageCollection.phantomReference.Cleanable;
+
 /**
  * ConnectionReference extends PhantomReference
  * @author Jack
  *
  */
-public class ConnectionReference extends PhantomReference<ConnectionWrapper> {
+public class ConnectionReference extends PhantomReference<ConnectionWrapper> implements Cleanable {
 
 	/**
-	 * Note: Never point a member field to the referent object  !!!
-	 * <br> or the referent will never be phantom reachable !!!
+	 * Note: never point a member field to the referent object  !!!
+	 * <br> otherwise the referent will never become phantom reachable !!!
 	 */
 	private Connection con;
 	
@@ -24,11 +26,11 @@ public class ConnectionReference extends PhantomReference<ConnectionWrapper> {
 		this.con = connectionWrapper.getDbConnection();
 	}
 	
-	public void cleanUp() {
+	public void cleanup() {
 		try {
 			System.out.println(this.con + " is to be closed silently.");
 			
-			this.con.close();  // after this call, this.con is set to null
+			this.con.close();  // after this call, this.con willbe set to null
 			
 		} catch (SQLException e) {
 			e.printStackTrace();

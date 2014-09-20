@@ -20,10 +20,10 @@ public class PollAndCleanTask implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			ConnectionReference reference = (ConnectionReference) provider.getQueue().poll();
+			Cleanable reference = (Cleanable) provider.getQueue().poll();
 			if( reference != null) {
-				reference.cleanUp();
-				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a connection.");
+				reference.cleanup();
+				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a resource.");
 				
 				provider.getReferenceList().remove(reference);
 				
