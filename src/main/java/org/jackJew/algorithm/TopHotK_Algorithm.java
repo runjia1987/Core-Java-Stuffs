@@ -1,8 +1,10 @@
 package org.jackJew.algorithm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -13,10 +15,18 @@ import java.util.Random;
  */
 public class TopHotK_Algorithm {
 	
+	private static final int maxElementsSize = 1000;
+	
 	public final String ASCIIWord = "abcdefghijklmnopqrstuvwxyz";
 	
+	private String[] array;
+	
+	private final int reduceTask_thread_number = 10;
+	
+	private final ReduceTask[] reduceTasks = new ReduceTask[reduceTask_thread_number];
+
 	/**
-	 * simulate the map
+	 * simulate the map, distribution
 	 * @author Jack
 	 *
 	 */
@@ -25,7 +35,18 @@ public class TopHotK_Algorithm {
 		@Override
 		public void run() {
 			// hash(md5) to map to different task nodes
-			
+			String element;
+			int hashCode, mod;
+			String md5;
+			for(int i = 0; i < array.length; i++){
+				element = array[i];
+				md5 = Md5Util.getMD5(element);
+				hashCode = md5.hashCode();
+				
+				// get mod
+				mod = hashCode % reduceTask_thread_number;
+				reduceTasks[mod].addElement(element);				
+			}
 		}
 		
 	}
@@ -36,11 +57,17 @@ public class TopHotK_Algorithm {
 	 *
 	 */
 	class ReduceTask implements Runnable {
+		
+		private List<String> rangeArray = new ArrayList<String>(maxElementsSize / reduceTask_thread_number);
 
 		@Override
 		public void run() {
 			// TODO
-		}		
+		}
+		
+		public void addElement(String element){
+			this.rangeArray.add(element);
+		}	
 	}
 	
 	/**
@@ -63,9 +90,9 @@ public class TopHotK_Algorithm {
 	 */
 	public static void main(String[] args){
 		TopHotK_Algorithm tha = new TopHotK_Algorithm();
-		String[] array = tha.createRandomStrings(1000);
-		System.out.println(Arrays.toString(array));
-		tha.findDuplicated(array);
+		tha.setArray(tha.createRandomStrings(maxElementsSize));
+		
+		tha.findDuplicated(tha.getArray());
 		
 	}
 	
@@ -112,6 +139,14 @@ public class TopHotK_Algorithm {
 			i++;
 		}
 		
+		return array;
+	}
+
+	public void setArray(String[] array) {
+		this.array = array;
+	}
+
+	public String[] getArray() {
 		return array;
 	}
 
