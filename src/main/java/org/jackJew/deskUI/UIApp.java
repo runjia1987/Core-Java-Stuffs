@@ -12,6 +12,7 @@ public class UIApp {
 		Object[][] userInfo = { { "小强", 22, "男" }, { "小明", 23, "女" }, { "小华", 24, "男" } };
 		
 		JTable table = new JTable(userInfo, titles); // 建立表格
+		table.setEnabled(false);
 		JScrollPane scr = new JScrollPane(table);
 		
 		frame.add(scr); // 将JScrollPanel添加进窗口

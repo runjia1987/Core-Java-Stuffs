@@ -1,6 +1,7 @@
 package org.jackJew.algorithm;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -93,6 +94,31 @@ public class SortAlgorithm {
 		}
 	}
 	
+	public static void quickSort(int left, int right, int[] A){
+        int i = left, j = right;
+        int pivot = A[i];
+        
+        if ( left < right) {
+            while (i < j){
+                    while(i < j && A[j] > pivot) j--;
+                    
+                    if(i < j)
+                        A[i] = A[j];
+                    
+                    while(i < j && A[i] < pivot) i++;
+                    
+                    if (i < j)
+                        A[j] = A[i];
+            }
+            
+            A[i] = pivot;
+            System.out.println(Arrays.toString(A));
+            
+            quickSort(left, i - 1, A);
+            quickSort(i+1, right, A);
+        }        
+    }
+	
 	/**
 	 * 快速排序, ASC, 随机化轴值
 	 */
@@ -163,6 +189,8 @@ public class SortAlgorithm {
 		
 		long startTime = System.currentTimeMillis();
 		//mergeSort(0, array.length-1, array, temp);
+		
+		quickSort(0, array.length-1, array);
 		quickSort_random(array, 0, array.length-1);
 		//bubbleSort(array, array.length);
 		//selectSort(array, array.length);
