@@ -74,8 +74,9 @@ public class SortAlgorithm {
 	 * 快速排序, ASC
 	 */
 	public static void quickSort(int[] array, int left, int right){
-		if(left < right){
-			int i = left, j = right, pivot = array[left];	//选择一个参照数
+		int i = left, j = right, pivot = array[left];	//选择一个参照数
+		
+		if(left < right){			
 			while (i < j){
 				while(i < j && array[j] >= pivot)	//从右端点向左查找第一个小于参照数的值
 					j--;
@@ -93,31 +94,6 @@ public class SortAlgorithm {
 			quickSort(array, i+1, right);	//排序右侧数据
 		}
 	}
-	
-	public static void quickSort(int left, int right, int[] A){
-        int i = left, j = right;
-        int pivot = A[i];
-        
-        if ( left < right) {
-            while (i < j){
-                    while(i < j && A[j] > pivot) j--;
-                    
-                    if(i < j)
-                        A[i] = A[j];
-                    
-                    while(i < j && A[i] < pivot) i++;
-                    
-                    if (i < j)
-                        A[j] = A[i];
-            }
-            
-            A[i] = pivot;
-            System.out.println(Arrays.toString(A));
-            
-            quickSort(left, i - 1, A);
-            quickSort(i+1, right, A);
-        }        
-    }
 	
 	/**
 	 * 快速排序, ASC, 随机化轴值
@@ -191,7 +167,7 @@ public class SortAlgorithm {
 		//mergeSort(0, array.length-1, array, temp);
 		
 		quickSort(0, array.length-1, array);
-		quickSort_random(array, 0, array.length-1);
+		quickSort(array, 0, array.length-1);
 		//bubbleSort(array, array.length);
 		//selectSort(array, array.length);
 		
