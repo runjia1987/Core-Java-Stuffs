@@ -166,7 +166,6 @@ public class SortAlgorithm {
 		long startTime = System.currentTimeMillis();
 		//mergeSort(0, array.length-1, array, temp);
 		
-		quickSort(0, array.length-1, array);
 		quickSort(array, 0, array.length-1);
 		//bubbleSort(array, array.length);
 		//selectSort(array, array.length);
