@@ -150,9 +150,9 @@ public class SortAlgorithm {
 			for(int j = i+1; j < length; j++){  //将本次循环的最小值与当前首元素交换
 				if(array[i] > array[j]){
 					minJ = j;
-					array[i] = array[j];
 				}
 			}
+			array[i] = array[minJ];
 			array[minJ] = temp;
 		}
 	}
@@ -163,19 +163,15 @@ public class SortAlgorithm {
 	public static void main(String[] args) throws Exception {
 		int[] temp = new int[array.length];
 		
-		long startTime = System.currentTimeMillis();
 		//mergeSort(0, array.length-1, array, temp);
 		
 		quickSort(array, 0, array.length-1);
+		System.out.println(Arrays.toString(array));
+		
 		//bubbleSort(array, array.length);
-		//selectSort(array, array.length);
+		selectSort(array, array.length);
+		System.out.println(Arrays.toString(array));
 		
-		for(int i : array)
-			System.out.print(i + ",");
-		
-		System.out.println("\ntime elapsed： " + (System.currentTimeMillis() - startTime) + "ms.");
-		
-		//System.out.println(2.0 / 5.0);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 		System.out.println(sdf.parse("2013-12-16 20:09:33.0"));
 		
