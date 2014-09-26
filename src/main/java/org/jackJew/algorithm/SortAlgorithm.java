@@ -3,6 +3,7 @@ package org.jackJew.algorithm;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * 
@@ -49,7 +50,7 @@ public class SortAlgorithm {
 	}
 	
 	/**
-	 * merge and find out the common elements from two sorted arrays
+	 * merge and find out the identical elements from two sorted arrays
 	 */
 	public static void mergeCommon(int[] array1, int[] array2){
 		int a1 = 0, a2 = array1.length, b1 = 0 ,b2 = array2.length;
@@ -121,6 +122,66 @@ public class SortAlgorithm {
 			
 			quickSort(array, left, i-1);	//排序左侧数据
 			quickSort(array, i+1, right);	//排序右侧数据
+		}
+	}
+	
+	/**
+	 * 快速排序, 非随机
+	 */
+	public static void quickSort_nonRecursive(int[] array, int left, int right) {
+		Stack stack = new Stack();
+		int index = findPivotIndex(array, left, right);
+		
+		if (left < right) {
+			if (left + 1 < index) {
+				stack.push(left);
+				stack.push(index - 1);
+			} 
+			if (index + 1 < right){
+				stack.push(index + 1);
+				stack.push(right);
+			}
+			
+			while (stack.size() > 0) {
+				int highBound = (Integer) stack.pop();
+				int lowBound = (Integer) stack.pop();
+				index = findPivotIndex(array, lowBound, highBound);
+				//repeat
+				if (lowBound + 1 < index) {
+					stack.push(lowBound);
+					stack.push(index - 1);
+				} 
+				if (index + 1 < highBound){
+					stack.push(index + 1);
+					stack.push(highBound);
+				}
+			}
+		}
+	}
+	
+	private static int findPivotIndex(int[] array, int left, int right) {
+		if (left < right) {
+			int i = left, j = right;
+			int randomPos = left + new Random().nextInt(right - left);
+			int pivot = array[i];
+			array[i] = array[randomPos];
+			array[randomPos] = pivot;
+			pivot = array[i];
+			
+			while ( i < j) {
+				while(i < j && array[j] >= pivot)
+					j--;
+				if (i < j)
+					array[i] = array[j];
+				
+				while ( i< j && array[i] < pivot)
+					i++;
+				array[j] = array[i];
+			}
+			array[i] = pivot;
+			return i;
+		} else {
+			return -1;
 		}
 	}
 	
