@@ -129,7 +129,7 @@ public class SortAlgorithm {
 	 * 快速排序, 非随机
 	 */
 	public static void quickSort_nonRecursive(int[] array, int left, int right) {
-		Stack stack = new Stack();
+		Stack<Integer> stack = new Stack<Integer>();
 		int index = findPivotIndex(array, left, right);
 		
 		if (left < right) {
@@ -159,6 +159,7 @@ public class SortAlgorithm {
 		}
 	}
 	
+	// find the index for pivot
 	private static int findPivotIndex(int[] array, int left, int right) {
 		if (left < right) {
 			int i = left, j = right;
