@@ -126,7 +126,7 @@ public class SortAlgorithm {
 	}
 	
 	/**
-	 * 快速排序, 非随机
+	 * 快速排序, 非递归
 	 */
 	public static void quickSort_nonRecursive(int[] array, int left, int right) {
 		Stack<Integer> stack = new Stack<Integer>();
