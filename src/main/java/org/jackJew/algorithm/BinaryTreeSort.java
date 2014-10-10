@@ -3,7 +3,8 @@ package org.jackJew.algorithm;
 /**
  * assume this binary tree is a complete binary tree, which has two kinds of storage: <br>
  * 1) array-based, node at index n has two children nodes: 2n+1 & 2n+2, just like a heap;
- * 2) left | child pointer-based, just like java.util.TreeMap
+ * <br>
+ * 2) [left - child - parent] pointer-based, just like java.util.TreeMap
  * @author Jack
  *
  */
@@ -20,7 +21,7 @@ public class BinaryTreeSort {
 	public boolean checkIfSortedTree(int[] treeArray){
 		// TODO
 		// logic:
-		// for each node with index n, has two children(2n+1,2n+2) or less, <br>
+		// for each node with index n, has two children(2n+1,2n+2) or zero or one, <br>
 		// and the parent is calculated as below:
 		// if n % 2 == 0, this node is right child, parent is n/2 - 1; 
 		// else, this node is left child, parent is n/2;
@@ -31,7 +32,7 @@ public class BinaryTreeSort {
 		
 		// this algorithm will be much more efficient than pointer-based TreeMap,
 		// with precise O(n) time complexity;
-		// while pointer-based TreeMap takes more than O(n) time complexity for certain.
+		// pointer-based TreeMap takes more than O(n) time complexity for certain.
 		
 		return false;
 	}
