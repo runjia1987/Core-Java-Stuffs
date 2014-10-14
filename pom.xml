@@ -195,12 +195,6 @@
 		</dependency>
 		<!-- jfreechart end -->
 		<!-- database begin -->
-		<!-- jdbc driver -->
-		<dependency>
-			<groupId>com.oracle</groupId>
-			<artifactId>ojdbc14</artifactId>
-			<version>10.2.0.4</version>
-		</dependency>
 		<dependency>
 			<groupId>commons-dbcp</groupId>
 			<artifactId>commons-dbcp</artifactId>
