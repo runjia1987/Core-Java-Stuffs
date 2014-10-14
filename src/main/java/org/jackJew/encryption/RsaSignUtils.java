@@ -12,7 +12,7 @@ import java.security.spec.X509EncodedKeySpec;
 
 import org.jackJew.algorithm.Base64Algorithm;
 
-public class RSA_Sign_Utils {
+public class RsaSignUtils {
 	
 	private String publicKeyStr;
 	private String privateKeyStr;
@@ -28,7 +28,7 @@ public class RSA_Sign_Utils {
 	/**
 	 * create pub & private from KeyPairGenerator
 	 */
-	public RSA_Sign_Utils() throws NoSuchAlgorithmException{
+	public RsaSignUtils() throws NoSuchAlgorithmException{
 		KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(algorithm);
 		kpGenerator.initialize(secretKeyLength);
 		
@@ -90,7 +90,7 @@ public class RSA_Sign_Utils {
 	
 	public static void main(String[] args) throws Exception {
 		byte[] contentBytes = "these are the content,just for test".getBytes(EncodingCharset);
-		RSA_Sign_Utils utils = new RSA_Sign_Utils();
+		RsaSignUtils utils = new RsaSignUtils();
 		String generatedSign = utils.getSign(contentBytes);
 		
 		System.out.println("base64 encoded signature: " + generatedSign);
