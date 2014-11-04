@@ -60,7 +60,7 @@ class Element<E> implements Comparable<E> {
 			else return -1;
 		}
 		else
-			return o == null ? 1 : this.compareTo(o);  // ?三元操作符没有短路功能
+			return o == null ? 1 : this.compareTo(o);  // ?三元操作符也具备短路功能
 	}
 	
 	public static void main(String[] args) {
