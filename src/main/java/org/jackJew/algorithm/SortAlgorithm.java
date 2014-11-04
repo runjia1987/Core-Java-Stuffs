@@ -120,8 +120,8 @@ public class SortAlgorithm {
 			
 			array[i] = pivot;	//第一轮排序后, i左侧的数都小于i右侧的数据
 			
-			quickSort(array, left, i-1);	//排序左侧数据
-			quickSort(array, i+1, right);	//排序右侧数据
+			quickSort_random(array, left, i-1);	//排序左侧数据
+			quickSort_random(array, i+1, right);	//排序右侧数据
 		}
 	}
 	
@@ -132,7 +132,7 @@ public class SortAlgorithm {
 		Stack<Integer> stack = new Stack<Integer>();
 		int index = findPivotIndex(array, left, right);
 		
-		if (left < right) {
+		if (index != -1 && left < right) {
 			if (left + 1 < index) {
 				stack.push(left);
 				stack.push(index - 1);
@@ -146,6 +146,8 @@ public class SortAlgorithm {
 				int highBound = (Integer) stack.pop();
 				int lowBound = (Integer) stack.pop();
 				index = findPivotIndex(array, lowBound, highBound);
+				if (index == -1)
+					break;
 				//repeat
 				if (lowBound + 1 < index) {
 					stack.push(lowBound);
@@ -227,9 +229,10 @@ public class SortAlgorithm {
 		
 		//mergeSort(0, array.length-1, array, temp);
 		
-		quickSort(array, 0, array.length-1);
+		//quickSort(array, 0, array.length-1);
+		quickSort_nonRecursive(array, 0, array.length-1);
 		System.out.println(Arrays.toString(array));
-		
+				
 		//bubbleSort(array, array.length);
 		selectSort(array, array.length);
 		System.out.println(Arrays.toString(array));
