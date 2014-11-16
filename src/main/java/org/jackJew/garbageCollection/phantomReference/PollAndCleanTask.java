@@ -20,7 +20,12 @@ public class PollAndCleanTask implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			Cleanable reference = (Cleanable) provider.getQueue().poll();
+			Cleanable reference = null;
+			try {
+				reference = (Cleanable) provider.getQueue().remove();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			if( reference != null) {
 				reference.cleanup();
 				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a resource.");
