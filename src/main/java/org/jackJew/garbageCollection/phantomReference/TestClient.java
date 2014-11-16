@@ -21,7 +21,7 @@ public class TestClient {
 			Thread t = new Thread(){
 				public void run(){					
 					try {
-						ResourceWrapper resourceW = provider.getResource();
+						Resource resourceW = provider.getResource();
 						resourceW.doSth();
 						resourceW = null;  // help GC, this is useful
 						

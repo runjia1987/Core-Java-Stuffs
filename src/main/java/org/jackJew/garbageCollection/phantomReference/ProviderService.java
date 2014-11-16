@@ -19,7 +19,7 @@ public class ProviderService implements InitializingBean {
 	 * Before a connection object will be garbage collected,
 	 * <br> its phantom reference will be enqueued into the associated reference queue.
 	 */
-	private final ReferenceQueue<ResourceWrapper> queue = new ReferenceQueue<ResourceWrapper>();
+	private final ReferenceQueue<Resource> queue = new ReferenceQueue<Resource>();
 	
 	/**
 	 * This is necessary to ensure that phantom references are not garbage collected
@@ -29,8 +29,8 @@ public class ProviderService implements InitializingBean {
 	
 	private DataSource dataSource;
 
-	public ResourceWrapper getResource() throws SQLException{
-		ResourceWrapper resourceW = new ResourceWrapper();
+	public Resource getResource() throws SQLException{
+		Resource resourceW = new Resource();
 		
 		Cleanable reference = new PhantomResourceReference(resourceW, queue);
 		referenceList.add(reference);
@@ -56,7 +56,7 @@ public class ProviderService implements InitializingBean {
 		this.dataSource = dataSource;
 	}
 
-	public ReferenceQueue<ResourceWrapper> getQueue() {
+	public ReferenceQueue<Resource> getQueue() {
 		return queue;
 	}
 
