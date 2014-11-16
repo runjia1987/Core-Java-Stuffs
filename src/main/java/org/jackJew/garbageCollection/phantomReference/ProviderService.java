@@ -4,7 +4,6 @@ import java.lang.ref.ReferenceQueue;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import javax.sql.DataSource;
 
 import org.springframework.beans.factory.InitializingBean;
 
@@ -26,8 +25,6 @@ public class ProviderService implements InitializingBean {
 	 * <br> as long as they have not been handled by the reference queue.
 	 */
 	private final List<Cleanable> referenceList = new ArrayList<Cleanable>();
-	
-	private DataSource dataSource;
 
 	public Resource getResource() throws SQLException{
 		Resource resourceW = new Resource();
@@ -50,10 +47,6 @@ public class ProviderService implements InitializingBean {
 		thread.start();
 		
 		System.out.println("pollingThread is started.");
-	}
-
-	public void setDataSource(DataSource dataSource) {
-		this.dataSource = dataSource;
 	}
 
 	public ReferenceQueue<Resource> getQueue() {
