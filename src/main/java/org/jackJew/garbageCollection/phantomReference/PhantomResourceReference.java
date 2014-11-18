@@ -9,16 +9,16 @@ import java.util.Map;
  * @author Jack
  *
  */
-public class PhantomResourceReference extends PhantomReference<ResourceWrapper> implements Cleanable {
+public class PhantomResourceReference extends PhantomReference<Resource> implements Cleanable {
 
 	/**
-	 * Note: never point a member field to the referent object  !!!
+	 * Note: never set a member field pointed to the referent object  !!!
 	 * <br> otherwise the referent will never become phantom reachable !!!
 	 */
 	private Map<String, Object> resourcesMap;
 	
-	public PhantomResourceReference(ResourceWrapper referent,
-			ReferenceQueue<? super ResourceWrapper> q) {
+	public PhantomResourceReference(Resource referent,
+			ReferenceQueue<? super Resource> q) {
 		super(referent, q);
 		this.resourcesMap = referent.getResourcesMap();
 	}

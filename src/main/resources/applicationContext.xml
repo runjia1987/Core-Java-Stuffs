@@ -138,7 +138,6 @@
 	</bean>
 	
 	<bean id="phantomConnectionProviderService" class="org.jackJew.garbageCollection.phantomReference.ProviderService">
-		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
 </beans>
