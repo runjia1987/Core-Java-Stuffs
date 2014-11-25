@@ -177,7 +177,7 @@ public class MathSqrt {
 
 		System.out.println(ms.sqrt1(91000009d, 6));
 
-		System.out.println(ms.newtonSqrt(91000009d, 0.1d));
+		System.out.println(ms.newtonSqrt(91000009d, 0.01d));
 
 		System.out.println(ms.blackTechSqrt(91000009d));
 	}
