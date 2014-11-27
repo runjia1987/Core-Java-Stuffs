@@ -1,0 +1,187 @@
+package org.jackJew.image;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ConvolveOp;
+import java.awt.image.Kernel;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import com.sun.image.codec.jpeg.JPEGCodec;
+import com.sun.image.codec.jpeg.JPEGEncodeParam;
+import com.sun.image.codec.jpeg.JPEGImageEncoder;
+
+/**
+ * 图像增强-灰度化、二值化、像素填充缩放
+ * 
+ * @author jack.zhu
+ *
+ */
+public class ImageEnhancer {
+
+	public static void gray(String inputFilePath, String outputFilePath) {
+		try {
+			BufferedImage i = ImageIO.read(new FileInputStream(inputFilePath));
+			int h = i.getHeight();
+			int w = i.getWidth();
+
+			// 灰度化
+			int[][] gray = new int[w][h];
+			for (int x = 0; x < w; x++) {
+				for (int y = 0; y < h; y++) {
+					int argb = i.getRGB(x, y);
+					int r = (argb >> 16) & 0xFF;
+					int g = (argb >> 8) & 0xFF;
+					int b = (argb >> 0) & 0xFF;
+					int grayPixel = (int) ((b * 29 + g * 150 + r * 77 + 128) >> 8);
+					gray[x][y] = grayPixel;
+				}
+			}
+
+			// 二值化
+			int threshold = ostu(gray, w, h);
+			BufferedImage binaryBufferedImage = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_BINARY);
+			for (int x = 0; x < w; x++) {
+				for (int y = 0; y < h; y++) {
+					if (gray[x][y] > threshold) {
+						gray[x][y] |= 0x00FFFF;
+					} else {
+						gray[x][y] &= 0xFF0000;
+					}
+					binaryBufferedImage.setRGB(x, y, gray[x][y]);
+				}
+			}
+			ImageIO.write(binaryBufferedImage, "JPEG", new File(outputFilePath));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static int ostu(int[][] gray, int w, int h) {
+		int[] histData = new int[w * h];
+		// Calculate histogram
+		for (int x = 0; x < w; x++) {
+			for (int y = 0; y < h; y++) {
+				int red = 0xff & gray[x][y];
+				histData[red]++;
+			}
+		}
+		// Total number of pixels
+		int total = w * h;
+		float sum = 0;
+		for (int t = 0; t < 256; t++) {
+			sum += t * histData[t];
+		}
+
+		float sumB = 0;
+		int wB = 0;
+		int wF = 0;
+		float varMax = 0;
+		int threshold = 0;
+		for (int t = 0; t < 256; t++) {
+			wB += histData[t]; // Weight Background
+			if (wB == 0)
+				continue;
+			wF = total - wB; // Weight Foreground
+			if (wF == 0)
+				break;
+
+			sumB += (float) (t * histData[t]);
+			float mB = sumB / wB; // Mean Background
+			float mF = (sum - sumB) / wF; // Mean Foreground
+
+			// Calculate Between Class Variance
+			float varBetween = wB * wF * (mB - mF) * (mB - mF);
+			// Check if new maximum found
+			if (varBetween > varMax) {
+				varMax = varBetween;
+				threshold = t;
+			}
+		}
+		return threshold;
+	}
+
+	public static void scale(String inputFilePath, String outputFilePath, float scale) {
+		try {
+			BufferedImage src = ImageIO.read(new File(inputFilePath));
+			int width = src.getWidth();
+			int height = src.getHeight();
+			width = (int) (width * scale);
+			height = (int) (height * scale);
+
+			Image image = src.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+			BufferedImage tag = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
+			Graphics g = tag.getGraphics();
+			g.drawImage(image, 0, 0, null);
+			g.dispose();
+
+			ImageIO.write(tag, "JPEG", new File(outputFilePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void scale2(String inputFilePath, String outputFilePath, float scale, float quality) {
+		try {
+			BufferedImage src = ImageIO.read(new File(inputFilePath));
+
+			int width = src.getWidth();
+			int height = src.getHeight();
+			width = (int) (width * scale);
+			height = (int) (height * scale);
+			ImageIcon ii = new ImageIcon(inputFilePath);
+			Image i = ii.getImage();
+			Image resizedImage = i.getScaledInstance(width, height, Image.SCALE_DEFAULT);
+			Image temp = new ImageIcon(resizedImage).getImage();
+
+			// Create the buffered image.
+			BufferedImage bi = new BufferedImage(temp.getWidth(null),
+					temp.getHeight(null), BufferedImage.TYPE_BYTE_BINARY);
+			Graphics g = bi.createGraphics();
+
+			// Clear background and paint the image.
+			g.setColor(Color.white);
+			g.fillRect(0, 0, temp.getWidth(null), temp.getHeight(null));
+			g.drawImage(temp, 0, 0, null);
+			g.dispose();
+
+			// Soften.
+			float softenFactor = 0.05f;
+			float[] softenArray = { 0, softenFactor, 0, softenFactor,
+					1 - (softenFactor * 4), softenFactor, 0, softenFactor, 0 };
+			Kernel kernel = new Kernel(3, 3, softenArray);
+			ConvolveOp cOp = new ConvolveOp(kernel, ConvolveOp.EDGE_NO_OP, null);
+			bi = cOp.filter(bi, null);
+
+			// Write the jpeg to a file.
+			FileOutputStream out = new FileOutputStream(outputFilePath);
+			JPEGImageEncoder encoder = JPEGCodec.createJPEGEncoder(out);
+			JPEGEncodeParam param = encoder.getDefaultJPEGEncodeParam(bi);
+
+			param.setQuality(quality, true);
+			encoder.setJPEGEncodeParam(param);
+			encoder.encode(bi);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		final String basePath = "C:\\Users\\jack.zhu\\Desktop\\图片识别\\";
+		final String inputFilePath = basePath + "zhaobiao_wenzi.jpg";
+		String outputFilePath = basePath + "zhaobiao_wenzi_gray.jpg";
+
+		long startTime = System.currentTimeMillis();
+		gray(inputFilePath, outputFilePath);
+
+		System.out.println("completed. time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+	}
+
+}
