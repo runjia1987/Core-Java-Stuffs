@@ -4,26 +4,23 @@ import java.util.Date;
 import java.util.List;
 
 public class Child extends Parent {
-	
+
 	int val = 999;
 	static String XYZ = "Child static value";
 
 	/*
-	 * Class initialization refers to the computation and assignment of initial
-	 * values specified by the programmer to the static fields of a class. It is
-	 * not to be confused with preparation, which refers to the assignment of
-	 * default values to each static field when the class is created - null to
+	 * Class initialization refers to the computation and assignment of initial values specified by the programmer to the static fields of a class. It is not to be confused with preparation, which refers to the assignment of default values to each static field when the class is created - null to
 	 * reference types, 0 to numeric types, etc.
 	 */
 	private Date date = new Date();
-	
+
 	{
 		System.out.println("子类普通初始化块");
 	}
 
 	// 实例变量在类加载时linking(verification of binary representation,
-	//						preparation of class or interface types,
-	//						resolution of symbolic references)与initialization期间
+	// preparation of class or interface types,
+	// resolution of symbolic references)与initialization期间
 	// 仅被初始化为null或原始类型的默认值, 需要等到本类构造器被调用时才正常赋值.
 	// 静态变量(static variables)则在类加载时被正常初始化(initialization阶段).
 
@@ -40,13 +37,15 @@ public class Child extends Parent {
 		new Child().unifiedJob();
 
 		// new Parent().dosth();
-		
+
 		System.out.println("\n test id static variables and methods can be overridden...");
-		
+
 		Parent instance = new Child();
-		//Child instance = new Child();  // 静态变量与静态方法的输出结果, 是不同于上面的
+		// Child instance = new Child(); // 静态变量与静态方法的输出结果, 是不同于上面的
 		System.out.println(instance.XYZ);
 		System.out.println(instance.getStr());
+
+		System.out.println(instance.getABC());
 	}
 
 	@Override
@@ -57,10 +56,10 @@ public class Child extends Parent {
 		} else
 			System.out.println("child dosth() date field is " + date.getDate());
 	}
-	
+
 	static String xyz = "child static value";
-	
-	static String getStr(){
+
+	static String getStr() {
 		return xyz;
 	}
 
