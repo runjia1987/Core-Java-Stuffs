@@ -116,7 +116,7 @@ public class TreeTraversing {
 	 */
 	public void createSiblingLinks() {
 		Queue<Node> queue = new LinkedList<Node>();
-		List<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes
+		Queue<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes
 		queue.add(root);
 		int times = 0, expectedPollCount = 1;
 		while ( ! queue.isEmpty() ){
@@ -147,7 +147,7 @@ public class TreeTraversing {
 	 * link the elements from the most-left to the most-right
 	 * @param siblingNodes
 	 */
-	private void siblingLink(List<Node> siblingNodes){
+	private void siblingLink(Queue<Node> siblingNodes){
 		Iterator<Node> itr = siblingNodes.iterator();
 		Node n, previous = null;
 		while(itr.hasNext()) {
