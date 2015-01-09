@@ -27,14 +27,14 @@ public class SortAlgorithm {
 			mergeSort(left, middle, array, temp); // 左侧排序
 			mergeSort(middle + 1, right, array, temp); // 右侧排序
 
-			mergeArray(left, right, array, temp); // 合并已排序的左侧与右侧数据
+			doMerge(left, right, array, temp); // 合并已排序的左侧与右侧数据
 		}
 	}
 
 	/**
-	 * 递增有序
+	 * 归并已经从中点分割有序的一个数组
 	 */
-	public static void mergeArray(int left, int right, int[] array, int[] temp) {
+	private static void doMerge(int left, int right, int[] array, int[] temp) {
 		int i = left, mid = (left + right) / 2, j = mid + 1, index = 0;
 		while (i <= mid && j <= right) {
 			if (array[i] < array[j])
@@ -49,6 +49,24 @@ public class SortAlgorithm {
 
 		for (i = 0; i < index; i++)
 			array[left + i] = temp[i];
+	}
+	
+	/**
+	 * 归并排序两个各自有序的数组
+	 */
+	public static void mergeArray(int[] array1, int[] array2, int[] target) {
+		int i1 = 0, i2 = 0;
+		int index = 0;
+		while (i1 < array1.length && i2 < array2.length) {
+			if (array1[i1] < array2[i2])
+				target[index++] = array1[i1++];
+			else
+				target[index++] = array2[i2++];
+		}
+		while (i1 < array1.length)
+			target[index++] = array1[i1++];
+		while (i2 < array2.length)
+			target[index++] = array2[i2++];
 	}
 
 	/**
@@ -70,6 +88,45 @@ public class SortAlgorithm {
 				b1++;
 			}
 		}
+	}
+	
+	/**
+	 * merge and find out the identical elements from two sorted arrays,
+	 * time complexity: O(m+n)/2
+	 */
+	public static int mergeForMedianValue(int[] array1, int[] array2) {
+		int a1 = array1[0], a2 = array2[0];
+		int i1 = 0, i2 = 0;
+		int limit = (array1.length + array2.length) / 2 + 1, count = 0;
+		System.out.println("limit: " + limit);
+		while (count++ < limit) { // 循环次数
+			if(i1 == array1.length) {
+				a1 = a2;
+				a2 = array2[i2++];
+				continue;
+			}
+			if(i2 == array2.length) {
+				a1 = a2;
+				a2 = array1[i1++];
+				continue;
+			}
+			if (array1[i1] < array2[i2]) { // less than	
+				a1 = a2;
+				a2 = array1[i1++];
+			} else if (array1[i1] > array2[i2]){  // greater than	
+				a1 = a2;
+				a2 = array2[i2++];
+			} else {  // equal
+				a1 = a2;
+				a2 = array1[i1];
+				i1++;
+			}
+		}
+		System.out.println(a1 + "," + a2);
+		if((array1.length + array2.length) % 2 == 0)
+			return (a1 + a2) / 2;
+		else
+			return a2;
 	}
 
 	/**
@@ -187,7 +244,8 @@ public class SortAlgorithm {
 
 				while (i < j && array[i] < pivot)
 					i++;
-				array[j] = array[i];
+				if (i < j)
+					array[j] = array[i];
 			}
 			array[i] = pivot;
 			return i;
@@ -249,8 +307,19 @@ public class SortAlgorithm {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.S");
 		System.out.println(sdf.parse("2013-12-16 20:09:33.0"));
 
-		int[] array1 = { -9, 1, 7, 45, 234, 321 }, array2 = { 7, 56, 321, 500, 600, 1000, 4500, };
+		System.out.println("merge common: ");
+		int[] array1 = { -9 }, array2 = { 7, 45, 92, 100, 321, 500, 600, 1000, 4500, 9999 };
 		mergeCommon(array1, array2);
+		
+		int totalCount = array1.length + array2.length;
+		int[] mergedSort = new int[totalCount];
+		mergeArray(array1, array2, mergedSort);
+		for (int i : mergedSort) {
+			System.out.print(i + ", ");
+		}
+		System.out.println("totalCount: " + totalCount);
+		
+		System.out.println("mergeForMedianValue: " + mergeForMedianValue(array1, array2));
 
 	}
 

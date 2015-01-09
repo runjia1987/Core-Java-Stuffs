@@ -123,7 +123,7 @@ public class TopK_Algorithm {
 		int parent = 0;
 		while (i > 0) {
 			parent = i >>> 1;
-			if (array[parent] <= element) {
+			if (element >= array[parent]) {
 				break;
 			}
 			// parent is greater than children
