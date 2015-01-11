@@ -129,25 +129,25 @@ public class SortAlgorithm {
 	}
 	
 	/**
-	 * 快排查找中位数, ASC
+	 * 快排查找中位数, ASC, 亦可解决第k小的数值问题
 	 * @param array
 	 */
-	public static int quickSortForMedianValue(int[] array, int left, int right, int limit){
+	public static int quickSortForMedianValue(int[] array, int left, int right, int kIndex){
 		if (left < right) {
 			int i = findPivotIndex(array, left, right);
-			System.out.println("limit: " + limit + ", i: " + i + ", array[i]: " + array[i]);
+			System.out.println("limit: " + kIndex + ", i: " + i + ", array[i]: " + array[i]);
 			for(int j : array) {
 				System.out.print(j + ", ");
 			}
 			System.out.println();
-			if ( i == limit) {
+			if ( i == kIndex) {
 				return array[i];
-			} else if (i > limit) {
+			} else if (i > kIndex) {
 				// 位置大于中间的位置，则查找左半部分中第(i-limit)大的数字
-				return quickSortForMedianValue(array, left, i - 1, limit);
+				return quickSortForMedianValue(array, left, i - 1, kIndex);
 			} else {
 				// 位置小于中间的位置，则查找右半部分中第(limit - i)小的数字
-				return quickSortForMedianValue(array, i + 1, right, limit);
+				return quickSortForMedianValue(array, i + 1, right, kIndex);
 			}
 		} else if(left == right) {
 			return array[left];
@@ -351,6 +351,11 @@ public class SortAlgorithm {
 		array2 = new int[] {20, 9999, 600, 7, 22, 92, 100, 321, 500, 1000, 4500 };
 		// 只考虑数组长度为奇数的情况
 		System.out.println("quickSortForMedianValue: " + quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2));
+		
+		int k = 3;
+		System.out.println("quickSortForMedianValue k " + k +  " smallest value: "
+				+ quickSortForMedianValue(array2, 0, array2.length - 1, k - 1));
+		
 	}
 
 }
