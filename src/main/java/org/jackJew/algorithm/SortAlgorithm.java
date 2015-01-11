@@ -14,7 +14,7 @@ import java.util.Stack;
  */
 public class SortAlgorithm {
 
-	private static int[] array = { 12, 45, 67, 90, 103, 666, 2, 103, 88, 344, 45, 1000 };
+	private static int[] array = { 9999, 450, 0, 8, -20, 45555, 12, 45, 67, 90, 103, 666, 2, 103, 88, 344, 45, 1000 };
 	final static Random rand = new Random();
 
 	/**
@@ -118,8 +118,7 @@ public class SortAlgorithm {
 				a2 = array2[i2++];
 			} else {  // equal
 				a1 = a2;
-				a2 = array1[i1];
-				i1++;
+				a2 = array1[i1++];
 			}
 		}
 		System.out.println(a1 + "," + a2);
@@ -127,6 +126,34 @@ public class SortAlgorithm {
 			return (a1 + a2) / 2;
 		else
 			return a2;
+	}
+	
+	/**
+	 * 快排查找中位数, ASC
+	 * @param array
+	 */
+	public static int quickSortForMedianValue(int[] array, int left, int right, int limit){
+		if (left < right) {
+			int i = findPivotIndex(array, left, right);
+			System.out.println("limit: " + limit + ", i: " + i + ", array[i]: " + array[i]);
+			for(int j : array) {
+				System.out.print(j + ", ");
+			}
+			System.out.println();
+			if ( i == limit) {
+				return array[i];
+			} else if (i > limit) {
+				// 位置大于中间的位置，则查找左半部分中第(i-limit)大的数字
+				return quickSortForMedianValue(array, left, i - 1, limit);
+			} else {
+				// 位置小于中间的位置，则查找右半部分中第(limit - i)小的数字
+				return quickSortForMedianValue(array, i + 1, right, limit);
+			}
+		} else if(left == right) {
+			return array[left];
+		} else {
+			throw new RuntimeException("left > right error.");
+		}
 	}
 
 	/**
@@ -308,7 +335,7 @@ public class SortAlgorithm {
 		System.out.println(sdf.parse("2013-12-16 20:09:33.0"));
 
 		System.out.println("merge common: ");
-		int[] array1 = { -9 }, array2 = { 7, 45, 92, 100, 321, 500, 600, 1000, 4500, 9999 };
+		int[] array1 = { -9, 22, 100, 600 }, array2 = { 7, 22, 45, 92, 100, 321, 500, 600, 1000, 4500, 9999 };
 		mergeCommon(array1, array2);
 		
 		int totalCount = array1.length + array2.length;
@@ -320,7 +347,10 @@ public class SortAlgorithm {
 		System.out.println("totalCount: " + totalCount);
 		
 		System.out.println("mergeForMedianValue: " + mergeForMedianValue(array1, array2));
-
+		
+		array2 = new int[] {20, 9999, 600, 7, 22, 92, 100, 321, 500, 1000, 4500 };
+		// 只考虑数组长度为奇数的情况
+		System.out.println("quickSortForMedianValue: " + quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2));
 	}
 
 }
