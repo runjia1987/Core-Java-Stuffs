@@ -31,7 +31,7 @@ public class TransactionService {
 			
 			transactionManager.commit(status);
 			
-		} catch(DataAccessException e){
+		} catch(RuntimeException e){
 			System.out.println(e.getMessage());
 			transactionManager.rollback(status);
 		}

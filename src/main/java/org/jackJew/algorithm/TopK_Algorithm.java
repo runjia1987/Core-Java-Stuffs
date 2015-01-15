@@ -158,6 +158,45 @@ public class TopK_Algorithm {
 		}
 		array[i] = element;
 	}
+	
+	public void getTopKByQuickSort(int[] array, int k, int left, int right) {
+		if( left < right) {
+			int index = findPivotIndex(array, left, right);
+			System.out.println(index + ": " + k);
+			if(index == k - 1) {
+				// found
+				for (int i = 0; i <= index; i++) {
+					System.out.print(array[i] + ", ");
+				}
+			} else if(index > k - 1){
+				getTopKByQuickSort(array, k, 0, index - 1);
+			} else {
+				getTopKByQuickSort(array, k, index + 1, array.length - 1);
+			}
+		} else {
+			System.out.println(left + "," + right);
+		}
+	}
+	
+	// desc sort
+	private int findPivotIndex(int[] array, int left, int right){
+		int i = left, j = right;
+		final int pivot = array[left];
+		while(i < j){
+			while(i < j && array[j] <= pivot) {
+				j--;
+			}
+			if(i < j)
+				array[i] = array[j];
+			while(i < j && array[i] > pivot) {
+				i++;
+			}
+			if(i < j)
+				array[j] = array[i];
+		}
+		array[i] = pivot;
+		return i;
+	}
 
 	public static void main(String[] args) {
 		TopK_Algorithm ta = new TopK_Algorithm();
@@ -175,7 +214,12 @@ public class TopK_Algorithm {
 		ta.getTopKByMinHeap(array, 10);
 		endTime = System.nanoTime();
 		System.out.println("getTopKByMinHeap cost: " + (endTime - startTime) + "ns.");
-
+		
+		// by QuickSort
+		startTime = System.nanoTime();
+		ta.getTopKByQuickSort(array, 10, 0, array.length - 1);
+		endTime = System.nanoTime();
+		System.out.println("getTopKByMinHeap cost: " + (endTime - startTime) + "ns.");
 		/**
 		 * summary: from the log, getTopKByMinHeap is about 10% faster than getTopKByArray.
 		 */

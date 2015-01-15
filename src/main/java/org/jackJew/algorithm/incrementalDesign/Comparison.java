@@ -44,7 +44,7 @@ public class Comparison {
 					updatedList.add(n);
 				}
 			} else if (comp > 0) {
-				// larger PK id, which means n is possibly inserted later
+				// larger PK id, which means n is possibly inserted later,
 				// find the index of oldList to match the n pkId
 				int index = lastRunIndex;
 				boolean found = false;
