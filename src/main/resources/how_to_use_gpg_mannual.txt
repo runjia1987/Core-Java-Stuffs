@@ -1,10 +1,10 @@
-ecking the trustdb
+checking the trustdb
 gpg: 3 marginal(s) needed, 1 complete(s) needed, PGP trust model
 gpg: depth: 0  valid:   1  signed:   0  trust: 0-, 0q, 0n, 0m, 0f, 1u
 gpg: next trustdb check due at 2019-05-07
 pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
       Key fingerprint = 754C EBB9 39C4 3AF7 7FBD  9D80 A86D 6E1D D4A6 6076
-      uid                  runjia.zrj@alibaba-inc.com (gpg key) <runjia.zrj@alibaba-inc.com>
+      uid                  runjia.zrj
       sub   2048g/A1EE181E 2014-05-08 [expires: 2019-05-07]
       
       gpg --gen-key
@@ -28,4 +28,4 @@ pub   1024D/D4A66076 2014-05-08 [expires: 2019-05-07]
       私钥解密命令：
       gpg  -o output.txt -d file.gpg
 	  
-require gpg 1.4.16+, to support RSA 2048-bit encrypting.
+require gpg 1.4.16+, to support RSA 2048-bit encryption.
