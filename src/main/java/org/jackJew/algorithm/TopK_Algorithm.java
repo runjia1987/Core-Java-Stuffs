@@ -162,11 +162,11 @@ public class TopK_Algorithm {
 	public void getTopKByQuickSort(int[] array, int k, int left, int right) {
 		if( left < right) {
 			int index = findPivotIndex(array, left, right);
-			System.out.println(index + ": " + k);
+			//System.out.println(index + ": " + k);
 			if(index == k - 1) {
 				// found
 				for (int i = 0; i <= index; i++) {
-					System.out.print(array[i] + ", ");
+					//System.out.print(array[i] + ", ");
 				}
 			} else if(index > k - 1){
 				getTopKByQuickSort(array, k, 0, index - 1);
@@ -219,9 +219,10 @@ public class TopK_Algorithm {
 		startTime = System.nanoTime();
 		ta.getTopKByQuickSort(array, 10, 0, array.length - 1);
 		endTime = System.nanoTime();
-		System.out.println("getTopKByMinHeap cost: " + (endTime - startTime) + "ns.");
+		System.out.println("getTopKByQuickSort cost: " + (endTime - startTime) + "ns.");
 		/**
 		 * summary: from the log, getTopKByMinHeap is about 10% faster than getTopKByArray.
+		 * <br> getTopKByQuickSort is the best in performance.
 		 */
 	}
 
