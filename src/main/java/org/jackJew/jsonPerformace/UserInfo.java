@@ -8,14 +8,14 @@ package org.jackJew.jsonPerformace;
  * 
  */
 public class UserInfo implements java.io.Serializable {
-
-	/**
-		 * 
-		 */
+	
 	private static final long serialVersionUID = -9119809361527461888L;
 	private int id;
 	private String name;
 	private String password;
+	private Comparable<?> sortValue;
+	
+	public UserInfo(){}
 
 	public UserInfo(int id, String name, String password) {
 		this.id = id;
@@ -45,6 +45,14 @@ public class UserInfo implements java.io.Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Comparable<?> getSortValue() {
+		return sortValue;
+	}
+
+	public void setSortValue(Comparable<?> sortValue) {
+		this.sortValue = sortValue;
 	}
 
 }

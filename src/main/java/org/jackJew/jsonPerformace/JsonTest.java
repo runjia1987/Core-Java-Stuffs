@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 
 /**
  * 
@@ -36,11 +39,13 @@ public class JsonTest {
 		com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
 		array.add(n);
 		
-		//List<UserInfo> userList = new ArrayList<UserInfo>();
-		//for(int i = 0; i < 5; i++)
-		//	userList.add(new UserInfo(9999, "runjia", null));
+		UserInfo info = new UserInfo(9999, "runjia", null);
+		info.setSortValue(100);
+		String serializeStr = JSON.toJSONString(info);		
+		System.out.println(serializeStr);
 		
-		//System.out.println(JSON.toJSONString(userList));
+		UserInfo info2 = JSON.toJavaObject(JSON.parseObject(serializeStr), UserInfo.class);
+		System.out.println("deserialize: " + info2.getSortValue());
 		System.out.println(JSONUtil.toCompatibleJSONString(array));
 	}
 	
@@ -58,8 +63,7 @@ public class JsonTest {
 		
 		//循环
 		int i = 0;
-		while(i++ < 100){
-			//test.useJsonLib();
+		while(i++ < 1){
 			test.useFastJson();
 		}
 		
