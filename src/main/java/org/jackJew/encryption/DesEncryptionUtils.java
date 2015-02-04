@@ -49,18 +49,6 @@ public class DesEncryptionUtils {
 		}
 	}
 	
-	public SecretKey createSecretKey(){
-		try {
-			DESKeySpec spec = new DESKeySpec(sourceKey.getBytes(Encoding));
-			SecretKeyFactory skf = SecretKeyFactory.getInstance(Algorithm);
-			SecretKey secretKey = skf.generateSecret(spec);
-			
-			return secretKey;
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
-	}
-	
 	/**
 	 * encrypt
 	 * @param content
@@ -96,7 +84,7 @@ public class DesEncryptionUtils {
 	/**
 	 * encrypt
 	 * @param content
-	 * @param decryptMode CBC(preferred) or ECB(less safety)
+	 * @param decryptMode CBC(preferred) or ECB(less safe)
 	 * @return source string
 	 */
 	public String decrypt(String content, String decryptMode){
