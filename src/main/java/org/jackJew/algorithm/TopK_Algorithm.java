@@ -222,7 +222,8 @@ public class TopK_Algorithm {
 		System.out.println("getTopKByQuickSort cost: " + (endTime - startTime) + "ns.");
 		/**
 		 * summary: from the log, getTopKByMinHeap is about 10% faster than getTopKByArray.
-		 * <br> getTopKByQuickSort is the best in performance.
+		 * <br> getTopKByQuickSort is the best in performance.(maybe not, on i7, getTopKByMinHeap cost: 1590048ns.
+				getTopKByQuickSort cost: 3158749ns.)
 		 */
 	}
 
