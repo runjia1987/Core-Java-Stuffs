@@ -44,7 +44,7 @@ public class JsonTest {
 		String serializeStr = JSON.toJSONString(info);		
 		System.out.println(serializeStr);
 		
-		UserInfo info2 = JSON.toJavaObject(JSON.parseObject(serializeStr), UserInfo.class);
+		UserInfo info2 = JSON.parseObject(serializeStr, UserInfo.class);
 		System.out.println("deserialize: " + info2.getSortValue());
 		System.out.println(JSONUtil.toCompatibleJSONString(array));
 	}
@@ -53,12 +53,11 @@ public class JsonTest {
 	 * use json-lib library
 	 */
 	public void useJsonLib(){
-		
+		// TODO
 	}
 
 	public static void main(String[] args){
-		long beginTime = System.currentTimeMillis();
-		
+		long beginTime = System.currentTimeMillis();		
 		JsonTest test = new JsonTest();
 		
 		//循环
@@ -66,9 +65,7 @@ public class JsonTest {
 		while(i++ < 1){
 			test.useFastJson();
 		}
-		
-		long endTime = System.currentTimeMillis();
-		System.out.println((endTime - beginTime) + "ms cost.");
+		System.out.println((System.currentTimeMillis() - beginTime) + "ms cost.");
 	}
 	
 }

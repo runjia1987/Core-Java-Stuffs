@@ -13,9 +13,13 @@ public class UserInfo implements java.io.Serializable {
 	private int id;
 	private String name;
 	private String password;
-	private Comparable<?> sortValue;
+	private int sortValue;
 	
-	public UserInfo(){}
+	/**
+	 * if no default non-arg constructor is provided, will throw: <br>
+	 * com.alibaba.fastjson.JSONException: default constructor not found.
+	 */
+	public UserInfo(){ }
 
 	public UserInfo(int id, String name, String password) {
 		this.id = id;
@@ -47,11 +51,11 @@ public class UserInfo implements java.io.Serializable {
 		this.password = password;
 	}
 
-	public Comparable<?> getSortValue() {
+	public int getSortValue() {
 		return sortValue;
 	}
 
-	public void setSortValue(Comparable<?> sortValue) {
+	public void setSortValue(int sortValue) {
 		this.sortValue = sortValue;
 	}
 
