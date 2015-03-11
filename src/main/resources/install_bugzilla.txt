@@ -1,0 +1,12 @@
+How to install bugzilla on Win2008 Server r2:
+
+1, mysql 5.6，"bugs" DB & user & pass;
+2, activePerl 5.16，ppm install 20+ modules;
+3, download and extract bugzilla tar.gz, execute checksetup.pl, to see modules ready status, and repeat 2), then
+	vi localconfig;
+4, IIS enable, virtual directory, webDav user access control for IIS_IUSRS;
+   script mapping for .cgi using perl.exe;
+5, Time Zone bugs (can't locate time Zone), add "Asia/Shanghai" as tz in bugzilla/Bugzilla/Util.pm
+    use Date::Parse;
+	use Date::Format;
+	BEGIN { $ENV{TZ} = 'Asia/Shanghai' }  // this is added
