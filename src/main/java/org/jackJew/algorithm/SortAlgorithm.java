@@ -257,11 +257,11 @@ public class SortAlgorithm {
 			int i = left, j = right;
 			// random pivot pos
 			int randomPos = left + new Random().nextInt(right - left);
-			int pivot = array[i];
+			int temp = array[i];
 			// switch with left-most pos
 			array[i] = array[randomPos];
-			array[randomPos] = pivot;
-			pivot = array[i];
+			array[randomPos] = temp;
+			int pivot = array[i];
 
 			while (i < j) {
 				while (i < j && array[j] >= pivot)
