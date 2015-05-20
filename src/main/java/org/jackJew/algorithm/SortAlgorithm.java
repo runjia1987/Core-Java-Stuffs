@@ -20,14 +20,14 @@ public class SortAlgorithm {
 	/**
 	 * 归并排序, 递归
 	 */
-	public static void mergeSort(int left, int right, int[] array, int[] temp) {
+	public static void mergeSort(int left, int right, int[] array) {
 		if (left < right) {
 			int middle = (left + right) / 2; // 中间点
 
-			mergeSort(left, middle, array, temp); // 左侧排序
-			mergeSort(middle + 1, right, array, temp); // 右侧排序
+			mergeSort(left, middle, array); // 左侧排序
+			mergeSort(middle + 1, right, array); // 右侧排序
 
-			doMerge(left, right, array, temp); // 合并已排序的左侧与右侧数据
+			doMerge(left, right, array, new int[array.length]); // 合并已排序的左侧与右侧数据
 		}
 	}
 
@@ -319,9 +319,8 @@ public class SortAlgorithm {
 	 * 排序测试
 	 */
 	public static void main(String[] args) throws Exception {
-		int[] temp = new int[array.length];
-
-		// mergeSort(0, array.length-1, array, temp);
+		
+		// mergeSort(0, array.length-1, array);
 
 		// quickSort(array, 0, array.length-1);
 		quickSort_nonRecursive(array, 0, array.length - 1);
