@@ -6,7 +6,15 @@ public class TestClient {
 	
 	final static int THREADS_SIZE = 5;
 	
-	public static void main(String[] args) {		
+	public static void main(String[] args) {
+		final NIOServer server = new NIOServer("NIO server");
+		
+		new Thread(){
+			public void run() {
+			server.startServ();
+			}
+		}.start();
+		
 		ArrayList<NIOClient> clientsList = new ArrayList<NIOClient>();
 		
 		// setup multiple clients to listen

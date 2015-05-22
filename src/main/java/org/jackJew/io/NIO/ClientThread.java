@@ -1,7 +1,5 @@
 package org.jackJew.io.NIO;
 
-import java.lang.ThreadLocal;
-
 public class ClientThread extends Thread {
 	
 	private NIOClient client;

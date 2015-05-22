@@ -1,10 +1,8 @@
 package org.jackJew.io.NIO;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.ClosedChannelException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
@@ -13,8 +11,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
-
-import org.apache.tools.ant.taskdefs.Sleep;
 
 public class NIOServer {
 	
@@ -135,11 +131,6 @@ public class NIOServer {
 		System.out.println("server closing " + channel);
 		contactMap.remove(channel);
 		channel.close();
-	}
-	
-	public static void main(String[] args){
-		NIOServer server = new NIOServer("NIO server");
-		server.startServ();
 	}
 
 }
