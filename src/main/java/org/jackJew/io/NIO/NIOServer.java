@@ -49,7 +49,7 @@ public class NIOServer {
 					
 					// 由于 select()操作会向 Selector所关联的键集合中添加元素,
 					// 因此，如果不remove掉这个处理过的key，
-					// 它就会在下次调用 select() 方法时仍然保留在集合中
+					// 在下次调用 select() 方法时仍然保留在集合中
 					keysItr.remove();
 					if(key.isValid()) {
 						handleKey(key, selector);

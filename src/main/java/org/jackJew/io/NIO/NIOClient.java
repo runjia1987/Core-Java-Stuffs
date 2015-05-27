@@ -36,10 +36,10 @@ public class NIOClient {
 				// wait for incomming events
 				selector.select();
 				
-				Iterator<SelectionKey> keys = selector.selectedKeys().iterator();
-				while(keys.hasNext()){
-					SelectionKey key = keys.next();
-					keys.remove();
+				Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
+				while(keysItr.hasNext()){
+					SelectionKey key = keysItr.next();
+					keysItr.remove();
 					if(key.isValid()) {
 						handleKey(key, selector);
 					}
