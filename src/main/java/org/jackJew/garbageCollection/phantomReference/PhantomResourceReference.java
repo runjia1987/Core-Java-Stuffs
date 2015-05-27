@@ -12,7 +12,7 @@ import java.util.Map;
 public class PhantomResourceReference extends PhantomReference<Resource> implements Cleanable {
 
 	/**
-	 * Note: never set a member field pointed to the referent object  !!!
+	 * Note: never hold a member field pointed to the referent object  !!!
 	 * <br> otherwise the referent will never become phantom reachable !!!
 	 */
 	private Map<String, Object> resourcesMap;
