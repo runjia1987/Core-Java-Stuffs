@@ -3,14 +3,10 @@ package org.jackJew.io.readerToStream;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.io.Reader;
 
 /**
@@ -31,13 +27,12 @@ public class ReaderToInputStreamStyle {
 		OutputStreamWriter osw = null;
 		char[] buffer = new char[bufferSie];
 		int count = 0;
-		char c = '\u0000';
 		try {
 			//osw = new OutputStreamWriter(bous, charset);
 			
 			while ((count = reader.read(buffer)) != -1) {
 				//osw.write(buffer, 0, count);
-				bous.write(new String(buffer, 0, count).getBytes(charset));  //适应中文字符
+				bous.write(new String(buffer, 0, count).getBytes(charset));
 			}
 			//osw.flush();
 			
