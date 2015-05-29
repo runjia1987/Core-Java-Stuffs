@@ -63,9 +63,7 @@ public class NIOServer {
 		
 	}
 	
-	private void handleKey(SelectionKey key, Selector selector) {
-		System.out.println(key.isAcceptable() + "," + key.isReadable() + "," + key.isWritable());
-		
+	private void handleKey(SelectionKey key, Selector selector) {		
 		try {
 			if(key.isAcceptable()){
 				ServerSocketChannel sc = (ServerSocketChannel) key.channel();
@@ -88,13 +86,12 @@ public class NIOServer {
 						if( ! contactMap.containsKey(channel)){
 							// first contact with this client
 							contactMap.put(channel, true);
-							System.out.println("request comes from client: " + rcvContent);
-							
+							System.out.println("server request comes from client: " + rcvContent);							
 						}
-						System.out.println("receive message: " + rcvContent);
+						System.out.println("server receive message: " + rcvContent);
 						channel.register(selector, SelectionKey.OP_WRITE);						
 					} else {
-						System.out.println("server read nothing. will end the communication.");
+						System.out.println("server read nothing. end the communication.");
 						key.cancel();
 					}
 				} catch(IOException cce){
@@ -114,7 +111,7 @@ public class NIOServer {
 					channel.register(selector, SelectionKey.OP_READ);
 					
 				} catch(IOException ioe){
-					//注意 selector选择器不能关闭
+					// do not close selector
 					closeChannel(channel);
 				}
 			}

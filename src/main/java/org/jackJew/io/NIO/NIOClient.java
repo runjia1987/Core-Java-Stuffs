@@ -6,12 +6,13 @@ import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Iterator;
+import java.util.UUID;
 
 public class NIOClient {
 
 	final String HOST = "127.0.0.1";
 	final int PORT = 9999;
-	final int MAX_REQUESTS = 20;
+	final int MAX_REQUESTS = 10;
 	private ByteBuffer buffer = ByteBuffer.allocate(1 << 10);
 	private String clientName;
 	private boolean firstContact = true;
@@ -69,13 +70,15 @@ public class NIOClient {
 				if(channel.finishConnect()){  // notice !!!
 					System.out.println(this.clientName + " connected to " + channel.socket().getInetAddress());
 				} else{
-					// continue the connect event key.
+					// fail to connect in this try
 					connected = false;
 				}
 			}
 			if(connected){
+				// connected, deregister OP_CONNECT
 				channel.register(selector, SelectionKey.OP_READ);
 			}
+			// not connected, then keep selecting in next loop
 		} else if(key.isReadable()){
 			buffer.clear();
 			int read = channel.read(buffer);
@@ -89,14 +92,15 @@ public class NIOClient {
 			}
 			
 		} else if(key.isWritable()){
-			System.out.println("client will write...");
+			System.out.println(this.clientName + " will write...");
 			if( firstContact ) {
 				firstContact = false;
 				// write client name to server
 				channel.write(ByteBuffer.wrap(this.clientName.getBytes()));
 			} else {
-				System.out.println(this.clientName + " sends ACK to server.");
-				channel.write(ByteBuffer.wrap(Constants.NEXT_MESSAGE.getBytes()));
+				String uuidStr = UUID.randomUUID().toString();
+				System.out.println(this.clientName + " sends response: " + uuidStr);
+				channel.write(ByteBuffer.wrap(uuidStr.getBytes()));
 			}
 			channel.register(selector, SelectionKey.OP_READ);
 		}

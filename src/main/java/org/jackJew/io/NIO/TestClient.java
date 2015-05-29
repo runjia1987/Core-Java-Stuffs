@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class TestClient {
 	
-	final static int THREADS_SIZE = 5;
+	final static int THREADS_SIZE = 4;
 	
 	public static void main(String[] args) {
 		final NIOServer server = new NIOServer("NIO server");
