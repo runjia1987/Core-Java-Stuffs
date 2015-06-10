@@ -1,6 +1,7 @@
 package org.jackJew.synchronization;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Application {
 
