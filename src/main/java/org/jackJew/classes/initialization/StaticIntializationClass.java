@@ -48,7 +48,7 @@ public class StaticIntializationClass {
 	
 	public static void main(String[] args) {
 		StaticClass22 instance = null;  // will not initialize class.
-		//StaticClass22.MyMap.put("123", "abc");
+		// StaticClass22.MyMap.put("123", "abc");
 		
 		//System.out.println(StaticClass22.MyMap);
 		System.out.println(StaticClass22.ABC);
