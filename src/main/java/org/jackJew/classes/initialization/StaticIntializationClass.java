@@ -29,7 +29,8 @@ public class StaticIntializationClass {
 	
 	private static String getJob(){
 		System.out.println("getJob()");
-		Object obj = new StaticIntializationClass();
+		Object obj1 = new StaticIntializationClass();
+		Object obj2 = new StaticIntializationClass();
 		return "static method job";
 	}
 	
