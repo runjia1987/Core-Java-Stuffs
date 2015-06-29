@@ -21,9 +21,9 @@ public class TestClient {
 		
 		list1.print();
 		
-		// reverse the list
-		System.out.println("start to reverse...");
+		// reverse the list		
 		list1.reverse();
+		System.out.println("after reverse:");
 		list1.print();
 	}
 

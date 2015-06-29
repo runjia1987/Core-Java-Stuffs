@@ -121,6 +121,11 @@ public final class LinkList {
 		head = previous;		
 	}
 	
+	// abcdefgh -> badcfehg
+	public void reverse2(){
+		
+	}
+	
 	public LinkNode getHead(){
 		return this.head;
 	}

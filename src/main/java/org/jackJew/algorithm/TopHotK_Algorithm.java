@@ -142,7 +142,7 @@ public class TopHotK_Algorithm {
 		return array;
 	}
 
-	public void setArray(String[] array) {
+	private void setArray(String[] array) {
 		this.array = array;
 	}
 
