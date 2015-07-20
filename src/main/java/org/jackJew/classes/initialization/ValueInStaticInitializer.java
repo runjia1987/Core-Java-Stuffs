@@ -11,7 +11,7 @@ public class ValueInStaticInitializer {
 	
 	public static void main(String[] args) {
 		
-		System.out.println(xyz);
+		System.out.println(xyz);  // output: 123
 		// decided by the order of xyz
 		// 后出现的赋值会覆盖前面的赋值，并生效
 		

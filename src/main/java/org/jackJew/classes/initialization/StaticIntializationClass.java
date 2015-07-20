@@ -14,17 +14,19 @@ public class StaticIntializationClass {
 	
 	private static String instance = getJob();   //静态变量
 	private Date date = getDate();	 //实例变量
+	private final int flag;
 	
 	/**
 	 * 静态初始块仅执行一次; 可以有多个static initializer blocks, 按顺序执行;
 	 */
 	static {
-		System.out.println("静态初始块 ");
+		System.out.println("静态初始块 ");		
 		//new StaticIntializationClass();
 	}
 	
 	{
 		System.out.println("普通初始化块");  //普通初始化块, 每次调用构造器都会被执行
+		flag = 100;
 	}
 	
 	private static String getJob(){
