@@ -10,7 +10,7 @@ package org.jackJew.classes.initialization;
  */
 public class Child extends AbstractParent {
 	
-	private int number = 100;	//初始化为0, 直至<当前类>构造器被调用时才正常赋值
+	private int number = 100;	//初始化为0, 直至<当前类>被实例化时才正常赋值
 	private char character = 'a';		//初始化为'\u0000'
 	
 	{
