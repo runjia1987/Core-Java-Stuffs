@@ -49,7 +49,7 @@ public class Child <P extends Collection<Parent>, Q, R> extends Parent{
 		// ***************** 泛型数组创建 ***************** //
 		t = (Q[])new Object[5];	//第一种方式, 由Object类型强制转换
 		
-		Class<?> cls = null;
+		Class<?> cls = String.class;
 		t = (Q[])Array.newInstance(cls, 5);	//第二种方式, 反射创建
 		// ***************** End ***************** //
 	}
@@ -64,6 +64,7 @@ public class Child <P extends Collection<Parent>, Q, R> extends Parent{
 		
 		//List<Date> dataList = new ArrayList<Timestamp>();	//compile error
 		//List<? super Date> dataList1 = new ArrayList<Timestamp>();  //compile error
+		List<? extends Date> dataList11 = new ArrayList<Timestamp>();
 		
 		List<?> dataList2 = new ArrayList<Timestamp>();
 		//dataList2.add(new Timestamp(0));	//compile error
