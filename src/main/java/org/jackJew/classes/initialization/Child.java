@@ -25,20 +25,18 @@ public class Child extends AbstractParent {
 	public Child(int i){
 		super(i);   // 如果省略这行, 则自动调用父类的无参默认构造方法
 		System.out.println("子类有参构造方法.");
-		add();
+		print();
 	}
 	
 	public static void main(String[] args) {
 		System.out.println(new Child(1).number);
+		System.out.println(new Child(2).number);
 		
 		//StaticBlockIntializationClass sbi = null;	//不会执行StaticBlockIntializationClass类的任何初始化
 	}
 
 	@Override
-	/**
-	 * 父类: protected abstract void add();
-	 */
-	protected void add() {
+	protected void print() {
 		//number++;
 		System.out.println("子类add()方法: number@" + number + "  " + (character == '\u0000'));
 	

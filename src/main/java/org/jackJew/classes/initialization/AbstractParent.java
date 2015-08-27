@@ -2,7 +2,7 @@ package org.jackJew.classes.initialization;
 
 public abstract class AbstractParent {
 	
-	protected abstract void add();
+	protected abstract void print();
 	
 	{
 		System.out.println("抽象父类普通初始化块");
@@ -17,7 +17,7 @@ public abstract class AbstractParent {
 	 */
 	public AbstractParent() {
 		System.out.println("抽象父类无参构造方法.");
-		add();
+		print();
 	}
 	
 	/**
@@ -25,7 +25,7 @@ public abstract class AbstractParent {
 	 */
 	public AbstractParent(int i){
 		System.out.println("抽象父类有参构造方法.");
-		add();
+		print();
 	}
 	
 	public static void main(String[] args) {
