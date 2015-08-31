@@ -19,12 +19,11 @@ public class TestClient {
 			// likewise in real occasions, multi - threads simulation.
 			
 			Thread t = new Thread(){
-				public void run(){					
+				public void run(){
 					try {
 						Resource resourceW = provider.getResource();
 						resourceW.doSth();
-						resourceW = null;  // help GC, this is useful
-						
+						resourceW = null;  // help GC, this is useful						
 						System.gc();
 						
 					} catch (Exception e) {
@@ -33,8 +32,7 @@ public class TestClient {
 				}
 			};
 			t.start();
-		}
-		
+		}		
 	}
 
 }

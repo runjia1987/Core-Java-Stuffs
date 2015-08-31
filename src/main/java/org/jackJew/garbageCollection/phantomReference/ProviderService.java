@@ -24,12 +24,12 @@ public class ProviderService implements InitializingBean {
 	 * This is necessary to ensure that phantom references are not garbage collected
 	 * <br> as long as they have not been handled by the reference queue.
 	 */
-	private final List<Cleanable> referenceList = new ArrayList<Cleanable>();
+	private final List<PhantomResourceReference> referenceList = new ArrayList<PhantomResourceReference>();
 
 	public Resource getResource() throws SQLException{
 		Resource resourceW = new Resource();
 		
-		Cleanable reference = new PhantomResourceReference(resourceW, queue);
+		PhantomResourceReference reference = new PhantomResourceReference(resourceW, queue);
 		referenceList.add(reference);
 		
 		return resourceW;
@@ -53,7 +53,7 @@ public class ProviderService implements InitializingBean {
 		return queue;
 	}
 
-	public List<Cleanable> getReferenceList() {
+	public List<PhantomResourceReference> getReferenceList() {
 		return referenceList;
 	}
 

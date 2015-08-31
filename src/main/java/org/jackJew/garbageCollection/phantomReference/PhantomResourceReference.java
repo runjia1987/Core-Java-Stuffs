@@ -9,7 +9,7 @@ import java.util.Map;
  * @author Jack
  *
  */
-public class PhantomResourceReference extends PhantomReference<Resource> implements Cleanable {
+public class PhantomResourceReference extends PhantomReference<Resource> {
 
 	/**
 	 * Note: never hold a member field pointed to the referent object  !!!
@@ -23,7 +23,6 @@ public class PhantomResourceReference extends PhantomReference<Resource> impleme
 		this.resourcesMap = referent.getResourcesMap();
 	}
 
-	@Override
 	public void cleanup() {
 		System.out.println("starting to clear resourcesMap hash: " + resourcesMap.hashCode());
 		

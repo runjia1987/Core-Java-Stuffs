@@ -20,9 +20,9 @@ public class PollAndCleanTask implements Runnable {
 	@Override
 	public void run() {
 		while (true) {
-			Cleanable reference = null;
+			PhantomResourceReference reference = null;
 			try {
-				reference = (Cleanable) provider.getQueue().remove();
+				reference = (PhantomResourceReference)provider.getQueue().remove(10 * 1000L);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -30,14 +30,10 @@ public class PollAndCleanTask implements Runnable {
 				reference.cleanup();
 				System.out.println(Thread.currentThread().getName() + " successfully cleanUp a resource.");
 				
-				provider.getReferenceList().remove(reference);
-				
+				provider.getReferenceList().remove(reference);				
 			} else {
 				System.out.println("queue is empty");
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e) {
-				}
+				break;
 			}
 		}
 	}
