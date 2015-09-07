@@ -22,22 +22,24 @@ class TestClientForFinalClass {
 
 public class FinalClassThreadSafety {
 	
-	private static FinalDesign instance;
+	private static String instance;
 	
-	public static FinalDesign getInstance(){  //final design does not guarantee safety.
+	public static String getInstance() {
 		if(instance == null){
-			instance = new FinalDesign();
+			instance = new String("123");
 		}
 		return instance;
 	}
 	
-	final static class FinalDesign {
-		private final Date d;
-		
-		public FinalDesign(){
-			this.d = new Date();
-			System.out.println("FinalDesign instance created.");
-		}
-		
+}
+class FinalClassThreadSafety2 extends FinalClassThreadSafety {
+	
+	public static String getInstance() {
+		return null;
+	}
+	
+	public static void main(String[] args) {
+		FinalClassThreadSafety f = new FinalClassThreadSafety2();
+		System.out.println(f.getInstance());
 	}
 }
