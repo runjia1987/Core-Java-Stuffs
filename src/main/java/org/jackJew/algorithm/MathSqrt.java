@@ -21,7 +21,7 @@ public class MathSqrt {
 			s = (s + d / s) / 2;
 		} while (Math.abs(s - last) > precision);
 
-		System.out.println("time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+		System.out.println("newtonSqrt time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
 		return s;
 	}
 
@@ -41,7 +41,7 @@ public class MathSqrt {
 			s = s * (1.5f - half * s * s);
 		}
 
-		System.out.println("time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+		System.out.println("blackTechSqrt time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
 		return 1 / s;
 	}
 
@@ -81,7 +81,7 @@ public class MathSqrt {
 			if (i == maxBinarySearchCount)
 				break;
 		}
-		System.out.println("time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+		System.out.println("sqrt1 time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
 		return trim(mid, scale);
 	}
 
@@ -101,61 +101,7 @@ public class MathSqrt {
 			return (d2 + 1) * 1000d;
 		}
 	}
-
-	/**
-	 * less efficient, takes more time when computing.
-	 */
-	double sqrt2(double d, int scale) {
-		long startTime = System.currentTimeMillis();
-		// first start from 0
-		// try to find an integer value as threshold
-		int i = 0, count = 0;
-		while (true) {
-			long pow = i * i;
-			if (pow == d) {
-				return i;
-			} else if (pow > d) {
-				i--;
-				break;
-			} else {
-				i++;
-			}
-			count++;
-		}
-		int j = i + 1;
-		// definitely the final result will lay between i and j
-
-		// use binary search
-		int maxBinarySearchCount = 64;
-		double a = i, b = j, mid = 0d;
-		String sa, sb, smid;
-		count = 0;
-		while (true) {
-			mid = (a + b) / 2;
-			sa = String.valueOf(a);
-			sb = String.valueOf(b);
-			smid = String.valueOf(mid);
-			if (sa.equals(smid) || sb.equals(smid)) {
-				return mid;
-			}
-
-			double pow = mid * mid;
-			if (pow == d) {
-				break;
-			} else if (pow > d) {
-				b = mid;
-			} else {
-				a = mid;
-			}
-			count++;
-			if (count == maxBinarySearchCount)
-				break;
-		}
-
-		System.out.println("time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
-		return trim(mid, scale);
-	}
-
+	
 	private double trim(double result, int scale) {
 		String s = String.valueOf(result);
 		String[] array = s.split("\\.");
@@ -164,8 +110,7 @@ public class MathSqrt {
 			builder.append(".");
 			int i = 0;
 			while (i < scale) {
-				builder.append(array[1].charAt(i));
-				i++;
+				builder.append(array[1].charAt(i++));
 			}
 			return Double.valueOf(builder.toString());
 		}
