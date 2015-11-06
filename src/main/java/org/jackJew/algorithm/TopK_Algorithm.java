@@ -2,6 +2,7 @@ package org.jackJew.algorithm;
 
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Stack;
 
 /**
  * top K algorithm
@@ -111,7 +112,7 @@ public class TopK_Algorithm {
 				siftDown(store, 0, element);
 			}
 		}
-		System.out.println("getTopKByMinHeap final result: " + Arrays.toString(store));
+		System.out.println(Arrays.toString(store));
 	}
 
 	/**
@@ -159,7 +160,7 @@ public class TopK_Algorithm {
 		array[i] = element;
 	}
 	
-	public void getTopKByQuickSort(int[] array, int k, int left, int right) {
+	public void getTopKByQuickSortRecursive(int[] array, int k, int left, int right) {
 		if( left < right) {
 			int index = findPivotIndex(array, left, right);
 			//System.out.println(index + ": " + k);
@@ -169,39 +170,74 @@ public class TopK_Algorithm {
 					//System.out.print(array[i] + ", ");
 				}
 			} else if(index > k - 1){
-				getTopKByQuickSort(array, k, 0, index - 1);
+				getTopKByQuickSortRecursive(array, k, 0, index - 1);
 			} else {
-				getTopKByQuickSort(array, k, index + 1, array.length - 1);
+				getTopKByQuickSortRecursive(array, k, index + 1, array.length - 1);
 			}
-		} else {
-			System.out.println(left + "," + right);
+		}
+	}
+	
+	public void getTopLByQuickSortNonRecursive(int[] array, int k, int left, int right) {
+		if(left < right) {
+			Stack<Integer> stack = new Stack<Integer>();
+			int index = findPivotIndex(array, left, right);
+			if(index == -1) {
+				return;
+			}
+			if(index - left > 1) {
+				stack.push(index - 1);
+				stack.push(left);
+			}
+			if(right - index > 1) {
+				stack.push(right);
+				stack.push(index + 1);
+			}
+			while(!stack.isEmpty()) {
+				int _highBound = stack.pop(), _lowBound = stack.pop();
+				index = findPivotIndex(array, _lowBound, _highBound);
+				if(index == -1) {
+					return;
+				}
+				if(index - _lowBound > 1) {
+					stack.push(index - 1);
+					stack.push(_lowBound);
+				}
+				if(_highBound - index > 1){
+					stack.push(_highBound);
+					stack.push(index + 1);
+				}				
+			}
 		}
 	}
 	
 	// desc sort
 	private int findPivotIndex(int[] array, int left, int right){
-		int i = left, j = right;
-		final int pivot = array[left];
-		while(i < j){
-			while(i < j && array[j] <= pivot) {
-				j--;
+		if(left < right) {
+			int i = left, j = right;
+			final int pivot = array[left];
+			while(i < j){
+				while(i < j && array[j] <= pivot) {
+					j--;
+				}
+				if(i < j)
+					array[i] = array[j];
+				while(i < j && array[i] > pivot) {
+					i++;
+				}
+				if(i < j)
+					array[j] = array[i];
 			}
-			if(i < j)
-				array[i] = array[j];
-			while(i < j && array[i] > pivot) {
-				i++;
-			}
-			if(i < j)
-				array[j] = array[i];
-		}
-		array[i] = pivot;
-		return i;
+			array[i] = pivot;
+			return i;
+		} else {
+			return -1;
+		}		
 	}
 
 	public static void main(String[] args) {
 		TopK_Algorithm ta = new TopK_Algorithm();
+		// create an array - 100k size
 		int[] array = ta.createRandomString(100000);
-		// System.out.println(Arrays.toString(array));
 
 		// by array
 		long startTime = System.nanoTime();
@@ -215,15 +251,30 @@ public class TopK_Algorithm {
 		endTime = System.nanoTime();
 		System.out.println("getTopKByMinHeap cost: " + (endTime - startTime) + "ns.");
 		
-		// by QuickSort
+		// by quickSort
 		startTime = System.nanoTime();
-		ta.getTopKByQuickSort(array, 10, 0, array.length - 1);
+		ta.getTopKByQuickSortRecursive(array, 10, 0, array.length - 1);
+		int index = 0;
+		while(index < 10) {
+			System.out.print(array[index++] + ", ");
+		}
+		System.out.println();
 		endTime = System.nanoTime();
-		System.out.println("getTopKByQuickSort cost: " + (endTime - startTime) + "ns.");
+		System.out.println("getTopKByQuickSortRecursive cost: " + (endTime - startTime) + "ns.");
+		
+		// by quickSort - non recursive
+		startTime = System.nanoTime();
+		ta.getTopLByQuickSortNonRecursive(array, 10, 0, array.length - 1);
+		index = 0;
+		while(index < 10) {
+			System.out.print(array[index++] + ", ");
+		}
+		System.out.println();
+		endTime = System.nanoTime();
+		System.out.println("getTopLByQuickSortNonRecursive cost: " + (endTime - startTime) + "ns.");
 		/**
 		 * summary: from stdout, getTopKByMinHeap is about 10% faster than getTopKByArray.
-		 * <br> getTopKByQuickSort is the best in performance.(maybe not, on i7, getTopKByMinHeap cost: 1590048ns.
-				getTopKByQuickSort cost: 3158749ns.)
+		 * <br> getTopLByQuickSortNonRecursive is the best in performance, far beyond others.
 		 */
 	}
 

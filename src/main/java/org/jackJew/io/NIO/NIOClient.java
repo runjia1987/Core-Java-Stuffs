@@ -8,6 +8,12 @@ import java.nio.channels.SelectionKey;
 import java.util.Iterator;
 import java.util.UUID;
 
+/**
+ * NIO client
+ * @see NIOServer
+ * @author Jack
+ *
+ */
 public class NIOClient {
 
 	final String HOST = "127.0.0.1";

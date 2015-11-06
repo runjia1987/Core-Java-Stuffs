@@ -12,6 +12,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ * NIO Server
+ * @see NIOClient
+ * @author Jack
+ *
+ */
 public class NIOServer {
 	
 	final int PORT = 9999;
