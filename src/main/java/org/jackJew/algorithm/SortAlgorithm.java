@@ -128,11 +128,21 @@ public class SortAlgorithm {
 			return a2;
 	}
 	
+	static class IndexAndValue {
+		int index;		
+		int value;
+		
+		public IndexAndValue(int index, int value) {
+			this.index = index;
+			this.value = value;
+		}
+	}
+	
 	/**
 	 * 快排查找中位数, ASC, 亦可解决第k小的数值问题
 	 * @param array
 	 */
-	public static int quickSortForMedianValue(int[] array, int left, int right, int kIndex){
+	public static IndexAndValue quickSortForMedianValue(int[] array, int left, int right, int kIndex){
 		if (left < right) {
 			int i = findPivotIndex(array, left, right);
 			System.out.println("limit: " + kIndex + ", i: " + i + ", array[i]: " + array[i]);
@@ -141,7 +151,7 @@ public class SortAlgorithm {
 			}
 			System.out.println();
 			if ( i == kIndex) {
-				return array[i];
+				return new IndexAndValue(i, array[i]);
 			} else if (i > kIndex) {
 				// 位置大于中间的位置，则查找左半部分中第(i-limit)大的数字
 				return quickSortForMedianValue(array, left, i - 1, kIndex);
@@ -150,7 +160,7 @@ public class SortAlgorithm {
 				return quickSortForMedianValue(array, i + 1, right, kIndex);
 			}
 		} else if(left == right) {
-			return array[left];
+			return new IndexAndValue(left, array[left]);
 		} else {
 			throw new RuntimeException("left > right error.");
 		}
@@ -160,57 +170,11 @@ public class SortAlgorithm {
 	 * 快速排序, ASC
 	 */
 	public static void quickSort(int[] array, int left, int right) {
-		int i = left, j = right, pivot = array[left]; // 选择一个参照数
-
-		if (left < right) {
-			while (i < j) {
-				while (i < j && array[j] >= pivot)
-					// 从右端点向左查找第一个小于参照数的值
-					j--;
-				if (i < j)
-					array[i] = array[j];
-				while (i < j && array[i] < pivot)
-					// 从左端点向右查找第一个大于=参照数的值
-					i++;
-				if (i < j)
-					array[j] = array[i];
-			}
-
-			array[i] = pivot; // 第一轮排序后, i左侧的数都小于i右侧的数据
-
-			quickSort(array, left, i - 1); // 排序左侧数据
-			quickSort(array, i + 1, right); // 排序右侧数据
-		}
-	}
-
-	/**
-	 * 快速排序, ASC, 随机化轴值
-	 */
-	public static void quickSort_random(int[] array, int left, int right) {
-		if (left < right) {
-			int randomPos = left + rand.nextInt(right - left);
-			int i = left, j = right, X = array[i], pivot = array[randomPos]; // 随机的参照数
-			// swap
-			array[randomPos] = X;
-			array[i] = pivot;
-
-			while (i < j) {
-				while (i < j && array[j] >= pivot)
-					// 从右端点向左查找第一个小于参照数的值
-					j--;
-				if (i < j)
-					array[i] = array[j];
-				while (i < j && array[i] < pivot)
-					// 从左端点向右查找第一个大于参照数的值
-					i++;
-				if (i < j)
-					array[j] = array[i];
-			}
-
-			array[i] = pivot; // 第一轮排序后, i左侧的数都小于i右侧的数据
-
-			quickSort_random(array, left, i - 1); // 排序左侧数据
-			quickSort_random(array, i + 1, right); // 排序右侧数据
+		int index = findPivotIndex(array, left, right);
+		
+		if (index != -1 && left < right) {
+			quickSort(array, left, index - 1); // 排序左侧数据
+			quickSort(array, index + 1, right); // 排序右侧数据
 		}
 	}
 
@@ -251,7 +215,7 @@ public class SortAlgorithm {
 		}
 	}
 
-	// find the index for pivot
+	// find the index for pivot, ASC
 	private static int findPivotIndex(int[] array, int left, int right) {
 		if (left < right) {
 			int i = left, j = right;
@@ -318,12 +282,11 @@ public class SortAlgorithm {
 	/**
 	 * 排序测试
 	 */
-	public static void main(String[] args) throws Exception {
-		
+	public static void main(String[] args) throws Exception {		
 		// mergeSort(0, array.length-1, array);
 
-		// quickSort(array, 0, array.length-1);
-		quickSort_nonRecursive(array, 0, array.length - 1);
+		quickSort(array, 0, array.length-1);
+		//quickSort_nonRecursive(array, 0, array.length - 1);
 		System.out.println(Arrays.toString(array));
 
 		// bubbleSort(array, array.length);
@@ -347,14 +310,25 @@ public class SortAlgorithm {
 		
 		System.out.println("mergeForMedianValue: " + mergeForMedianValue(array1, array2));
 		
+		/**
+		 * find median value in odd-sized array
+		 */
 		array2 = new int[] {20, 9999, 600, 7, 22, 92, 100, 321, 500, 1000, 4500 };
-		// 只考虑数组长度为奇数的情况
-		System.out.println("quickSortForMedianValue: " + quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2));
+		System.out.println("array2 quickSortForMedianValue: " + quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2));
 		
 		int k = 3;
-		System.out.println("quickSortForMedianValue k " + k +  " smallest value: "
+		System.out.println("quickSortForMedianValue the " + k +  " least value: "
 				+ quickSortForMedianValue(array2, 0, array2.length - 1, k - 1));
 		
+		/**
+		 * find median value in even-sized array
+		 */
+		array2 = new int[] {20, 9999, 600, 7, 22, 92, 100, 321, 500, 1000, 4500, 323 };
+		IndexAndValue result = quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2);
+		int upperValue = result.value;
+		int lowerValue = quickSortForMedianValue(array2, 0, result.index, result.index - 1).value;
+		// expected value is 322
+		System.out.println("even array2 quickSortForMedianValue: " + (lowerValue + upperValue) / 2);
 	}
 
 }
