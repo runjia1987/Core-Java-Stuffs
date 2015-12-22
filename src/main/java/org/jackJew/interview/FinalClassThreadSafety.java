@@ -5,11 +5,7 @@ import java.util.Date;
 class TestClientForFinalClass {
 	
 	public static void main(String... args){
-		Runnable task = new Runnable() {
-			public void run() {
-				FinalClassThreadSafety.getInstance();
-			}
-		};
+		Runnable task = () -> FinalClassThreadSafety.getInstance();
 		Thread[] threads = new Thread[10];
 		for(int i = 0; i < 10;i++){
 			threads[i] = new Thread(task);

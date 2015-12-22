@@ -38,7 +38,7 @@ public class TestClient {
 		System.out.println("after AOP advice, list.size is: " + list.size());  // 5
 		
 		
-		TargetProtoTypeBean bean1 = (TargetProtoTypeBean)context.getBean("myTargetBean");
+		TargetProtoTypeBean bean1 = (TargetProtoTypeBean)context.getBean("targetPrototypeBean");
 		System.out.println(bean1);
 		
 	}

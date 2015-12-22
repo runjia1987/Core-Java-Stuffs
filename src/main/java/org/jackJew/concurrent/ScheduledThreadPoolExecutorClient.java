@@ -24,13 +24,11 @@ public class ScheduledThreadPoolExecutorClient {
 		//When submit a task to the executor, it returns you a FutureTask instance,
 		//FutureTask.get() will re-throw any exception thrown by the task as an ExecutorException.
 
-		ScheduledFuture<?> future = scheduler.scheduleAtFixedRate(new Runnable() {
-			@Override
-			public void run() {  //will swallow exception
+		ScheduledFuture<?> future = scheduler.scheduleAtFixedRate( () -> {
+				//will swallow exception
 				int i = 1 / 0;
 				System.out.println("1234567890");
-			}
-		}, 1, 1, TimeUnit.SECONDS); // 1秒后执行
+			}, 1, 1, TimeUnit.SECONDS); // 1秒后执行
 		
 		try {
 			future.get();

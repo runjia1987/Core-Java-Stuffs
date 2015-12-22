@@ -27,7 +27,8 @@
 		</property>
 	</bean>
 	
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close" lazy-init="true">
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+			lazy-init="true">
         <property name="driverClassName">
         	<value>${jdbc.driverClassName}</value>
         </property>
@@ -58,10 +59,9 @@
 		<property name="transactionManager" ref="transactionManager" />
 	</bean>
 	
-	<!-- <aop:aspectj-autoproxy /> enables @Aspect and @Pointcut into effects,
-			and also enables spring transaction definition
-			using @Transactional and @Service. -->
+	<!-- <aop:aspectj-autoproxy /> enables @Aspect and @Pointcut into effects -->
 	<aop:aspectj-autoproxy />
+	
 	<tx:annotation-driven />
 	
 	<!--  
@@ -137,7 +137,8 @@
 		<property name="username" value="${jdbc.username}" />
 	</bean>
 	
-	<bean id="phantomConnectionProviderService" class="org.jackJew.garbageCollection.phantomReference.ProviderService">
+	<bean id="phantomConnectionProviderService"
+		class="org.jackJew.garbageCollection.phantomReference.ProviderService">
 	</bean>
 	
 </beans>

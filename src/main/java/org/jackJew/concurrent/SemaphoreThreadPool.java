@@ -79,9 +79,7 @@ public class SemaphoreThreadPool {
 	public static void main(String[] args) {
 		final Pool pool = new Pool();	//局部变量和参数必须有final修饰
 		//构造runnable对象
-		Runnable runnable = new Runnable() {		
-			@Override
-			public void run() {
+		Runnable runnable = () -> {
 				Object obj = pool.getItem();
 				if(obj == null)
 					System.out.println("取到了空元素.");
@@ -95,8 +93,7 @@ public class SemaphoreThreadPool {
 					System.out.println("对取到的元素操作结束.");
 				}
 				pool.putItem(obj);
-			}
-		};
+			};
 		//线程池
 		ExecutorService es = Executors.newFixedThreadPool(5);
 		//线程池的数目(5)大于许可的数目(3), 以观察测试效果

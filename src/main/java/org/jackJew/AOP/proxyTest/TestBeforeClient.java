@@ -5,14 +5,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestBeforeClient {
-
-	/**
-	 * 
-	 */
+	
 	public static void main(String[] args) {
 		
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml"); 
-			//new FileSystemXmlApplicationContext("src/applicationContext.xml");  // both OK
 		
 		Interface1 bean = (Interface1)factory.getBean("beforeProxyBean");
 		
@@ -21,7 +17,8 @@ public class TestBeforeClient {
 		// 输出: class org.springframework.aop.framework.ProxyFactoryBean
 		System.out.println(factory.getBean("&beforeProxyBean").getClass());
 		
-		System.out.println(((ApplicationContext)factory).getResource("file:/备忘.txt").exists());
+		ApplicationContext context = (ApplicationContext)factory;
+		System.out.println(context.getResource("file:/备忘.txt").exists());  // false
 		
 	}
 

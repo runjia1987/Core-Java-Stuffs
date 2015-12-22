@@ -36,15 +36,18 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 	}
 
 	public static void main(String[] args) {
-		ApplicationContext ac = new AnnotationConfigApplicationContext(
+		AnnotationConfigApplicationContext acac = new AnnotationConfigApplicationContext(
 										AtConfigurationAtBeanWithBeanLifecycle.class);
-		// test the bean initialization cycle
-		AA instance = ac.getBean("AA", AA.class);
+		AA instance = acac.getBean("AA", AA.class);
 		
-		IBB ibb = ac.getBean("BB", BB.class);
+		// acac.register(class1, class2);
+		// acac.scan(basePackages);
+		//acac.refresh();
+		
+		IBB ibb = acac.getBean("BB", BB.class);
 		ibb.print();
 		
-		ConfigurableBeanFactory cbf = (ConfigurableBeanFactory)ac.getAutowireCapableBeanFactory();
+		ConfigurableBeanFactory cbf = (ConfigurableBeanFactory)acac.getAutowireCapableBeanFactory();
 		// test the bean destruction cycle
 		cbf.destroyBean("AA", instance);
 		cbf.destroySingletons();

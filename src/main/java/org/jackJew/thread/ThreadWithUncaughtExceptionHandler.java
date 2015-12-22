@@ -9,7 +9,8 @@ public class ThreadWithUncaughtExceptionHandler {
 	
 	/**
 	 * javac编译器确保checked exception在run()方法被强制捕获处理;
-	 * <br>对于unchecked exception,由于线程有各自独立的栈(JVM虚拟机栈),而异常基于栈,因此不能跨线程捕获异常,会一直向外层传播到控制台.
+	 * <br>对于unchecked exception,由于线程有各自独立的栈(JVM虚拟机栈),而异常基于栈,
+	 * 因此不能跨线程捕获异常,会一直向外层传播到控制台.
 	 * <br>处理办法: 自定义线程工厂,调用setUncaughtExceptionHandler()定义异常处理器,
 	 * <br>可以捕获run()方法抛出的unchecked exception
 	 */
@@ -18,15 +19,6 @@ public class ThreadWithUncaughtExceptionHandler {
 		ExecutorService es = Executors.newFixedThreadPool(1, new SpecificThreadFactory());
 		es.execute(new SpecificThread("zhurunjia-Thread"));
 		es.shutdown();
-		
-		/*
-		//SpecificThread st = new SpecificThread("zhurunjia-Thread");
-		try {
-			SpecificThread st = new SpecificThread("zhurunjia-Thread");
-			st.start();
-		} catch(Exception e){
-			System.out.println("caught exception.");
-		}*/
 	}
 
 }
@@ -54,7 +46,7 @@ class SpecificThread extends Thread {
 	
 }
 /**
- * 实现接口的未捕获异常处理类
+ * 未捕获异常处理类
  * @author zhurunjia
  */
 class SpecificUncaughtExceptionHandler implements UncaughtExceptionHandler {
