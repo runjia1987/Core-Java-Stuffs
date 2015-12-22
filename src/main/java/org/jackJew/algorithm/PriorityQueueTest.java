@@ -14,6 +14,9 @@ public class PriorityQueueTest {
 	 */
 	public static void main(String[] args) {
 		
+		TreeMap<String, Object> treeMap = new TreeMap<>();
+		treeMap.put(null, "123");  // fail, do not allow null when no comparator is provided
+		
 		// default init_capacity is 11.
 		PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
 		pq.add(999);

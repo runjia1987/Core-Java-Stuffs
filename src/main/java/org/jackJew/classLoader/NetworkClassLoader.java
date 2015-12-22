@@ -22,27 +22,23 @@ public class NetworkClassLoader extends ClassLoader {
 	}
 	
 	private byte[] getClassFileBytes(String className){
-		String url = rootUrl + className.replace('.', '/') + ".class";
+		String url = rootUrl + "/" + className.replace('.', '/') + ".class";
 		
-		try {
-			InputStream is = new java.net.URL(url).openStream();
-			
+		try (InputStream is = new java.net.URL(url).openStream();) {			
 			byte[] buffer = new byte[512];
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			int numRead = -1;
 			while( (numRead=is.read(buffer)) != -1)
 				bos.write(buffer, 0, numRead);
 			
-			is.close();buffer = null;
-			
+			buffer = null;			
 			return bos.toByteArray();
 			
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}	
-		
+		}		
 		return null;
 	}	
 

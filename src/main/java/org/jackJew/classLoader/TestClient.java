@@ -10,11 +10,14 @@ public class TestClient {
 	 */
 	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
 		System.out.println("自定义的基于文件系统的类加载器");
-		FileSystemClassLoader fcl = new FileSystemClassLoader("D:\\workspace\\JavaApp\\bin2");
+		FileSystemClassLoader fcl = new FileSystemClassLoader("D:\\");
 		
-		//注意loadclass和findclass方法, 如果AppClassLoader加载器(父)查找的目录(/bin)中存在
+		FileSystemClassLoader fc2 = new FileSystemClassLoader("D:\\");
+		
+		//注意: 如果AppClassLoader加载器(父)查找的目录($buildDir)中存在,
 		//目标类的字节码, 将会直接加载, 而不会执行到自定义类加载器的findClass方法, 
-		//会造成自定义类加载器无效的假象（因此需要先删除掉/bin下的目标类字节码, 或者重写loadClass方法, 破坏Delegate模型）.
+		//会造成自定义类加载器无效的假象（因此需要先删除掉$buildDir下的目标类字节码, 或者重写loadClass方法, 破坏Delegate模型）.
+		//
 		//java.lang.ClassLoader类的loadClass方法执行步骤:  findLoadedClass(name),
 		//												 parent.loadClass(name,resolve),
 		//												 findClass(name);
@@ -25,15 +28,19 @@ public class TestClient {
 		Class<?> class1 = fcl.loadClass("org.jackJew.classLoader.PrintClass");
 		class1.newInstance();
 		
+		Class<?> class_11 = fc2.loadClass("org.jackJew.classLoader.PrintClass");
+		assert (class1 == class_11);  // true
+		
 		System.out.println("\n自定义的基于网络流的类加载器");
-		NetworkClassLoader ncl = new NetworkClassLoader("http://localhost:8080/WebApp/");
+		NetworkClassLoader ncl = new NetworkClassLoader("http://localhost:8080");
 		Class<?> class2 = ncl.loadClass("org.jackJew.classLoader.PrintClass");
 		class2.newInstance();
 		
-		//注意： 由于被不同的类加载器加载, 因而报java.lang.ClassCastException
-		//System.out.println(class1.cast(class2.newInstance()));
+		//Expcetion： 被不同type的类加载器加载的, 因而报java.lang.ClassCastException
+		System.out.println(class1.cast(class2.newInstance()));
 		
-		System.out.println("\n getSystemClassLoader(): " + ClassLoader.getSystemClassLoader());
+		System.out.println("\ngetSystemClassLoader(): " + ClassLoader.getSystemClassLoader());
+		// sun.misc.Launcher$AppClassLoader@xxxx
 	}
 
 }
