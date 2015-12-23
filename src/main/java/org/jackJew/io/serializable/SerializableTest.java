@@ -10,8 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 /**
- * 
- * Description: 序列化写入读出测试
+ * 序列化写入读出测试
  * @author zhurunjia
  *
  */
@@ -21,8 +20,8 @@ public class SerializableTest {
 	
 	public static void main(String[] args){
 		
-		new SerializableTest().byteArrayReadWrite();
-		//new SerializableTest().fileSystemReadWrite();
+		//new SerializableTest().byteArrayReadWrite();
+		new SerializableTest().fileSystemReadWrite();
 		
 	}
 	
@@ -65,7 +64,7 @@ public class SerializableTest {
 			UserInfo u = (UserInfo)ois.readObject();
 			
 			//下面为false, 因为新建对象了.
-			//可改写readResolve方法返回同一个实例(Singleton单例)
+			//可改写readResolve方法返回同一个实例(Singleton单例, Enum)
 			System.out.println("恢复的对象是否==：" + (u == user));  //false
 			
 			System.out.println(u.getId() + "," + u.getUsername() + "," + u.getPassword());

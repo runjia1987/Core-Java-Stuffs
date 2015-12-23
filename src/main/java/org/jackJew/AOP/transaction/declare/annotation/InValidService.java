@@ -10,17 +10,30 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service("transactionInValidService")
 public class InValidService {
-	
-	@Resource(name="transactionDao")
+
+	@Resource(name = "transactionDao")
 	private PojoDao dao;
-	
-	//@Transactional(propagation=Propagation.REQUIRED)  //when invoker uses try...catch, UnexpectedRollbackException; if not catch then throw ORA-00936 exception.
-	//@Transactional(propagation=Propagation.NESTED)  //when invoker uses try...catch, only execute correct subpath; if does not catch then throw ORA-00936 exception.
-	@Transactional(propagation=Propagation.REQUIRES_NEW)  //same as NESTED !!!
-	public void insert(Pojo man){
+
+	/**
+	 * @Transactional(propagation=Propagation.REQUIRED) when invoker uses
+	 *                                                  try...catch,
+	 *                                                  UnexpectedRollbackException
+	 * <br/>
+	 *                                                  if does not catch then
+	 *                                                  throw ORA-00936
+	 *                                                  exception.<br/>
+	 * 
+	 * @Transactional(propagation=Propagation.NESTED) when invoker uses
+	 *                                                try...catch, only execute
+	 *                                                the correct subpath; <br/>
+	 *                                                if does not catch then
+	 *                                                throw ORA-00936 exception. <br/>
+	 *                                                REQUIRES_NEW is similar to
+	 *                                                NESTED in effects.
+	 */
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void insert(Pojo man) {
 		dao.insert(man, false);
 	}
-
-	public void callService(List<Pojo> manList) { }
 
 }

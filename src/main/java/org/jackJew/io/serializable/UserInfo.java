@@ -20,7 +20,8 @@ public class UserInfo implements java.io.Serializable {
 	private Integer id;
 	private String username;
 	private transient String password;	//不定义transient关键字也可实现此字段不被序列化;
-								//定义了transient关键字也可实现此字段被序列化.
+										//定义了transient关键字也可实现此字段被序列化.
+	public static String XXX = "XXX";
 	
 	/**
 	 * 自定义<i>私有</i>的writeObject方法,
@@ -33,13 +34,14 @@ public class UserInfo implements java.io.Serializable {
 		oos.writeInt(id);
 		oos.writeObject(username);
 		oos.writeObject(password);
+		oos.writeUTF(XXX);
 	}
 	
 	/**
 	 * 自定义私有的readObject方法,
 	 * <br> 注意：可先调用ois.defaultReadObject()自动读取类的全部非transient字段(确保为第一个操作)，
 	 * <br> 再调用readXXX方法显式读取transient字段
-	 * <br> 等价于一个公有构造方法, 如果要达到非可变域效果需使用保护性拷贝, 
+	 * <br> 等价于一个公有构造方法, 如果要达到非可变字段效果需使用保护性拷贝, 
 	 * 		同时检查约束条件是否满足, 可抛出 InvalidObjectException .（Effective Java第56条）
 	 */
 	private void readObject(ObjectInputStream ois) throws IOException, ClassNotFoundException{
@@ -48,6 +50,7 @@ public class UserInfo implements java.io.Serializable {
 		id = ois.readInt();
 		username = (String) ois.readObject();
 		password = (String)ois.readObject();
+		XXX = ois.readUTF();
 	}
 	
 	/**

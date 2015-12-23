@@ -5,27 +5,27 @@ import java.util.List;
 
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class TestClient {
 
 	/**
-	 * Use schema-based configuration in XML,
-	 * like <tx-advice> - <tx:attributes>,
-	 * <aop:config> - <aop:pointcut> - <aop:advisor>.
+	 * Use schema-based configuration in XML, like <tx-advice> -
+	 * <tx:attributes>, <aop:config> - <aop:pointcut> - <aop:advisor>.
 	 */
 	public static void main(String[] args) {
-		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		
+		ApplicationContext context = new ClassPathXmlApplicationContext(
+				"applicationContext.xml");
+
 		List<Pojo> list = new ArrayList<Pojo>(2);
 		Pojo pojo = new Pojo(1, "runjia", "123456");
 		list.add(pojo);
 		pojo = new Pojo(2, "abcd", "xxxxxxx");
 		list.add(pojo);
-		context.getBean("validService_Schema", ValidService.class).callService(list);
-		
-		ConfigurableBeanFactory cbf = (ConfigurableBeanFactory)(context.getAutowireCapableBeanFactory());
-		cbf.destroySingletons();
+		context.getBean("validService2", ValidService.class).insert(list);
+
+		((AbstractApplicationContext)context).close();
 	}
 
 }

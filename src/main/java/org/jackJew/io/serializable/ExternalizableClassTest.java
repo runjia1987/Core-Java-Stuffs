@@ -12,7 +12,7 @@ import java.io.ObjectOutputStream;
 
 /**
  * 
- * 序列化类的另一个测试, Externalizable 比 Serializable 提供更多的可控性, 占用空间更小.
+ * 序列化类的另一个测试, Externalizable 比 Serializable 提供更多的可控性.
  * @author zhurunjia
  *
  */

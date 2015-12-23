@@ -15,6 +15,7 @@
     <context:component-scan base-package="org.jackJew.ioc.beanSinletonPrototype" />
     <context:component-scan base-package="org.jackJew.AOP" />
     <context:component-scan base-package="org.jackJew.ioc.spring" />
+    <context:component-scan base-package="org.jackJew.spring.rpc" />
     
     <context:annotation-config /> <!-- actually there's no need to put this definition -->
     
@@ -55,29 +56,20 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 	
-	<bean id="transactionService" class="org.jackJew.AOP.transaction.programmatic.TransactionService">
-		<property name="transactionManager" ref="transactionManager" />
-	</bean>
-	
 	<!-- <aop:aspectj-autoproxy /> enables @Aspect and @Pointcut into effects -->
 	<aop:aspectj-autoproxy />
 	
 	<tx:annotation-driven />
 	
-	<!--  
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
         <tx:attributes>  
-            <tx:method name="add*" propagation="REQUIRED" />  
-            <tx:method name="delete*" propagation="REQUIRED" />  
-            <tx:method name="update*" propagation="REQUIRES_NEW" />  
-            <tx:method name="add*" propagation="NESTED" /> 
+            <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>    
    </tx:advice>
-   <aop:config>  
-        <aop:pointcut id="allManagerMethod" expression="execution(* com.service.*.*(..))" />  
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="allManagerMethod" />  
+   <aop:config>
+   		<aop:pointcut id="tx_pointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="tx_pointcut" />
    </aop:config>
-    -->
     
 	<bean id="target" class="org.jackJew.AOP.proxyTest.TargetClass2" />
 	<bean id="beforeAdvice" class="org.jackJew.AOP.proxyTest.BeforeAdvice" />
@@ -140,5 +132,15 @@
 	<bean id="phantomConnectionProviderService"
 		class="org.jackJew.garbageCollection.phantomReference.ProviderService">
 	</bean>
+	
+	<bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />
+	<bean id="transactionInValidService2" class="org.jackJew.AOP.transaction.declare.schema.InValidService" />
+	<bean id="transactionDao2" class="org.jackJew.AOP.transaction.declare.schema.PojoDao" />
+	
+	<bean id="transactionService" class="org.jackJew.AOP.transaction.programmatic.TransactionService"
+		autowire="byType">
+	</bean>
+	
+	<import resource="classpath:applicationContext-rpc.xml" />
 	
 </beans>

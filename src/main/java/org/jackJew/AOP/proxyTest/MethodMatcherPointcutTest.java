@@ -8,6 +8,7 @@ import java.util.Set;
 import org.aopalliance.aop.Advice;
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang.ClassUtils;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -24,8 +25,17 @@ public class MethodMatcherPointcutTest {
 		 * notice: proxyFactoryBean will autodetectInterfaces represented by the target.
 		 * <br>	   ProxyFactory will not autodetect intefaces.
 		 */
-		ProxyFactory pf = new ProxyFactory();  //there is a constructor taking target as parameter
-		//pf.setTarget(null);
+		ProxyFactory pf1 = new ProxyFactory();  //there is a constructor taking target as parameter
+		pf1.setTarget(new Object());
+		Object proxyObject1 = pf1.getProxy(org.springframework.util.ClassUtils.getDefaultClassLoader());
+		System.out.println(proxyObject1.getClass()); // aop.SpringProxy$$EnhancerBySpringCGLIB$$xxxxx
+		
+		ProxyFactory pf2 = new ProxyFactory(new Class<?>[] {java.util.Set.class});
+		pf2.setTarget(new java.util.HashSet<Integer>());
+		Object proxyObject2 = pf2.getProxy(org.springframework.util.ClassUtils.getDefaultClassLoader());
+		System.out.println(proxyObject2.getClass()); // com.sun.proxy.$Proxy0
+		System.out.println(Arrays.toString(proxyObject2.getClass().getInterfaces()));
+		// output: java.util.Set, aop.SpringProxy, aop.framework.Advised
 		
 		ProxyFactoryBean pfb = new ProxyFactoryBean();
 		pfb.setTarget(new TargetOperation());

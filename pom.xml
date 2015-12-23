@@ -3,16 +3,18 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.jack</groupId>
-	<artifactId>JavaApp</artifactId>
+	<artifactId>Xapp</artifactId>
 	<version>1.0.0</version>
-
-	<name>JavaApp</name>
+	<packaging>war</packaging>
+	<name>Xapp</name>
 	<description>core Java and Java EE testcases</description>
 	
 	<properties>
-		<spring.version>3.0.6.RELEASE</spring.version>
-		<ibatis.version>2.3.4.726</ibatis.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<jetty.port>9090</jetty.port>
+		<jetty.stopPort>10012</jetty.stopPort>
+		<spring.version>4.1.6.RELEASE</spring.version>
+		<ibatis.version>2.3.4.726</ibatis.version>
 	</properties>
 	
 	<repositories>
@@ -29,7 +31,7 @@
 	</repositories>
 
 	<dependencies>
-	<!-- spring begin -->
+		<!-- spring begin -->
 		<dependency>
 			<groupId>asm</groupId>
 			<artifactId>asm-commons</artifactId>
@@ -149,27 +151,11 @@
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
-			<artifactId>jstl</artifactId>
-			<version>1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>taglibs</groupId>
-			<artifactId>standard</artifactId>
-			<version>1.1.2</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
 			<version>2.5</version>
+			<scope>provided</scope>
 		</dependency>
 		<!-- web end -->
-		<!-- ibatis begin -->
-		<dependency>
-			<groupId>org.apache.ibatis</groupId>
-			<artifactId>ibatis-sqlmap</artifactId>
-			<version>${ibatis.version}</version>
-		</dependency>
-		<!-- ibatis end -->
 		<!-- utils begin -->
 		<dependency>
 			<groupId>commons-lang</groupId>
@@ -183,17 +169,6 @@
 		</dependency>
 		<!-- utils end -->
 		<!-- jfreechart begin -->
-		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jcommon</artifactId>
-			<version>1.0.15</version>
-		</dependency>
-		<dependency>
-			<groupId>jfree</groupId>
-			<artifactId>jfreechart</artifactId>
-			<version>1.0.13</version>
-		</dependency>
-		<!-- jfreechart end -->
 		<!-- database begin -->
 		<dependency>
 			<groupId>commons-dbcp</groupId>
@@ -201,39 +176,6 @@
 			<version>1.4</version>
 		</dependency>
 		<!-- database end -->
-		<!-- web service begin -->
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-api</artifactId>
-			<version>1.2.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-dom</artifactId>
-			<version>1.2.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.ws.commons.axiom</groupId>
-			<artifactId>axiom-impl</artifactId>
-			<version>1.2.9</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.axis2</groupId>
-			<artifactId>axis2-java2wsdl</artifactId>
-			<version>1.5.2</version>
-		</dependency>
-		<!-- web service end -->
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-mock</artifactId>
-			<scope>test</scope>
-			<version>2.0.1</version>
-		</dependency>
 		<dependency>
 			<groupId>org.mvel</groupId> 
 		  	<artifactId>mvel2</artifactId> 
@@ -245,21 +187,69 @@
 			<version>5.1.29</version>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.ehcache</groupId>
-			<artifactId>ehcache-core</artifactId>
-		<version>2.0.1</version>
-</dependency>
-	</dependencies>
-
+			<groupId>org.jack</groupId>  
+       		<artifactId>common-proxy</artifactId>  
+        	<version>1.0-SNAPSHOT</version> 
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.3.5</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>commons-logging</artifactId>
+					<groupId>commons-logging</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+	</dependencies>	
+	
 	<build>
 		<plugins>
+		<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.2.10.v20150310</version>
+				<configuration>
+					<scanIntervalSeconds>0</scanIntervalSeconds>
+					<contextPath>/</contextPath>
+					<connectors>
+						<connector implementation="org.mortbay.jetty.nio.SelectChannelConnector">
+							<port>${jetty.port}</port>
+							<maxIdleTime>60000</maxIdleTime>
+						</connector>
+					</connectors>
+					<stopKey>stopkey</stopKey>
+					<stopPort>${jetty.stopPort}</stopPort>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.4</version>
+				<configuration>
+					<webResources>
+						<resource>
+							<filtering>true</filtering>
+							<!-- this is relative to the pom.xml directory -->
+							<directory>src</directory>
+							<includes>
+								<include>main</include>
+							</includes>
+							<excludes>
+								<exclude>test</exclude>
+							</excludes>
+						</resource>
+					</webResources>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.1</version>
 				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
+					<source>1.8</source>
+					<target>1.8</target>
 				</configuration>
 			</plugin>
 		</plugins>
