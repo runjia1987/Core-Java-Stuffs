@@ -7,7 +7,6 @@ import org.springframework.context.support.FileSystemXmlApplicationContext;
 public class TestClient {
 	
 	public static void main(String... args){
-		// 这一句仅仅是为了获得beanFactory
 		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		SingletonBean singletonBean = factory.getBean(SingletonBean.class);

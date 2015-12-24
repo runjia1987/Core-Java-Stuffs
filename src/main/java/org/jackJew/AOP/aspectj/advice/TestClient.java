@@ -1,5 +1,6 @@
 package org.jackJew.AOP.aspectj.advice;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.jackJew.ioc.beanSinletonPrototype.TargetProtoTypeBean;
@@ -34,6 +35,8 @@ public class TestClient {
 		
 		
 		JoinpointOperation2 operation2 = context.getBean(JoinpointOperation2.class);
+		System.out.println(operation2.getClass());   // JoinpointOperation2$$EnhancerBySpringCGLIB$$xxxx
+		System.out.println(Arrays.toString(operation2.getClass().getInterfaces()));
 		operation2.call();
 		
 		TargetProtoTypeBean bean1 = (TargetProtoTypeBean)context.getBean("targetPrototypeBean");

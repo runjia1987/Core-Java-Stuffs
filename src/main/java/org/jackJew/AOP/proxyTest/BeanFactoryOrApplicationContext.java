@@ -53,7 +53,7 @@ public class BeanFactoryOrApplicationContext {
 	}
 	
 	/**
-	 * 一些内置的BeanPostProcessor, such as:
+	 * 一些内置的BeanPostProcessor( MergedBeanDefinitionPostProcessor ), such as:
 	 * <br> AutowiredAnnotationBeanPostProcessor, (handle the @Autowired and @Value, JSR-330 @Inject)
 	 * <br> RequiredAnnotationBeanPostProcessor, (handle @Required)
 	 * <br> CommonAnnotationBeanPostProcessor (
@@ -63,7 +63,7 @@ public class BeanFactoryOrApplicationContext {
 	 * -----------------------------------------------------------------------------------------
 	 * 
 	 * <br> Regarding class-scope annotations: @Component, @Service, @Controller, @Repository, 
-	 * <br>	they will be handled by ClasspathScanningCandidateComponentProvider class.
+	 * <br>	they will be handled by ClassPathScanningCandidateComponentProvider class.
 	 */
 
 }

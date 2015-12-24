@@ -99,7 +99,7 @@
 		<constructor-arg value="999"/>
 	</bean>
 	
-	<bean id="methodLookupBean" class="org.jackJew.ioc.beanSinletonPrototype.SingletonBean"
+	<bean id="lookupSingletonBean" class="org.jackJew.ioc.beanSinletonPrototype.SingletonBean"
 								scope="singleton">
 		<lookup-method name="getNewPrototypeBean" bean="targetPrototypeBean"/>
 	</bean>

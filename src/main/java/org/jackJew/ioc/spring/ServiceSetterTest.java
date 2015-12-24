@@ -1,17 +1,32 @@
 package org.jackJew.ioc.spring;
 
 import javax.annotation.Resource;
+
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ClassPathScanningCandidateComponentProvider, ClassPathBeanDefinitionScanner for annotation-based beans;
+ * <br/>
+ * XmlBeanDefinitionReader for XML Schema-based beans;
+ * @author Jack
+ *
+ */
 @Service("testService1")
 public class ServiceSetterTest {
 	
+	/**
+	 * CommonAnnotationBeanPostProcessor
+	 */
 	@Resource(name="service1")
 	private Service1 service1;
 	
@@ -20,34 +35,38 @@ public class ServiceSetterTest {
 
 	public static void main(String[] args) {
 		// we have to use ApplciationContext to put @Resource into effects, not BeanFactory.
-		BeanFactory context = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
+		BeanFactory beanFactory = new XmlBeanFactory(new ClassPathResource("myApplicationContext.xml"));
 		
-		ServiceSetterTest bean = context.getBean("testService1", ServiceSetterTest.class);
-		System.out.println(bean); //object
-		System.out.println(bean.getService2());  //null
+		ServiceSetterTest bean = beanFactory.getBean("testService1", ServiceSetterTest.class);
+		System.out.println(bean);
+		System.out.println(bean.getClass());  // class org.jackJew.ioc.spring.ServiceSetterTest
 		System.out.println(bean.getService1());  //null
+		System.out.println(bean.getService2());  //null
 		
-		System.out.println(context.getBean("service1")); //object
-		System.out.println(context.getBean("service2")); //object
 		
+		System.out.println(beanFactory.getBean("service1")); //object
+		System.out.println(beanFactory.getBean("service2")); //object
+		
+		((ConfigurableBeanFactory)beanFactory).destroySingletons();
+		
+		ApplicationContext context = new ClassPathXmlApplicationContext("classpath:myApplicationContext.xml");
+		ServiceSetterTest bean2 = context.getBean("testService1", ServiceSetterTest.class);
+		System.out.println(bean2);
+		System.out.println(bean2.getClass()); // class org.jackJew.ioc.spring.ServiceSetterTest
+		System.out.println(bean2.getService1());  // Service1@21fd5faa
+		System.out.println(bean2.getService2());  // Service2@47c4ecdc
+		
+		
+		((AbstractApplicationContext)context).close();	
 	}
 
 	public Service1 getService1() {
 		return service1;
 	}
-
-	public void setService1(Service1 service1) {
-		this.service1 = service1;
-	}
-
+	
 	public Service2 getService2() {
 		return service2;
 	}
-
-	public void setService2(Service2 service2) {
-		this.service2 = service2;
-	}
-
 }
 
 @Service("service1")

@@ -31,8 +31,8 @@ public class SingletonBean2 implements BeanFactoryAware {
 	}
 	
 	@Override
-	public void setBeanFactory(BeanFactory arg0) throws BeansException {
-		this.beanFactory = arg0;
+	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+		this.beanFactory = beanFactory;
 	}
 
 }

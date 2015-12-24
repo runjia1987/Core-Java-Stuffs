@@ -1,5 +1,6 @@
 package org.jackJew.ioc.beanSinletonPrototype;
 
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -7,6 +8,12 @@ public abstract class SingletonBean {
 	
 	private String name;
 	
+	/**
+	 * public | protected <non-static> method ()
+	 * <br/>
+	 * this method will be overriden by the CGlib generated subclass(requires CGlib)
+	 * <br/> notice this method should have zero arguments!!!
+	 */
 	protected abstract TargetProtoTypeBean getNewPrototypeBean();
 	
 	public void print(){
