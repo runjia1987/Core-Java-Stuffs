@@ -5,6 +5,7 @@ import java.util.List;
 import org.jackJew.ioc.beanSinletonPrototype.TargetProtoTypeBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 
@@ -26,21 +27,18 @@ public class TestClient {
 	public static void main(String... args){
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		/**
-		AnnotationConfigApplicationContext-> acac.scan("org.jackJew.AOP.adviceWeaver");
-		acac.register(JoinpointOperation.class, AnnotationSpringAspect.class);
-		acac.refresh();
-		*/
-		
 		JoinpointOperation operation = context.getBean(JoinpointOperation.class);
 		//operation.plainMethod();
 		List<?> list = operation.getList("jack is hero!!");  // service logic has 4
 		System.out.println("after AOP advice, list.size is: " + list.size());  // 5
 		
 		
+		JoinpointOperation2 operation2 = context.getBean(JoinpointOperation2.class);
+		operation2.call();
+		
 		TargetProtoTypeBean bean1 = (TargetProtoTypeBean)context.getBean("targetPrototypeBean");
 		System.out.println(bean1);
-		
+		((AbstractApplicationContext)context).close();
 	}
 	
 }

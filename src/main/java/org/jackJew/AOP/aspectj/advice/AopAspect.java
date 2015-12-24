@@ -12,7 +12,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 /**
- * notice: !!! the order of the advice defition will affect the actual advice injection.
+ * notice: !!! the order of the advice defition will affect the actual advice execution.
  *
  */
 @Component
@@ -28,6 +28,11 @@ public class AopAspect {
 	@Before("pointcutDef()")
 	void beforeAdvice(){
 		System.out.println("beforeAdivce executed.");
+	}
+	
+	@Before("pointcutDef() || execution(public * *..JoinpointOperation2.*(..))")
+	void beforeAdvice2() {
+		System.out.println("beforeAdvice2 executed.");
 	}
 	
 	/**
