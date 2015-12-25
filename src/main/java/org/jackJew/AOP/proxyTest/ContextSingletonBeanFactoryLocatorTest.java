@@ -8,6 +8,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.access.BeanFactoryLocator;
 import org.springframework.beans.factory.access.BeanFactoryReference;
 import org.springframework.context.access.ContextSingletonBeanFactoryLocator;
+import org.springframework.context.support.AbstractApplicationContext;
 
 /**
  * AutowiredAnnotationBeanPostProcessor, RequiredAnnotationBeanPostProcessor, CommonAnnotationBeanPostProcessor defined internally in Spring
@@ -24,7 +25,7 @@ public class ContextSingletonBeanFactoryLocatorTest {
 		// actually you get the ApplicationContext container
 		BeanFactory factory = reference.getFactory();
 		System.out.println(factory.getBean("beforeProxyBean"));
-		
+		((AbstractApplicationContext)factory).close();
 	}
 
 }

@@ -12,7 +12,7 @@ public class TestClient {
 	
 	public static void main(String[] args) throws Exception{
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-		final ProviderService provider = context.getBean("phantomConnectionProviderService", ProviderService.class);		
+		final ProviderService service = context.getBean("phantomConnectionProviderService", ProviderService.class);		
 		
 		int i = 0;
 		while (i++ < 10) {
@@ -21,7 +21,7 @@ public class TestClient {
 			Thread t = new Thread(){
 				public void run(){
 					try {
-						Resource resourceW = provider.getResource();
+						Resource resourceW = service.getResource();
 						resourceW.doSth();
 						resourceW = null;  // help GC, this is useful						
 						System.gc();

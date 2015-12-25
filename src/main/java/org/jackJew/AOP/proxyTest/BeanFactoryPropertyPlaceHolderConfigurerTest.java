@@ -24,9 +24,7 @@ public class BeanFactoryPropertyPlaceHolderConfigurerTest {
 		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
 		PropertyPlaceholderConfigurer ppc = new PropertyPlaceholderConfigurer();
 		ppc.setLocation(new ClassPathResource("jdbc.properties"));
-		ppc.postProcessBeanFactory(factory);
-		
-		
+		ppc.postProcessBeanFactory(factory);		
 		DataSource ds = (DataSource) factory.getBean("dataSource");
 		logger.info(ds);
 		

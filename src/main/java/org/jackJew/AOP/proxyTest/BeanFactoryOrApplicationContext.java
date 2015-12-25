@@ -43,8 +43,7 @@ public class BeanFactoryOrApplicationContext {
 		bfp.postProcessBeanFactory(factory);
 		
 		MyBean2 bean2 = factory.getBean("MyBean2", MyBean2.class);		//prototype
-		System.out.println(bean2.getProp1() + ", " + bean2.getNumber() + ", " + bean2.isPassed());
-		
+		System.out.println(bean2.getProp1() + ", " + bean2.getNumber() + ", " + bean2.isPassed());		
 		
 		//ApplicationContext 自动实例化和初始化非延迟加载的单例bean,
 		//                   自动注册 BeanPostProcessor/BeanFactoryPostProcessor.
@@ -63,7 +62,7 @@ public class BeanFactoryOrApplicationContext {
 	 * -----------------------------------------------------------------------------------------
 	 * 
 	 * <br> Regarding class-scope annotations: @Component, @Service, @Controller, @Repository, 
-	 * <br>	they will be handled by ClassPathScanningCandidateComponentProvider class.
+	 * <br>	they will be handled by ClassPathBeanDefinitionScanner | ClassPathScanningCandidateComponentProvider.
 	 */
 
 }

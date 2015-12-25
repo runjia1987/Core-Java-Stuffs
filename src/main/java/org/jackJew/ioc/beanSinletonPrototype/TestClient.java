@@ -1,15 +1,17 @@
 package org.jackJew.ioc.beanSinletonPrototype;
 
 import org.springframework.beans.factory.BeanFactory;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class TestClient {
 	
 	public static void main(String... args){
-		BeanFactory factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		SingletonBean singletonBean = factory.getBean(SingletonBean.class);
+		SingletonBean singletonBean = context.getBean(SingletonBean.class);
 		System.out.println("singletonBean class： " + singletonBean.getClass());
 		// org.jackJew.ioc.beanSinletonPrototype.SingletonBean$$EnhancerByCGLIB$$e95752e6
 		// @see org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate
@@ -18,7 +20,7 @@ public class TestClient {
 		singletonBean.setName("单例bean");
 		singletonBean.print();
 		singletonBean.print();
-		
+		((AbstractApplicationContext)context).close();
 	}
 
 }

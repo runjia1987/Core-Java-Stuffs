@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
@@ -26,15 +27,15 @@ public class MethodInvokingFactoryBeanTest {
 	 */
 	public static void main(String[] args) {
 		//ConfigurableBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
-		ApplicationContext factory = new ClassPathXmlApplicationContext("applicationContext.xml");
+		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		// 必须使用ApplciationContext容器(非BeanFactory), 否则字段值不能正常注入
-		MethodInvokingFactoryBeanTest bean = factory.getBean("MethodInvokingFactoryBeanTest",
+		MethodInvokingFactoryBeanTest bean = context.getBean("MethodInvokingFactoryBeanTest",
 													MethodInvokingFactoryBeanTest.class);
 		//try {int i = 100 / 0;}catch(Exception e){logger.fatal(e);}
-		//int i = 100 / 0;
-		
-		logger.info(bean);
+		//int i = 100 / 0;		
+		logger.info(bean);		
+		((AbstractApplicationContext)context).close();
 	}
 	
 	@Override

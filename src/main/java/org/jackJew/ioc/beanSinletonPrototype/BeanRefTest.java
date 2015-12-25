@@ -11,10 +11,11 @@ public class BeanRefTest {
 	 */
 	public static void main(String[] args) {
 		BeanFactory cbf = new XmlBeanFactory(
-				new FileSystemResource("./resources/applicationContext.xml"));
+				new FileSystemResource("./src/main/resources/applicationContext.xml"));
 		Bean1 bean1 = (Bean1)cbf.getBean("bean1");
 		System.out.println(bean1.getBean2());
 		System.out.println(Boolean.valueOf("false"));
+		((ConfigurableBeanFactory)cbf).destroySingletons();
 	}
 
 }
