@@ -14,26 +14,26 @@ public class Resource {
 	/**
 	 * sth to exhaust memory
 	 */
-	private Map<String, Object> resourcesMap = new TreeMap<String, Object>();
+	private Map<String, Object> field = new TreeMap<String, Object>();
 	
 	public Resource(){
 		int size = 1 << 10;
 		
-		// put sth to Map
+		// put sth to map
 		int i = 0;
 		Random rand = new Random(System.currentTimeMillis());
 		while (i++ < size) {
-			resourcesMap.put("" + rand.nextInt(1 << 16), "");
+			field.put("" + rand.nextInt(1 << 16), "");
 		}
 	}
 	
 	public void doSth(){
-		Map<String, ?> subMap = ((TreeMap<String, Object>)resourcesMap).tailMap("2000");
-		System.out.println("subMap size: " + subMap.size());
+		Map<String, ?> tailMap = ((TreeMap<String, Object>)field).tailMap("2000");
+		System.out.println("tailMap size: " + tailMap.size());
 	}
 	
-	public Map<String, Object> getResourcesMap() {
-		return resourcesMap;
+	public Map<String, Object> getField() {
+		return field;
 	}
 
 }

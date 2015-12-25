@@ -16,9 +16,15 @@ public class ThreadWithUncaughtExceptionHandler {
 	 */
 	public static void main(String... args){
 		
-		ExecutorService es = Executors.newFixedThreadPool(1, new SpecificThreadFactory());
-		es.execute(new SpecificThread("zhurunjia-Thread"));
+		ThreadFactory threadFactory = new SpecificThreadFactory();
+		ExecutorService es = Executors.newFixedThreadPool(1, threadFactory);
+		es.execute(new SpecificThread("test-thread"));
 		es.shutdown();
+		
+		Thread thread = threadFactory.newThread(() -> {
+				System.out.println("this is a task.");}
+		);
+		thread.start();
 	}
 
 }
@@ -29,14 +35,7 @@ public class ThreadWithUncaughtExceptionHandler {
 class SpecificThread extends Thread {
 	
 	public SpecificThread(String name){
-		super(name);
-		
-		/*try {	//同一线程中,可以捕获run()方法中的异常
-			run();
-		} catch(Exception e){
-			System.out.println(e.getMessage());
-		}*/
-		
+		super(name);		
 	}
 	
 	public void run(){

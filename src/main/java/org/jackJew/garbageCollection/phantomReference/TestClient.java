@@ -22,8 +22,7 @@ public class TestClient {
 				public void run(){
 					try {
 						Resource resourceW = service.getResource();
-						resourceW.doSth();
-						resourceW = null;  // help GC, this is useful						
+						resourceW.doSth();				
 						System.gc();
 						
 					} catch (Exception e) {

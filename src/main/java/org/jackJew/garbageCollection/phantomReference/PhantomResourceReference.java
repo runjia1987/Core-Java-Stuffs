@@ -12,21 +12,21 @@ import java.util.Map;
 public class PhantomResourceReference extends PhantomReference<Resource> {
 
 	/**
-	 * Note: never hold a member field pointed to the referent object  !!!
+	 * Note: never hold a member pointer directly to the referent object  !!!
 	 * <br> otherwise the referent will never become phantom reachable !!!
 	 */
-	private Map<String, Object> resourcesMap;
+	private Map<String, Object> field;
 	
 	public PhantomResourceReference(Resource referent,
 			ReferenceQueue<? super Resource> q) {
 		super(referent, q);
-		this.resourcesMap = referent.getResourcesMap();
+		this.field = referent.getField();
 	}
 
 	public void cleanup() {
-		System.out.println("starting to clear resourcesMap hash: " + resourcesMap.hashCode());
+		System.out.println("starting to clear resourcesMap: " + field.hashCode());
 		
-		this.resourcesMap.clear();		
+		field.clear();		
 	}
 
 }
