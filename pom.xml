@@ -191,17 +191,6 @@
        		<artifactId>common-proxy</artifactId>  
         	<version>1.0-SNAPSHOT</version> 
 		</dependency>
-		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<version>4.3.5</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
-		</dependency>
 	</dependencies>	
 	
 	<build>

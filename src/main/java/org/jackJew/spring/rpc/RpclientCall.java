@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vipshop.crawler.proxy.model.NewProxy;
-import com.vipshop.crawler.proxy.service.NewProxyRpc;
+import com.vipshop.crawler.proxy.service.NewProxyRpcService;
 
 /**
  * rpc client defined in resources/applicationContext-rpc.xml <br/>
@@ -46,13 +46,13 @@ import com.vipshop.crawler.proxy.service.NewProxyRpc;
 public class RpclientCall {
 
 	@Autowired
-	private NewProxyRpc newProxyRpc;
+	private NewProxyRpcService newProxyRpcService;
 	
 	/**
 	 * NewProxy should be serializable, otherwise exception.
 	 */
 	public String call() {
-		NewProxy newProxy = newProxyRpc.getOneFromPool();
+		NewProxy newProxy = newProxyRpcService.getOneFromPool();
 		if (newProxy != null) {
 			return newProxy.toString();
 		} else {
