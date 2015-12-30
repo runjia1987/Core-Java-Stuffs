@@ -2,7 +2,6 @@ package org.jackJew.AOP.proxyTest;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.lang.time.StopWatch;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -31,8 +30,6 @@ public class BeanFactoryOrApplicationContext {
 	 * 								   ApplicationEventPublisher 接口.
 	 */
 	public static void main(String[] args) {
-		StopWatch stop = new StopWatch();
-		stop.start();
 		
 		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
 		//必须使用ApplicationContext容器, 而非BeanFactory, 否则@Resource, @Value不能正常注入
@@ -48,7 +45,6 @@ public class BeanFactoryOrApplicationContext {
 		//ApplicationContext 自动实例化和初始化非延迟加载的单例bean,
 		//                   自动注册 BeanPostProcessor/BeanFactoryPostProcessor.
 		
-		System.out.println("time-elapsed: "  + stop.getTime() + "ms");
 	}
 	
 	/**

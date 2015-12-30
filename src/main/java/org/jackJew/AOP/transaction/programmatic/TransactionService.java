@@ -21,10 +21,9 @@ public class TransactionService {
 		definition.setReadOnly(true);
 		definition.setTimeout(2); // 2s timeout
 
-		TransactionStatus status = transactionManager
-				.getTransaction(definition);
+		TransactionStatus status = transactionManager.getTransaction(definition);
 		try {
-			// call jdbcTemplate or Ibatis SqlMapClient do sth.
+			// call jdbcTemplate or MyBatis SqlMapClient do sth.
 
 			transactionManager.commit(status);
 

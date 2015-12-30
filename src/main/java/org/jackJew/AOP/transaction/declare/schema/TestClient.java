@@ -23,7 +23,10 @@ public class TestClient {
 		list.add(pojo);
 		pojo = new Pojo(2, "abcd", "xxxxxxx");
 		list.add(pojo);
-		context.getBean("validService2", ValidService.class).insert(list);
+		ValidService validService = context.getBean("validService2", ValidService.class);
+		validService.insert(list);
+		// org.springframework.transaction.UnexpectedRollbackException:
+		// Transaction rolled back because it has been marked as rollback-only
 
 		((AbstractApplicationContext)context).close();
 	}

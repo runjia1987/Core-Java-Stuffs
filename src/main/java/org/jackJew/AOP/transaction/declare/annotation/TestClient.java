@@ -22,9 +22,10 @@ public class TestClient {
 		list.add(pojo);
 		pojo = new Pojo(2, "abcd", "xxxxxxx");
 		list.add(pojo);
-		context.getBean("transactionValidService", ValidService.class).insert(
-				list);
-
+		ValidService validService = context.getBean("transactionValidService", ValidService.class);
+		validService.insert(list);
+		// normally executed, with subPath rollbacked.
+		
 		((AbstractApplicationContext)context).close();
 	}
 

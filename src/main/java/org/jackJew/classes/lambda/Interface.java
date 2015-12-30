@@ -1,7 +1,7 @@
 package org.jackJew.classes.lambda;
 
 /**
- * functional interface: 只能包含一个抽象方法的接口
+ * functional interface
  * @author Jack
  *
  */
