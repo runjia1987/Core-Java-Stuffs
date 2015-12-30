@@ -3,14 +3,19 @@ package org.jackJew.ioc.cglib;
 public class TestClient {
 
 	/**
+	 * @throws Exception 
 	 * 
 	 */
-	public static void main(String[] args) {
-		CglibInterceptor interceptor = new CglibInterceptor();
+	public static void main(String[] args) throws Exception {
+		BizService bizService = new BizService(1);
+		CglibProxyFactory proxyFactory = new CglibProxyFactory(bizService);
 		
-		ServiceImpl s =(ServiceImpl) interceptor.createProxy(new ServiceImpl(1));
-		s.service("测试消息输出");
-		s.step1();
+		BizService proxy =(BizService) proxyFactory.getProxy();
+		proxy.step1("测试消息");
+		
+		System.out.println();
+		
+		proxy.step2("测试消息");
 	}
 
 }
