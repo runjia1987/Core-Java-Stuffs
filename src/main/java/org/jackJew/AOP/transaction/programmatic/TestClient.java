@@ -6,7 +6,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
- * 测试编程式事务管理 (programming style)
+ * 编程式事务管理 (programming style)
  * 
  * @author Jack
  *

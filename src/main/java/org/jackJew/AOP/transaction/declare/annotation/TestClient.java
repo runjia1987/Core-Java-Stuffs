@@ -8,6 +8,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * 声明式事务管理 (annotation style)
+ * 
+ * @author Jack
+ *
+ */
 public class TestClient {
 
 	/**

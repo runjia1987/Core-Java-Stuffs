@@ -22,7 +22,7 @@ public class CglibInterceptor2 implements MethodInterceptor {
 	public Object intercept(Object proxy, Method method, Object[] params,
 			MethodProxy methodProxy) throws Throwable {
 		System.out.println("CglibInterceptor2拦截的方法名：" + method.getName());
-		System.out.println("CglibInterceptor2参数值：" + Arrays.toString(params));
+		System.out.println("CglibInterceptor2拦截的参数：" + Arrays.toString(params));
 		System.out.println("代理的父类: " + proxy.getClass().getSuperclass());
 		System.out.println("代理实现的接口: " + Arrays.toString(proxy.getClass().getInterfaces()));
 		
