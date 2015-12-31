@@ -3,6 +3,8 @@ package org.jackJew.spring.rpc;
 import java.io.OutputStream;
 
 import org.aopalliance.intercept.MethodInvocation;
+import org.jackJew.crawler.proxy.model.NewProxy;
+import org.jackJew.crawler.proxy.service.NewProxyRpcService;
 import org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -15,9 +17,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.vipshop.crawler.proxy.model.NewProxy;
-import com.vipshop.crawler.proxy.service.NewProxyRpcService;
 
 /**
  * rpc client defined in resources/applicationContext-rpc.xml <br/>
