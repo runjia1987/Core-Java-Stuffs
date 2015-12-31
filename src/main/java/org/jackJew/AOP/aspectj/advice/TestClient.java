@@ -29,8 +29,9 @@ public class TestClient {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
 		JoinpointOperation operation = context.getBean(JoinpointOperation.class);
-		//operation.plainMethod();
-		List<?> list = operation.getList("jack is hero!!");  // service logic has 4
+		System.out.println(operation.getClass());   // JoinpointOperation2$$EnhancerBySpringCGLIB$$xxxx
+		System.out.println(Arrays.toString(operation.getClass().getInterfaces()));
+		List<?> list = operation.getList("jack");  // service logic has 4
 		System.out.println("after AOP advice, list.size is: " + list.size());  // 5
 		
 		
