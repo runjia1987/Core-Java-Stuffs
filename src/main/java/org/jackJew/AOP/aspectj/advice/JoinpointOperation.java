@@ -25,7 +25,7 @@ public class JoinpointOperation {
 		list.add("2");
 		list.add("3");
 		list.add(id);
-		System.out.println("JoinpointOperation.getList(String) executed, list.size id: "
+		System.out.println("JoinpointOperation.getList(String) executed, list.size: "
 					+ list.size());
 		return list;
 	}

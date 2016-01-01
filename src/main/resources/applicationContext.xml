@@ -17,7 +17,7 @@
     <context:component-scan base-package="org.jackJew.ioc.spring" />
     <context:component-scan base-package="org.jackJew.spring.rpc" />
     
-    <context:annotation-config /> <!-- actually there's no need to put this definition -->
+    <context:annotation-config /><!-- actually there's no need to put this definition -->
     
     <bean id="placeholderConfig"
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">

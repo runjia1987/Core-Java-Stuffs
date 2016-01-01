@@ -5,6 +5,7 @@ import java.util.List;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -13,21 +14,33 @@ import org.springframework.stereotype.Component;
 
 /**
  * notice: !!! the order of the advice defition will affect the actual advice execution.
- *
+ * <br/>
+ * pointcut-methods and advice-methods modifier could be private/protected/anything.
+ * @author Jack
  */
 @Component
 @Aspect
 public class AopAspect {
 	
 	@Pointcut("execution(public * *..JoinpointOperation.*(..))")
-	void pointcutDef(){  }
+	private void pointcutDef(){  }
 	
+	private @Pointcut("execution(public * org.jackJew.spring.controller.*.*(..))")
+	void controllerPointcut(){  }	
+	
+	
+	//////////////////////////////////////// advice ///////////////////////////////////
 	/**
-	 * 引用pointcut表达式方法pointcutDef()，可以为full-qualified name.
+	 * 引用pointcutDef()，可以为full-qualified name.
 	 */
 	@Before("pointcutDef()")
-	void beforeAdvice(){
+	private void beforeAdvice(){
 		System.out.println("beforeAdivce executed.");
+	}
+	
+	@Before("controllerPointcut()")
+	void beforeControllerAdvice() {
+		System.out.println("beforeControllerAdvice executed.");
 	}
 	
 	@Before("pointcutDef() || execution(public * *..JoinpointOperation2.*(..))")
