@@ -35,12 +35,12 @@ public class NIOClient {
 			selector = Selector.open();
 			channel.configureBlocking(false);
 			channel.register(selector, SelectionKey.OP_CONNECT);
-			channel.connect(new InetSocketAddress(HOST, PORT));					
+			channel.connect(new InetSocketAddress(HOST, PORT));
 			
 			int requestTimes = 0;
 			while(requestTimes++ < MAX_REQUESTS){
 				System.out.println(this.clientName + " wait for incoming events... times: " + requestTimes);
-				// wait for incomming events
+				// a blocking selection operation waiting for incomming events
 				selector.select();
 				
 				Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
@@ -73,7 +73,9 @@ public class NIOClient {
 		if(key.isConnectable()){
 			boolean connected = true;
 			if(! channel.isConnected()){
-				if(channel.finishConnect()){  // notice !!!
+				if(channel.finishConnect()){
+					// A non-blocking connection operation,
+					// true if, and only if, this channel's socket is now connected
 					System.out.println(this.clientName + " connected to " + channel.socket().getInetAddress());
 				} else{
 					// fail to connect in this try

@@ -41,19 +41,19 @@ public class NIOServer {
 			channel = ServerSocketChannel.open();
 			selector = Selector.open();
 			channel.configureBlocking(false);
-			channel.socket().bind(new InetSocketAddress(PORT));
 			channel.register(selector, SelectionKey.OP_ACCEPT);
-			System.out.println("NIO server started.");
+			channel.socket().bind(new InetSocketAddress(PORT));			
 			
-			while(true){
-				// wait for incomming events
+			System.out.println("NIO server started.");			
+			while(true) {
+				// a blocking selection operation waiting for incomming events
 				selector.select();
-				// there is something to process on selected keys
+				
 				Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
 				while(keysItr.hasNext()){
 					SelectionKey key = keysItr.next();
 					
-					// 由于 select()操作会向 Selector所关联的键集合中添加元素,
+					// 由于 select()操作会向 Selector所关联的keys集合中添加元素,
 					// 因此，如果不remove掉这个处理过的key，
 					// 在下次调用 select() 方法时仍然保留在集合中
 					keysItr.remove();
@@ -95,10 +95,7 @@ public class NIOServer {
 							System.out.println("server request comes from client: " + rcvContent);							
 						}
 						System.out.println("server receive message: " + rcvContent);
-						channel.register(selector, SelectionKey.OP_WRITE);						
-					} else {
-						System.out.println("server read nothing. end the communication.");
-						key.cancel();
+						channel.register(selector, SelectionKey.OP_WRITE);
 					}
 				} catch(IOException cce){
 					closeChannel(channel);
@@ -117,7 +114,6 @@ public class NIOServer {
 					channel.register(selector, SelectionKey.OP_READ);
 					
 				} catch(IOException ioe){
-					// do not close selector
 					closeChannel(channel);
 				}
 			}
@@ -128,12 +124,12 @@ public class NIOServer {
 	}
 	
 	/**
-	 * channel.close() include key.cancel(), so do not both.
+	 * channel.close() include key.cancel(), so don't need to do close both.
 	 */
 	private void closeChannel(SocketChannel channel) throws IOException {
 		System.out.println("server closing " + channel);
-		contactMap.remove(channel);
 		channel.close();
+		contactMap.remove(channel);		
 	}
 
 }
