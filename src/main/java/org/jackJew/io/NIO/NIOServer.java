@@ -61,12 +61,10 @@ public class NIOServer {
 						handleKey(key, selector);
 					}
 				}
-			}
-			
+			}			
 		} catch(Exception e){
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	private void handleKey(SelectionKey key, Selector selector) {		
@@ -80,8 +78,7 @@ public class NIOServer {
 				channel.write(ByteBuffer.wrap(
 								("Hello, welcome to " + this.serverName).getBytes()));
 				
-				channel.register(selector, SelectionKey.OP_READ);
-				
+				channel.register(selector, SelectionKey.OP_READ);				
 			} else if(key.isReadable()){
 				SocketChannel channel = (SocketChannel) key.channel();
 				buffer.clear();  // notice !!!
@@ -103,7 +100,6 @@ public class NIOServer {
 								
 			} else if(key.isWritable()){
 				SocketChannel channel = (SocketChannel) key.channel();
-
 				buffer.clear();
 				String content = String.valueOf(RAND.nextInt(100000));
 				System.out.println("server send: " + content);
@@ -119,8 +115,7 @@ public class NIOServer {
 			}
 		} catch(Exception e){
 			e.printStackTrace();
-		}
-		
+		}		
 	}
 	
 	/**

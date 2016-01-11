@@ -61,15 +61,13 @@ public class NIOClient {
 				System.out.println(this.clientName + " closed channel.");
 			} catch (Exception e) {
 				e.printStackTrace();
-			}
-			
+			}			
 		}
 	}
 	
 	private void handleKey(SelectionKey key, Selector selector) throws Exception {
 		System.out.println(key.isConnectable() + "," + key.isReadable() + "," + key.isWritable());
 		SocketChannel channel = (SocketChannel) key.channel();
-		
 		if(key.isConnectable()){
 			boolean connected = true;
 			if(! channel.isConnected()){
@@ -97,8 +95,7 @@ public class NIOClient {
 			} else {
 				System.out.println(this.clientName + " Warn: receive nothing. ");
 				key.cancel();
-			}
-			
+			}			
 		} else if(key.isWritable()){
 			System.out.println(this.clientName + " will write...");
 			if( firstContact ) {

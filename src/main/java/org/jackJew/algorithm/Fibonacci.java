@@ -28,9 +28,7 @@ public class Fibonacci {
 	public long normal(int n) {
 		long[] array = new long[3];
 		assert (n > 0);
-		if (n == 1) {
-			return 1;
-		} else if (n == 2) {
+		if (n == 1 || n == 2) {
 			return 1;
 		} else {
 			int i = 3;
