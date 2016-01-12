@@ -34,7 +34,7 @@ public class MVEL_Test {
 		
 		User user = new User("jack", "123456");
 		Object result = MVEL.executeExpression(PropertyExpression1, user);
-		System.out.println("propertyBeanExpression： " + result);
+		System.out.println("propertyBeanExpression: " + result);
 	}
 	
 	/**

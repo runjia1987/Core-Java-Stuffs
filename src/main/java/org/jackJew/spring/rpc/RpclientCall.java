@@ -3,8 +3,8 @@ package org.jackJew.spring.rpc;
 import java.io.OutputStream;
 
 import org.aopalliance.intercept.MethodInvocation;
-import org.jackJew.crawler.proxy.model.NewProxy;
-import org.jackJew.crawler.proxy.service.NewProxyRpcService;
+import org.jackJew.biz.proxy.model.NewProxy;
+import org.jackJew.biz.proxy.service.NewProxyRpcService;
 import org.springframework.remoting.httpinvoker.HttpComponentsHttpInvokerRequestExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 /**
  * rpc client defined in resources/applicationContext-rpc.xml <br/>
  * <br/>
+ * AOP proxy call based on JdkDynamicAopProxy, HttpInvokerProxyFactoryBean extends HttpInvokerClientInterceptor,
+ * which is an org.aopalliance.intercept.MethodInterceptor, or an advice.
+ * <br/>
  * HttpInvokerProxyFactoryBean -> invoke(MethodInvocation methodInvocation) -> <br/>
  * HttpComponentsHttpInvokerRequestExecutor doExecuteRequest() -> setRequestBody() <br/>
- * -> httpPost.setEntity(serialized bytes from ByteArrayOutputStream) <br/>
+ * -> httpPost.setEntity(ByteArrayEntity, serialized bytes from ByteArrayOutputStream) <br/>
  * <br/>
  * 
  * AbstractHttpInvokerRequestExecutor.getByteArrayOutputStream(RemoteInvocation invocation)
@@ -51,7 +54,7 @@ public class RpclientCall {
 	 * NewProxy should be serializable, otherwise exception.
 	 */
 	public String call() {
-		NewProxy newProxy = newProxyRpcService.getOneFromPool();
+		NewProxy newProxy = newProxyRpcService.getFromPool();
 		if (newProxy != null) {
 			return newProxy.toString();
 		} else {

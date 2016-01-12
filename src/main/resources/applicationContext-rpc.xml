@@ -8,7 +8,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
 	<bean id="rpcClient" class="org.springframework.remoting.httpinvoker.HttpInvokerProxyFactoryBean">
-			<property name="serviceInterface" value="org.jackJew.crawler.proxy.service.NewProxyRpcService" />
+			<property name="serviceInterface" value="org.jackJew.biz.proxy.service.NewProxyRpcService" />
 			<property name="serviceUrl" value="http://127.0.0.1:8080/crawler-proxy/newProxyRpc" />
 			<property name="httpInvokerRequestExecutor">
 				<!-- use apache httpClient, not the SimpleHttpInvokerRequestExecutor(JDK HttpUrlConnection) -->
