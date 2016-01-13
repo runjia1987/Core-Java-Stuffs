@@ -5,10 +5,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.cglib.proxy.Callback;
+import org.springframework.cglib.proxy.CallbackFilter;
+import org.springframework.cglib.proxy.Enhancer;
+import org.springframework.cglib.proxy.Enhancer.EnhancerKey;
 import org.springframework.util.ReflectionUtils;
 
-import net.sf.cglib.proxy.Callback;
-import net.sf.cglib.proxy.Enhancer;
 
 /**
  * create proxy
@@ -24,11 +26,11 @@ public class CglibProxyFactory {
 	}
 	
 	public Object getProxy() throws Exception {
-		Enhancer enhancer = new Enhancer();
+		Enhancer enhancer = new org.springframework.cglib.proxy.Enhancer();
 		final Class<?> cls = targetObject.getClass();
 		enhancer.setSuperclass(cls);
 		enhancer.setCallbacks(getCallbacks().toArray(new Callback[2]));
-		enhancer.setCallbackFilter(new CallbackFilter());
+		enhancer.setCallbackFilter(new CustomCallbackFilter());
 		
 		// if default no-args isn't defined, use this instead
 		Constructor<?> ctr = cls.getConstructor(new Class<?>[]{int.class});
@@ -44,7 +46,7 @@ public class CglibProxyFactory {
 		return callbacks;
 	}
 	
-	private class CallbackFilter implements net.sf.cglib.proxy.CallbackFilter {
+	private class CustomCallbackFilter implements CallbackFilter {
 
 		/**
 		 * indicate the index of callback to be executed
