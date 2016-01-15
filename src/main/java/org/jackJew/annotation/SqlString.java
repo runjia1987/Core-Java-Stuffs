@@ -27,6 +27,6 @@ public @interface SqlString {
 	/**
 	 * 列约束
 	 */
-	Constraints constrains() default @Constraints;
+	Constraints constrains() default @Constraints(color = Color.GREEN);
 
 }

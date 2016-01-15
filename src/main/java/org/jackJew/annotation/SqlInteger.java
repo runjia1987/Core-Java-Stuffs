@@ -28,6 +28,6 @@ public @interface SqlInteger {
 	/**
 	 * 约束
 	 */
-	Constraints constraints() default @Constraints;
+	Constraints constraints() default @Constraints(consts = {false, true, false});
 
 }

@@ -31,7 +31,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 
  * AbstractHttpInvokerRequestExecutor.getByteArrayOutputStream(RemoteInvocation invocation)
  * -> <br/>
- * writeRemoteInvocation(RemoteInvocation invocation, OutputStream os) <br/>
+ * remoteInvocation = new RemoteInvocation(MethodInvocation); <br/>
+ * new ObjectOutputStream(new ByteArrayOutputStream).writeObejct(remoteInvocation);
  * RemoteInvocation implements java.io.Serializable { <br/>
  * 		private String methodName;  <br/>
  * 		private Class[] parameterTypes;  <br/>
