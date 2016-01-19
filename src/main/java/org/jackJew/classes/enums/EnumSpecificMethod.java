@@ -1,5 +1,7 @@
 package org.jackJew.classes.enums;
 
+import java.lang.Enum;
+
 /**
  *
  * @author zhurunjia

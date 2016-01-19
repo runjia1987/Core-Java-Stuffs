@@ -90,12 +90,15 @@ public class NIOClient {
 			int read = channel.read(buffer);
 			if(read > 0){
 				buffer.flip();
-				System.out.println(this.clientName + " receive: " + new String(buffer.array(), 0, read));								
+				System.out.println(this.clientName + " receive: " + new String(buffer.array(), 0, read));
+				// don't register channels for OP_WRITE until you have something to write
 				channel.register(selector, SelectionKey.OP_WRITE);
-			} else {
+			} else if(read == -1) {
+				// de-register OP_READ to avoid infinite EOS events loop
+				key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
+			} else if(read == 0) {
 				System.out.println(this.clientName + " Warn: receive nothing. ");
-				key.cancel();
-			}			
+			}
 		} else if(key.isWritable()){
 			System.out.println(this.clientName + " will write...");
 			if( firstContact ) {

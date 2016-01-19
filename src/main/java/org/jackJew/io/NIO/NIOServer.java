@@ -64,7 +64,7 @@ public class NIOServer {
 			}			
 		} catch(Exception e){
 			e.printStackTrace();
-		}		
+		}
 	}
 	
 	private void handleKey(SelectionKey key, Selector selector) {		
@@ -93,6 +93,12 @@ public class NIOServer {
 						}
 						System.out.println("server receive message: " + rcvContent);
 						channel.register(selector, SelectionKey.OP_WRITE);
+					} else if(read == -1) {
+						// de-register the channel with OP_READ to avoid infinite events loop which
+						// is unnecessarily wasting CPU
+						key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
+					} else if(read == 0) {
+						System.out.println("reads empty from  channel.");
 					}
 				} catch(IOException cce){
 					closeChannel(channel);

@@ -9,11 +9,9 @@ public class TestClient {
 	public static void main(String[] args) {
 		final NIOServer server = new NIOServer("NIO server");
 		
-		new Thread(){
-			public void run() {
+		new Thread(() -> {
 			server.startServ();
-			}
-		}.start();
+		}).start();
 		
 		ArrayList<NIOClient> clientsList = new ArrayList<NIOClient>();
 		
@@ -22,9 +20,12 @@ public class TestClient {
 			clientsList.add(new NIOClient("client" + i));
 		}
 				
-		// start running
+		// start
 		for(int i = 0; i < CLIENTS_NUM; i++){
-			new ClientThread(clientsList.get(i)).start();
+			final int j = i;
+			new Thread(() -> {
+				clientsList.get(j).startListen();
+			}).start();
 		}
 	}
 
