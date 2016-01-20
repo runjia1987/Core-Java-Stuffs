@@ -11,6 +11,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 
 import org.jackJew.algorithm.Base64Algorithm;
+import org.springframework.util.Base64Utils;
 
 public class RsaSignUtils {
 	
@@ -44,11 +45,11 @@ public class RsaSignUtils {
 	}
 	
 	/**
-	 * create sign for input bytes, use private key
+	 * create sign for input bytes, using private key
 	 * @param data
 	 * @return
 	 */
-	public String getSign(byte[] data) throws Exception{
+	public byte[] getSign(byte[] data) throws Exception{
 		byte[] privateKeySpecBytes = Base64Algorithm.decode(privateKeyStr.toCharArray());
 		
 		// use PKCS8EncodedKeySpec to generate private key for signature
@@ -62,7 +63,7 @@ public class RsaSignUtils {
 		byte[] bytes = sig.sign();
 		
 		// create the sign, base64 encoded
-		return new String(Base64Algorithm.encode(bytes));
+		return bytes;
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class RsaSignUtils {
 	 * @param data
 	 * @return
 	 */
-	public boolean verify(String sign, byte[] data) throws Exception {
+	public boolean verify(byte[] bytes, byte[] data) throws Exception {
 		byte[] publicKeySpecBytes = Base64Algorithm.decode(publicKeyStr.toCharArray());
 		
 		// use X509EncodedKeySpec to generate public key for decryption
@@ -84,19 +85,20 @@ public class RsaSignUtils {
 		sig.update(data);
 		
 		// start verify
-		return sig.verify(Base64Algorithm.decode(sign.toCharArray()));
+		return sig.verify(bytes);
 		
 	}
 	
 	public static void main(String[] args) throws Exception {
-		byte[] contentBytes = "these are the content,just for test".getBytes(EncodingCharset);
+		byte[] contentBytes = "these are the content, just for test".getBytes(EncodingCharset);
 		RsaSignUtils utils = new RsaSignUtils();
-		String generatedSign = utils.getSign(contentBytes);
+		byte[] bytes = utils.getSign(contentBytes);
 		
+		String generatedSign = Base64Utils.encodeToString(bytes);
 		System.out.println("base64 encoded signature: " + generatedSign);
 		
 		//start kto verify the signature
-		boolean result = utils.verify(generatedSign, contentBytes);
+		boolean result = utils.verify(bytes, contentBytes);
 		
 		System.out.println("verification result: " + result);
 	}
