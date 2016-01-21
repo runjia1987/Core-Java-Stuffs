@@ -1,22 +1,24 @@
 package org.jackJew.encryption;
 
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.Signature;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
 
 import org.jackJew.algorithm.Base64Algorithm;
 import org.springframework.util.Base64Utils;
 
+/**
+ * RSA signature utils
+ * @author Jack
+ *
+ */
 public class RsaSignUtils {
 	
-	private String publicKeyStr;
-	private String privateKeyStr;
+	private PublicKey pubKey;
+	private PrivateKey privateKey;
 	
 	private final static String EncodingCharset = "UTF-8";
 	
@@ -34,14 +36,14 @@ public class RsaSignUtils {
 		kpGenerator.initialize(secretKeyLength);
 		
 		KeyPair keypair = kpGenerator.generateKeyPair();
-		PublicKey pubKey = keypair.getPublic();
-		PrivateKey privateKey = keypair.getPrivate();
+		pubKey = keypair.getPublic();
+		privateKey = keypair.getPrivate();
 		
-		publicKeyStr = new String(Base64Algorithm.encode(pubKey.getEncoded()));
-		privateKeyStr = new String(Base64Algorithm.encode(privateKey.getEncoded()));
+		String publicKeyStr = new String(Base64Algorithm.encode(pubKey.getEncoded()));
+		String privateKeyStr = new String(Base64Algorithm.encode(privateKey.getEncoded()));
 		
-		System.out.println("created keyPair: public @ " + publicKeyStr
-										+ "\nprivate@" + privateKeyStr);
+		System.out.println("created keyPair:\npublic: " + publicKeyStr
+										+ "\nprivate: " + privateKeyStr);
 	}
 	
 	/**
@@ -50,15 +52,9 @@ public class RsaSignUtils {
 	 * @return
 	 */
 	public byte[] getSign(byte[] data) throws Exception{
-		byte[] privateKeySpecBytes = Base64Algorithm.decode(privateKeyStr.toCharArray());
-		
-		// use PKCS8EncodedKeySpec to generate private key for signature
-		PKCS8EncodedKeySpec encodedKeySpec = new PKCS8EncodedKeySpec(privateKeySpecBytes);
-		KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
-		PrivateKey _private = keyFactory.generatePrivate(encodedKeySpec);
 		
 		Signature sig = Signature.getInstance(signAlgorithm);
-		sig.initSign(_private);
+		sig.initSign(privateKey);
 		sig.update(data);
 		byte[] bytes = sig.sign();
 		
@@ -68,20 +64,14 @@ public class RsaSignUtils {
 	
 	/**
 	 * verify if the previously generated sign is matched to the holding public key
-	 * @param sign
+	 * @param bytes
 	 * @param data
 	 * @return
 	 */
 	public boolean verify(byte[] bytes, byte[] data) throws Exception {
-		byte[] publicKeySpecBytes = Base64Algorithm.decode(publicKeyStr.toCharArray());
-		
-		// use X509EncodedKeySpec to generate public key for decryption
-		X509EncodedKeySpec encodedKeySpec = new X509EncodedKeySpec(publicKeySpecBytes);
-		KeyFactory keyFactory = KeyFactory.getInstance(algorithm);
-		PublicKey _public = keyFactory.generatePublic(encodedKeySpec);
 		
 		Signature sig = Signature.getInstance(signAlgorithm);
-		sig.initVerify(_public);
+		sig.initVerify(pubKey);
 		sig.update(data);
 		
 		// start verify

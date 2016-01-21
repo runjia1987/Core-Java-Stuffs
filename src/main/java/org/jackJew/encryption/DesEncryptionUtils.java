@@ -66,9 +66,11 @@ public class DesEncryptionUtils {
 			if (EncryptMode_CBC.equals(encryptMode) ) {
 				// require IvSpec if use CBC mode, 8 byte				
 				cipher.init(Cipher.ENCRYPT_MODE, secretKey, ivSpec);
-			} else {
+			} else if(EncryptMode_ECB.equals(encryptMode)) {
 				// ECB
 				cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+			} else {
+				throw new IllegalArgumentException("wrong encryptMode.");
 			}
 			byte[] results = cipher.doFinal(contentBytes);
 			// base64 transform
@@ -95,8 +97,11 @@ public class DesEncryptionUtils {
 			if (EncryptMode_CBC.equals(decryptMode)) {
 				// require IvSpec if use CBC mode, 8 byte	
 				cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
+			} else if(EncryptMode_ECB.equals(decryptMode)) {
+				// ECB
+				cipher.init(Cipher.ENCRYPT_MODE, secretKey);
 			} else {
-				cipher.init(Cipher.DECRYPT_MODE, secretKey);
+				throw new IllegalArgumentException("wrong decryptMode.");
 			}
 			byte[] resultBytes = cipher.doFinal(decodedBytes);
 			String sourceString = new String(resultBytes, Encoding);
