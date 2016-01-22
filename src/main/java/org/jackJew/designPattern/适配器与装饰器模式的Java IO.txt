@@ -1,5 +1,0 @@
-（适配器和装饰器模式）
-一个典型的例子就是Java IO： 
-BufferReader br = new BufferReader(new InputStreamReader(System.in)); 
-综合了两种模式：
-把InputStream 适配成 InputStreamReader，再把InputStreamReader 装饰增强为 BufferedReader。

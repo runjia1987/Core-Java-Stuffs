@@ -1,0 +1,49 @@
+[INFO] Scanning for projects...
+[INFO]                                                                         
+[INFO] ------------------------------------------------------------------------
+[INFO] Building Xapp 1.0.0
+[INFO] ------------------------------------------------------------------------
+[INFO] 
+[INFO] --- maven-dependency-plugin:2.8:tree (default-cli) @ Xapp ---
+[INFO] org.jack:Xapp:war:1.0.0
+[INFO] +- org.ow2.asm:asm:jar:5.0.4:compile
+[INFO] +- aopalliance:aopalliance:jar:1.0:compile
+[INFO] +- org.aspectj:aspectjweaver:jar:1.8.6:compile
+[INFO] +- cglib:cglib:jar:3.1:compile
+[INFO] +- org.springframework:spring-core:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-web:jar:4.1.6.RELEASE:compile
+[INFO] |  \- org.springframework:spring-beans:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-orm:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-jdbc:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-context:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-aop:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-expression:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-test:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-tx:jar:4.1.6.RELEASE:compile
+[INFO] +- org.springframework:spring-webmvc:jar:4.1.6.RELEASE:compile
+[INFO] +- junit:junit:jar:4.11:test
+[INFO] |  \- org.hamcrest:hamcrest-core:jar:1.3:test
+[INFO] +- com.google.code.gson:gson:jar:2.2.4:compile
+[INFO] +- commons-logging:commons-logging:jar:1.1.3:compile
+[INFO] +- org.slf4j:slf4j-api:jar:1.7.5:compile
+[INFO] +- org.slf4j:slf4j-log4j12:jar:1.7.5:compile
+[INFO] |  \- log4j:log4j:jar:1.2.17:compile
+[INFO] +- javax.servlet:servlet-api:jar:2.5:provided
+[INFO] +- javax.servlet.jsp:jsp-api:jar:2.1:provided
+[INFO] +- javax.servlet:jstl:jar:1.2:provided
+[INFO] +- org.quartz-scheduler:quartz:jar:2.2.1:compile
+[INFO] +- commons-dbcp:commons-dbcp:jar:1.4:compile
+[INFO] |  \- commons-pool:commons-pool:jar:1.5.4:compile
+[INFO] +- mysql:mysql-connector-java:jar:5.1.29:compile
+[INFO] +- org.mvel:mvel2:jar:2.1.9.Final:compile
+[INFO] +- org.apache.httpcomponents:httpclient:jar:4.4.1:compile
+[INFO] |  +- org.apache.httpcomponents:httpcore:jar:4.4.1:compile
+[INFO] |  \- commons-codec:commons-codec:jar:1.9:compile
+[INFO] \- org.jack:common-proxy:jar:1.0-SNAPSHOT:compile
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 1.109 s
+[INFO] Finished at: 2015-12-30T18:20:49+08:00
+[INFO] Final Memory: 13M/155M
+[INFO] ------------------------------------------------------------------------

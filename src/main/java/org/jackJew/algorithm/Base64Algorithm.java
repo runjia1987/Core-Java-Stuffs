@@ -132,7 +132,6 @@ public class Base64Algorithm {
 		}
 		
 		if (exceptionChar == c1) {
-			System.out.println("final char is '=' ");
 			if(sourceChars[size - 2] == exceptionChar) {
 				// double '=' trailing
 				j -= 2;
@@ -160,17 +159,13 @@ public class Base64Algorithm {
 	 */
 	public static void main(String[] args) throws Exception {
 		// encode
-		String sourceStr = "MTIzNDU2Nzg5c1Mk";
+		String sourceStr = "我是Jack";
 		char[] encodedResult = encode(sourceStr.getBytes(DefaultEncodingCharset));
 		System.out.println(encodedResult);
 		
 		// decode
 		char[] encodedChars = "5oiR5pivSmFjaw==".toCharArray();
 		byte[] resultBytes = decode(encodedChars);
-		for (byte b : resultBytes) {
-			System.out.print(b + ",");
-		}
-		System.out.println();
 		System.out.println(new String(resultBytes, DefaultEncodingCharset));
 	}
 
