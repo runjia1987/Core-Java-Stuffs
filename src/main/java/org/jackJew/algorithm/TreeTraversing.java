@@ -74,7 +74,7 @@ public class TreeTraversing {
 	}
 	
 	/**
-	 * traverse in depth-first
+	 * traverse in depth-first, by Stack
 	 */
 	public void depthTraverse(){
 		Stack<Node> stack = new Stack<Node>();
@@ -93,7 +93,7 @@ public class TreeTraversing {
 	}
 	
 	/**
-	 * traverse in width-first
+	 * traverse in width-first, by Queue
 	 */
 	public void breadthTraverse(){
 		Queue<Node> queue = new LinkedList<Node>();
@@ -111,7 +111,7 @@ public class TreeTraversing {
 	}
 	
 	/**
-	 * create sibling linkes for all nodes in the existing tree, <br>
+	 * create sibling linkes for all nodes in the existing tree,
 	 * based on breadth traversing
 	 */
 	public void createSiblingLinks() {
@@ -144,19 +144,18 @@ public class TreeTraversing {
 	}
 	
 	/**
-	 * link the elements from the most-left to the most-right
+	 * link the elements from the most-left to the most-right on the same layer
 	 * @param siblingNodes
 	 */
 	private void siblingLink(Queue<Node> siblingNodes){
 		Iterator<Node> itr = siblingNodes.iterator();
-		Node n, previous = null;
-		while(itr.hasNext()) {
+		
+		for(Node n , previous = null; itr.hasNext(); previous = n) {
 			n = itr.next();
 			if ( previous != null ) {
 				previous.nextSibling = n;
 				System.out.print(previous + " sibling is " + n + ", ");
 			}
-			previous = n;			
 		}
 		System.out.println();
 	}
@@ -171,15 +170,15 @@ public class TreeTraversing {
 		
 		System.out.println("start to setup a binary tree");		
 		tt.setUpTree();
-		System.out.println("complete to setup a binary tree");		
+		System.out.println("complete to setup a binary tree\n");		
 		
 		System.out.println("start to breadthTraverse a binary tree");		
 		tt.breadthTraverse();
-		System.out.println("complete to breadthTraverse a binary tree");
+		System.out.println("complete to breadthTraverse a binary tree\n");
 		
 		System.out.println("start to depthTraverse a binary tree");
 		tt.depthTraverse();
-		System.out.println("complete to depthTraverse a binary tree");
+		System.out.println("complete to depthTraverse a binary tree\n");
 		
 		tt.createSiblingLinks();
 		
