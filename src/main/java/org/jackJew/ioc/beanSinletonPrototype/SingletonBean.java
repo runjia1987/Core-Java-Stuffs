@@ -11,8 +11,8 @@ public abstract class SingletonBean {
 	/**
 	 * public | protected <non-static> method ()
 	 * <br/>
-	 * this method will be overriden by the CGlib generated subclass(requires CGlib)
-	 * <br/> notice this method should have zero arguments!!!
+	 * this method will be overriden by the CGlib generated subclass(requires CGlib),
+	 * notice this method should have zero arguments!!!
 	 */
 	protected abstract TargetProtoTypeBean getNewPrototypeBean();
 	
