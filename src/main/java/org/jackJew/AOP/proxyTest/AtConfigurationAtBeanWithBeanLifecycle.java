@@ -17,6 +17,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Scope;
 
+/**
+ * In case of multiple @Configuration classes,
+ * later @Bean definitions will override ones defined in earlier loaded files.
+ * @author Jack
+ *
+ */
 @Configuration
 public class AtConfigurationAtBeanWithBeanLifecycle {
 	
@@ -30,7 +36,7 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 		return new AA();
 	}
 	
-	@Bean(name={"BB", "BBBBB"})   //self define bean alias names, could be array []
+	@Bean(name={"BB", "BBBBB"})   //self define bean alias names, could be array[]
 	ABB getBB(){
 		return new BB();
 	}
@@ -38,6 +44,9 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 	public static void main(String[] args) {
 		AnnotationConfigApplicationContext acac = new AnnotationConfigApplicationContext(
 										AtConfigurationAtBeanWithBeanLifecycle.class);
+		// new AnnotationConfigApplicationContext(String... basePackages)
+		// the constructors will automatically call refresh()
+		
 		AA instance = acac.getBean("AA", AA.class);
 		
 		// acac.register(class1, class2);
@@ -57,8 +66,8 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 
 /**
  * Bean life cycle: <br>
- * instantiation, property population(dependency injection),
- * callback awares(BeanNameAware, BeanFactoryAware, BeanClassLoaderAware),
+ * instantiation, populate property(dependency injection, autowire by type/name),
+ * callback awares(invokeAwareMethods() -> BeanNameAware, BeanFactoryAware, BeanClassLoaderAware),
  * initialization(BeanPostProcessor and sth else, execution order:
  * 						@PostConstruct-> InitializingBean-> custom init-method ),
  * ready, destruction(execution order:
