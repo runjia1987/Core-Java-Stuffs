@@ -109,9 +109,11 @@ public class LinkedListWithRandomPointer<E> {
 	}	
 
 	public static void main(String[] args) {
+		final int count = 100;
 		LinkedListWithRandomPointer<Integer> list = new LinkedListWithRandomPointer<>();
-		Integer[] array = {800, 900, 10000, 100, 200, 300, 400, 500, 600, 700, };
+		Integer[] array = createRandomArray(count);
 		list.create(array);
+		long startTime = System.currentTimeMillis();
 		
 		// print
 		for(Node<Integer> node = list.head; node != null; node = node.next) {
@@ -123,6 +125,16 @@ public class LinkedListWithRandomPointer<E> {
 		for(Node<Integer> node = newHead; node != null; node = node.next) {
 			System.out.print(node + ", ");
 		}
+		System.out.println("\ntime cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+	}
+	
+	private static Integer[] createRandomArray(int count) {
+		Random rand = new Random();
+		Integer[] array = new Integer[count];
+		for(int i = 0; i < count; i++) {
+			array[i] = rand.nextInt(10000);
+		}
+		return array;
 	}
 
 }

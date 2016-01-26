@@ -130,7 +130,7 @@
 	</bean>
 	
 	<bean id="phantomConnectionProviderService"
-		class="org.jackJew.garbageCollection.phantomReference.ProviderService">
+		class="org.jackJew.garbageCollection.phantomReference.ProviderService" lazy-init="true">
 	</bean>
 	
 	<bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />

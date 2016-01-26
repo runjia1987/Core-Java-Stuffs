@@ -3,20 +3,20 @@ package org.jackJew.classLoader;
 public class TestClient {
 
 	/**
-	 * @throws ClassNotFoundException 
-	 * @throws IllegalAccessException 
-	 * @throws InstantiationException 
-	 * 
+	 * test 
 	 */
-	public static void main(String[] args) throws ClassNotFoundException, InstantiationException, IllegalAccessException {
-		System.out.println("自定义的基于文件系统的类加载器");
+	public static void main(String[] args) throws Exception {
+		System.out.println("getSystemClassLoader(): " + ClassLoader.getSystemClassLoader());
+		// sun.misc.Launcher$AppClassLoader@xxxx
+		
+		System.out.println("custom FileSystemClassLoader.");
 		FileSystemClassLoader fcl = new FileSystemClassLoader("D:\\");
 		
 		FileSystemClassLoader fc2 = new FileSystemClassLoader("D:\\");
 		
 		//注意: 如果AppClassLoader加载器(父)查找的目录($buildDir)中存在,
 		//目标类的字节码, 将会直接加载, 而不会执行到自定义类加载器的findClass方法, 
-		//会造成自定义类加载器无效的假象（因此需要先删除掉$buildDir下的目标类字节码, 或者重写loadClass方法, 破坏Delegate模型）.
+		//会造成自定义类加载器无效的假象（需要删除掉$buildDir下的.class）.
 		//
 		//java.lang.ClassLoader类的loadClass方法执行步骤:  findLoadedClass(name),
 		//												 parent.loadClass(name,resolve),
@@ -29,18 +29,18 @@ public class TestClient {
 		class1.newInstance();
 		
 		Class<?> class_11 = fc2.loadClass("org.jackJew.classLoader.PrintClass");
-		assert (class1 == class_11);  // true
+		//java.lang.ClassCastException: loaded by different classloaders
+		//System.out.println(class1.cast(class_11.newInstance()));
 		
-		System.out.println("\n自定义的基于网络流的类加载器");
+		System.out.println("\ncustom NetworkClassLoader");
 		NetworkClassLoader ncl = new NetworkClassLoader("http://localhost:8080");
 		Class<?> class2 = ncl.loadClass("org.jackJew.classLoader.PrintClass");
 		class2.newInstance();
 		
-		//Expcetion： 被不同type的类加载器加载的, 因而报java.lang.ClassCastException
+		//java.lang.ClassCastException: loaded by different classloaders
 		System.out.println(class1.cast(class2.newInstance()));
 		
-		System.out.println("\ngetSystemClassLoader(): " + ClassLoader.getSystemClassLoader());
-		// sun.misc.Launcher$AppClassLoader@xxxx
+		
 	}
 
 }

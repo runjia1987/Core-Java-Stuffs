@@ -9,12 +9,13 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
-import org.springframework.context.ApplicationContext;
+import org.springframework.beans.factory.support.BeanDefinitionReader;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.context.annotation.Scope;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
 public class BeanFactoryOrApplicationContext {
 
@@ -31,16 +32,26 @@ public class BeanFactoryOrApplicationContext {
 	 */
 	public static void main(String[] args) {
 		
-		XmlBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
-		//必须使用ApplicationContext容器, 而非BeanFactory, 否则@Resource, @Value不能正常注入
+		/**
+		 * use DefaultListableBeanFactory, not XmlBeanFactory(which is @Deprecated).
+		 */
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+		BeanDefinitionReader beanDefinitionReader = new XmlBeanDefinitionReader(factory);
+		beanDefinitionReader.loadBeanDefinitions(
+				new ClassPathResource("applicationContext.xml"));
+		
 		//ApplicationContext factory = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
 		
-		factory.addBeanPostProcessor(new MyBeanPostProcessor());
 		BeanFactoryPostProcessor bfp = new MyBeanFactoryPostProcessor();
-		bfp.postProcessBeanFactory(factory);
+		bfp.postProcessBeanFactory(factory);  // print all beanDefinitions
 		
-		MyBean2 bean2 = factory.getBean("MyBean2", MyBean2.class);		//prototype
-		System.out.println(bean2.getProp1() + ", " + bean2.getNumber() + ", " + bean2.isPassed());		
+		factory.addBeanPostProcessor(new MyBeanPostProcessor());
+		
+		MyBeanTest myBeanTest = factory.getBean("MyBeanTest", MyBeanTest.class);		//prototype
+		System.out.println(myBeanTest.getProp1() + ", " + myBeanTest.getNumber() + ", " + myBeanTest.isPassed());
+		
+		// DefaultListableBeanfactory implements ConfigurableBeanFactory#destroySingletons()
+		factory.destroySingletons();
 		
 		//ApplicationContext 自动实例化和初始化非延迟加载的单例bean,
 		//                   自动注册 BeanPostProcessor/BeanFactoryPostProcessor.
@@ -71,15 +82,14 @@ class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 			ConfigurableListableBeanFactory beanFactory) throws BeansException {
 		System.out.println("BeanFactoryPostProcessor postProcessBeanFactory start...");
 		
-		String[] bdnames = beanFactory.getBeanDefinitionNames();
-		BeanDefinition definition;
-		for(String name : bdnames){
-			definition = beanFactory.getBeanDefinition(name);
-			System.out.println(definition.getBeanClassName() + "\t" + definition.getScope());
+		String[] beanDefinitionNames = beanFactory.getBeanDefinitionNames();
+		for(String name : beanDefinitionNames){
+			BeanDefinition definition = beanFactory.getMergedBeanDefinition(name);
+			String scope = definition.getScope();
 			
-			//definition.setScope("singleton");
-		}
-		
+			System.out.println(definition.getBeanClassName() + "\t"
+					+ (StringUtils.isEmpty(scope) ? ConfigurableBeanFactory.SCOPE_SINGLETON : scope));
+		}		
 		System.out.println("BeanFactoryPostProcessor postProcessBeanFactory end.");
 	}
 	
@@ -91,30 +101,28 @@ class MyBeanPostProcessor implements BeanPostProcessor {
 	@Override
 	public Object postProcessBeforeInitialization(Object bean, String beanName)
 			throws BeansException {
-		System.out.println("postProcessBeforeInitialization: " + beanName);
+		System.out.println("MyBeanPostProcessor beforeInit: " + beanName);
 		return bean;
 	}
 
 	@Override
 	public Object postProcessAfterInitialization(Object bean, String beanName)
 			throws BeansException {
-		System.out.println("postProcessAfterInitialization: " + beanName);
+		System.out.println("MyBeanPostProcessor afterInit: " + beanName);
 		return bean;
 	}
 	
 }
 
-@Component("MyBean1")
-class MyBean1 {
-	
-}
 
-@Component("MyBean2")
+
+@Component("MyBeanTest")
 @Scope("prototype")
-class MyBean2 {
+class MyBeanTest {
 	
 	/**
-	 * do not require set method for the field
+	 * do not require set method for the field,
+	 * post-processed by CommonAnnotationBeanPostProcessor
 	 */
 	@Resource(name="staticFactoryBean")
 	private Integer prop1;
