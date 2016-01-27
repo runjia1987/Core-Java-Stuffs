@@ -27,7 +27,7 @@ public class Base64TestForJdk8 {
 		System.out.println(result3);
 		
 		input = "https://www.baidu.com/s?wd=";
-		String urlParams = "xx yy:zz#a$b";
+		String urlParams = "xx yy:zz#a$b";  // special keywords		
 		String result4 = URLEncoder.encode(urlParams, "GBK");
 		System.out.println(input + result4);  // this is proper way
 		

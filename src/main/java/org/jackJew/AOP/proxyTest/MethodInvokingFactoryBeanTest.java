@@ -3,12 +3,9 @@ package org.jackJew.AOP.proxyTest;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Component;
 
 @Component("MethodInvokingFactoryBeanTest")
@@ -19,6 +16,7 @@ public class MethodInvokingFactoryBeanTest {
 	@Resource(name="status")
 	private Integer status;
 	
+	// injected from factoryBean in xml schema
 	@Resource(name="osVersion")
 	private String osVersion;
 
@@ -26,15 +24,13 @@ public class MethodInvokingFactoryBeanTest {
 	 * Test
 	 */
 	public static void main(String[] args) {
-		//ConfigurableBeanFactory factory = new XmlBeanFactory(new ClassPathResource("applicationContext.xml"));
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		// 必须使用ApplciationContext容器(非BeanFactory), 否则字段值不能正常注入
 		MethodInvokingFactoryBeanTest bean = context.getBean("MethodInvokingFactoryBeanTest",
 													MethodInvokingFactoryBeanTest.class);
-		//try {int i = 100 / 0;}catch(Exception e){logger.fatal(e);}
-		//int i = 100 / 0;		
-		logger.info(bean);		
+		
+		logger.info(bean);
+		// status: 74, osVersion: Windows 8.1
 		((AbstractApplicationContext)context).close();
 	}
 	

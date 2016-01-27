@@ -25,9 +25,4 @@
 		</property>
 	</bean>
 	
-	<!-- <aop:aspectj-autoproxy /> enables @Aspect and @Pointcut into effects -->
-	<aop:aspectj-autoproxy proxy-target-class="true"/>
-	
-	<import resource="classpath:applicationContext-rpc.xml" />
-	
 </beans>

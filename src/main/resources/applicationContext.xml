@@ -61,13 +61,18 @@
 	
 	<tx:annotation-driven />
 	
-	<tx:advice id="txAdvice" transaction-manager="transactionManager">  
-        <tx:attributes>  
+	<!-- advice/TransactionInterceptor, transactionManager, transactionAttributes,
+			invokeWithInTransaction() -->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+	<!-- TransactionAttributes -->
+        <tx:attributes>
             <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>    
    </tx:advice>
+      
    <aop:config>
    		<aop:pointcut id="tx_pointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
+        <!-- TransactionProxyFactoryBean, mew DefaultPointcutAdvisor(poinut, advice) -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="tx_pointcut" />
    </aop:config>
     
@@ -95,12 +100,11 @@
 	</bean>
 	
 	<bean id="instanceFactoryBean" factory-bean="factoryBean" 
-								   factory-method="getStr" scope="prototype">
+								factory-method="getStr" scope="prototype">
 		<constructor-arg value="999"/>
 	</bean>
 	
-	<bean id="lookupSingletonBean" class="org.jackJew.ioc.beanSinletonPrototype.SingletonBean"
-								scope="singleton">
+	<bean id="lookupSingletonBean" class="org.jackJew.ioc.beanSinletonPrototype.SingletonBean">
 		<lookup-method name="getNewPrototypeBean" bean="targetPrototypeBean"/>
 	</bean>
 	

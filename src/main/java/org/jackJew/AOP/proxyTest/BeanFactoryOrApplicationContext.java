@@ -30,8 +30,7 @@ public class BeanFactoryOrApplicationContext {
 	 * <br> ApplicationContext接口继承了 MessageSource (i18n), ResourceLoader,
 	 * 								   ApplicationEventPublisher 接口.
 	 */
-	public static void main(String[] args) {
-		
+	public static void main(String[] args) {		
 		/**
 		 * use DefaultListableBeanFactory, not XmlBeanFactory(which is @Deprecated).
 		 */
@@ -71,7 +70,6 @@ public class BeanFactoryOrApplicationContext {
 	 * <br> Regarding class-scope annotations: @Component, @Service, @Controller, @Repository, 
 	 * <br>	they will be handled by ClassPathBeanDefinitionScanner | ClassPathScanningCandidateComponentProvider.
 	 */
-
 }
 
 @Component("MyBeanFactoryPostProcessor")
@@ -110,11 +108,8 @@ class MyBeanPostProcessor implements BeanPostProcessor {
 			throws BeansException {
 		System.out.println("MyBeanPostProcessor afterInit: " + beanName);
 		return bean;
-	}
-	
+	}	
 }
-
-
 
 @Component("MyBeanTest")
 @Scope("prototype")
@@ -143,6 +138,5 @@ class MyBeanTest {
 
 	public boolean isPassed() {
 		return isPassed;
-	}
-		
+	}		
 }

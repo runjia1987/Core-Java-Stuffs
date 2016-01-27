@@ -1,8 +1,8 @@
 package org.jackJew.ioc.beanSinletonPrototype;
 
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
-import org.springframework.beans.factory.xml.XmlBeanFactory;
+import org.springframework.beans.factory.support.BeanDefinitionReader;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.beans.factory.xml.XmlBeanDefinitionReader;
 import org.springframework.core.io.FileSystemResource;
 
 public class BeanRefTest {
@@ -10,12 +10,14 @@ public class BeanRefTest {
 	 * 
 	 */
 	public static void main(String[] args) {
-		BeanFactory cbf = new XmlBeanFactory(
-				new FileSystemResource("./src/main/resources/applicationContext.xml"));
-		Bean1 bean1 = (Bean1)cbf.getBean("bean1");
+		DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+		BeanDefinitionReader definitionReader = new XmlBeanDefinitionReader(factory);
+		definitionReader.loadBeanDefinitions(
+				new FileSystemResource("./src/main/resources/applicationContext.xml"));		
+		
+		Bean1 bean1 = (Bean1)factory.getBean("bean1");
 		System.out.println(bean1.getBean2());
-		System.out.println(Boolean.valueOf("false"));
-		((ConfigurableBeanFactory)cbf).destroySingletons();
+		factory.destroySingletons();
 	}
 
 }

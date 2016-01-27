@@ -1,6 +1,5 @@
 package org.jackJew.ioc.beanSinletonPrototype;
 
-import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 @Component
