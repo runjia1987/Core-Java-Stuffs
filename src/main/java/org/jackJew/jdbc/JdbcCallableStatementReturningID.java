@@ -14,15 +14,17 @@ public class JdbcCallableStatementReturningID {
 
 	public static void main(String[] args) throws SQLException, ClassNotFoundException {
 		
-		Class.forName("");
+		Class.forName("com.mysql.jdbc.Driver");
 		Connection conn = DriverManager.getConnection("url", "username", "password");
 		
 		CallableStatement statement = conn.prepareCall(
-					"{call INSERT INTO tableA(name,password) VALUES ('admin','123') RETURNING id INTO ?}");
+					"{call INSERT INTO table(name,password) VALUES ('admin','123') RETURNING id INTO ?}");
 		// {call proc(?) }
 		
-		statement.registerOutParameter(1, Types.INTEGER);
-
+		statement.registerOutParameter(1, Types.BIGINT);
+		
+		statement.execute();
+		
 		int id = statement.getInt(1);
 		System.out.println(id);
 	}

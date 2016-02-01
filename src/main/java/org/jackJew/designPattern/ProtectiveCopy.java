@@ -19,6 +19,7 @@ public class ProtectiveCopy {
 		this.name = name;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void main(String[] args) {
 		Date d = new Date();
 		ProtectiveCopy instance = new ProtectiveCopy(d, "runjia");
