@@ -38,6 +38,14 @@ public class AopAspect {
 		System.out.println("beforeAdivce executed.");
 	}
 	
+	/**
+	 * try to intercept MVC controller methods, only when controllers are defined
+	 * in the same context to aop aspects(which is not normal); <br/>
+	 * 
+	 * suggested solution: use @ControllerAdvice(introduced in 3.2) annotated class as apsect.
+	 * <br/>
+	 * spring-web module has dependency on spring-aop since 3.2
+	 */
 	@Before("controllerPointcut()")
 	void beforeControllerAdvice() {
 		System.out.println("beforeControllerAdvice executed.");

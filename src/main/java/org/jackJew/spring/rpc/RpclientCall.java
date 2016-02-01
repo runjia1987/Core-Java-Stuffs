@@ -40,8 +40,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * }
  *<br/>
  *
- * process response: <br/>
- * readRemoteInvocationResult() -> ObjectOutputStream.readObject()
+ * finally accepts responseBody stream from HttpClient, and deserialized to RemoteInvocationResult.
+ * <br/>
+ * 
+ * HttpInvokerServiceExporter: <br/>
+ * HttpServletRequest -> getInputStream() -> deserialized to RemoteInvocation ->
+ * jdk reflection call to proxy and AOP, write RemoteInvocationResult to HttpServletResponse#getOutputStream().
+ * 
  * @author Jack
  *
  */

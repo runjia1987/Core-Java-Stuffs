@@ -18,7 +18,7 @@ public class MyHashMap extends ConcurrentHashMap<String, Object> {
 
 		// in JDK 5,6,7, this code is just fine;
 		// but in JDK 8, super.containsKey directly invoke get(key) which is overriden by
-		// child class, recursive invocation happens, causing a serious error: StackOverflowError
+		// child class, recursive invocation happens, and leads to a StackOverflowError
 		if (super.containsKey(key)) {
 			return new Object();
 		}
@@ -31,7 +31,7 @@ public class MyHashMap extends ConcurrentHashMap<String, Object> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		Map map = new MyHashMap();
+		Map<String, Object> map = new MyHashMap();
 		map.put("123", new Object());
 
 		map.get("123");
