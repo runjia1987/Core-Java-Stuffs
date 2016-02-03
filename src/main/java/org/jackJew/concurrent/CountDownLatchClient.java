@@ -43,10 +43,8 @@ public class CountDownLatchClient {
 				e.printStackTrace();
 			} finally {
 				end.countDown();
-			}
-			
-		}
-		
+			}			
+		}		
 	}
 
 	public static void main(String[] args) throws InterruptedException {

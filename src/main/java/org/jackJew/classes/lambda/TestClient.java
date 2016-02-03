@@ -6,7 +6,7 @@ public class TestClient {
 
 	public static void main(String[] args) {
 		Interface interface1 = (param1, param2) -> {return "123";};
-		interface1.fun();
+		interface1.defaultMethod("abc", 1000);
 		
 		Comparator<Long> cmpr = (long1, long2) -> {return (int) (long1 - long2);};
 		int result = cmpr.compare(9999L, 8888L);
