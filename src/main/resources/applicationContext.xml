@@ -64,16 +64,16 @@
 	<!-- advice/TransactionInterceptor, transactionManager, transactionAttributes,
 			invokeWithInTransaction() -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-	<!-- TransactionAttributes -->
+		<!-- TransactionAttributes -->
         <tx:attributes>
             <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>    
    </tx:advice>
       
    <aop:config>
-   		<aop:pointcut id="tx_pointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
+   		<aop:pointcut id="txPointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
         <!-- TransactionProxyFactoryBean, mew DefaultPointcutAdvisor(poinut, advice) -->
-        <aop:advisor advice-ref="txAdvice" pointcut-ref="tx_pointcut" />
+        <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
    </aop:config>
     
 	<bean id="target" class="org.jackJew.AOP.proxyTest.TargetClass2" />

@@ -7,10 +7,14 @@ package org.jackJew.classes.lambda;
  */
 public interface Interface {
 	
-	String func2(String param1, int param2);
+	String normal(String param1, int param2);
 	
-	default void fun() {
-		System.out.println("fun");
+	default String defaultMethod(String param1, int param2) {
+		return normal(param1, param2);
+	}
+	
+	static void func() {
+		System.out.println("func");
 	}
 
 }
