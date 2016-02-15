@@ -62,7 +62,7 @@ class StaticClass22 {
 	
 	// We call a variable, of primitive type or type String, that is final and initialized 
 	// with a compile-time constant expression (§15.28) a constant variable.
-	// Java Spec: http://docs.oracle.com/javase/specs/jls/se5.0/html/typesValues.html#10931
+	// Java Spec: http://docs.oracle.com/javase/specs/jls/se6/html/typesValues.html#10931
 	final static String ABC = "ABC";
 	
 	// this is not a constant variable, so will cause class initialization !
