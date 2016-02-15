@@ -53,9 +53,7 @@ public class NIOServer {
 				while(keysItr.hasNext()){
 					SelectionKey key = keysItr.next();
 					
-					// 由于 select()操作会向 Selector所关联的keys集合中添加元素,
-					// 因此，如果不remove掉这个处理过的key，
-					// 在下次调用 select() 方法时仍然保留在集合中
+					// remove this key from selected-keys
 					keysItr.remove();
 					if(key.isValid()) {
 						handleKey(key, selector);
@@ -107,11 +105,11 @@ public class NIOServer {
 			} else if(key.isWritable()){
 				SocketChannel channel = (SocketChannel) key.channel();
 				buffer.clear();
-				String content = String.valueOf(RAND.nextInt(100000));
-				System.out.println("server send: " + content);
+				String content = String.valueOf(RAND.nextInt(100000));				
 				buffer.put(content.getBytes());
 				buffer.flip();
 				try {
+					System.out.println("server send: " + content);
 					channel.write(buffer);
 					channel.register(selector, SelectionKey.OP_READ);
 					
