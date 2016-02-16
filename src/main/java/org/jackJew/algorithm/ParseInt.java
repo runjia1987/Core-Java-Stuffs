@@ -5,7 +5,7 @@ public class ParseInt {
 	public static int parseInt(String input) {
 		String regex = "^[+|-]{0,1}\\d+$";
 		if(!input.matches(regex)) {
-			throw new IllegalArgumentException("input string can not parse to int.");
+			throw new IllegalArgumentException("input string can not be parsed to int.");
 		} else {
 			int result = 0, size = input.length();
 			char sign = '\u0000';
