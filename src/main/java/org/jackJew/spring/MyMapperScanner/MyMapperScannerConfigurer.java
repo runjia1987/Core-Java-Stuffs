@@ -59,12 +59,12 @@ public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProc
 	    Map<String, PropertyPlaceholderConfigurer> ppcs = applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class);
 
 	    System.out.println("PropertyPlaceholderConfigurers detected.");
-	    AutowireCapableBeanFactory beanfctory = applicationContext.getAutowireCapableBeanFactory();
+	    AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
 	    
-	    if (!ppcs.isEmpty() && beanfctory instanceof ConfigurableListableBeanFactory) {
+	    if (!ppcs.isEmpty() && beanFactory instanceof ConfigurableListableBeanFactory) {
 	    	System.out.println("PropertyPlaceholderConfigurers postProcessBeanFactory beanfctory.");
 	    	for (PropertyResourceConfigurer ppc : ppcs.values()) {
-		        ppc.postProcessBeanFactory((ConfigurableListableBeanFactory)beanfctory);
+		        ppc.postProcessBeanFactory((ConfigurableListableBeanFactory)beanFactory);
 		      }
 	    } else {
 	    	throw new IllegalStateException("not a ConfigurableListableBeanFactory.");
