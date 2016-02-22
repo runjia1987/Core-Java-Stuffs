@@ -29,7 +29,7 @@
 	</bean>
 	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-			lazy-init="true">
+		lazy-init="true">
         <property name="driverClassName">
         	<value>${jdbc.driverClassName}</value>
         </property>
@@ -47,7 +47,7 @@
 		</property>
     </bean>
     
-	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate" abstract="false">
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
         <property name="dataSource" ref="dataSource" />
     </bean>
 
@@ -145,6 +145,12 @@
 		autowire="byType">
 	</bean>
 	
-	<import resource="classpath:applicationContext-rpc.xml" />	
+	<import resource="classpath:applicationContext-rpc.xml" />
+	
+	<!-- likewise MyBatis MapperScannerConfigurer -->
+	<bean id="MyMapperScannerConfigurer" class="org.jackJew.spring.MyMapperScanner.MyMapperScannerConfigurer">
+		<property name="basePackage" value="org.jackJew.spring.MyMapperScanner" />
+		<property name="jdbcTemplateName" value="jdbcTemplate" />		
+	</bean>
 	
 </beans>

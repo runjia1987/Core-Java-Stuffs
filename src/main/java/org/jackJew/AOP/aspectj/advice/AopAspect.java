@@ -40,7 +40,7 @@ public class AopAspect {
 	
 	/**
 	 * try to intercept MVC controller methods, only when controllers are defined
-	 * in the same context to aop aspects(which is not normal); <br/>
+	 * in the same context in which aop aspects are defined(which is not normal); <br/>
 	 * 
 	 * suggested solution: use @ControllerAdvice(introduced in 3.2) annotated class as apsect.
 	 * <br/>

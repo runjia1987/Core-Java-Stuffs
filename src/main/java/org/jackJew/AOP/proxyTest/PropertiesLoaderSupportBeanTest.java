@@ -24,7 +24,7 @@ public class PropertiesLoaderSupportBeanTest extends PropertiesLoaderSupport
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		
-		// PropertyPlaceholderConfigurer is inherited from BeanFactoryPostProcessor,
+		// PropertyPlaceholderConfigurer inherits from BeanFactoryPostProcessor,
 		// so should be initialized automatically in ApplicationContext.
 		JdbcPropertyBean bean = context.getBean("jdbcPropertyBean", JdbcPropertyBean.class);
 		logger.info("\n" + bean.getDriverName() + ",\n"  + bean.getJdbcUrl() + ",\n" + bean.getUsername());
