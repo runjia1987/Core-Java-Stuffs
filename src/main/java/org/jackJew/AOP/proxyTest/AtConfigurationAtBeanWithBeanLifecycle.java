@@ -66,7 +66,7 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 
 /**
  * Bean life cycle: <br>
- * instantiation, populate property(dependency injection, autowire by type/name),
+ * instantiation, populate property(dependency injection, xml property setter methods),
  * callback awares(invokeAwareMethods() -> BeanNameAware, BeanFactoryAware, BeanClassLoaderAware),
  * initialization(BeanPostProcessor and sth else, execution order:
  * 						@PostConstruct-> InitializingBean-> custom init-method ),
