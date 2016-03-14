@@ -26,8 +26,7 @@ public class CglibInterceptor2 implements MethodInterceptor {
 		System.out.println("代理的父类: " + proxy.getClass().getSuperclass());
 		System.out.println("代理实现的接口: " + Arrays.toString(proxy.getClass().getInterfaces()));
 		
-		// invokeSuper是退出当前interceptor的处理，进入下一个net.sf.cglib.proxy.Callback处理; 
-		// invoke则会继续执行该方法
+		// or methodProxy.invokeSuper(proxy, params);
 		return methodProxy.invoke(this.target, params);
 	}
 
