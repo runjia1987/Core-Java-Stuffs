@@ -28,6 +28,9 @@
 		</property>
 	</bean>
 	
+	<!-- enables @Aspect and @Pointcut into effects -->
+	<aop:aspectj-autoproxy />
+	
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
 		lazy-init="true">
         <property name="driverClassName">
@@ -54,15 +57,12 @@
 	<!-- 配置事务管理器 -->
 	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 		<property name="dataSource" ref="dataSource" />
-	</bean>
+	</bean>	
 	
-	<!-- enables @Aspect and @Pointcut into effects -->
-	<aop:aspectj-autoproxy />
+	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
-	<tx:annotation-driven />
-	
-	<!-- advice/TransactionInterceptor, transactionManager, transactionAttributes,
-			invokeWithInTransaction() -->
+	<!-- TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor,
+			transactionManager, transactionAttributes, invokeWithInTransaction() -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
 		<!-- TransactionAttributes -->
         <tx:attributes>
@@ -72,7 +72,7 @@
       
    <aop:config>
    		<aop:pointcut id="txPointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
-        <!-- TransactionProxyFactoryBean, mew DefaultPointcutAdvisor(poinut, advice) -->
+        <!-- TransactionProxyFactoryBean, new DefaultPointcutAdvisor(poinut, TransactionInterceptor) -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
    </aop:config>
     
