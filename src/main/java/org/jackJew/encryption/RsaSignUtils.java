@@ -26,7 +26,7 @@ public class RsaSignUtils {
 	
 	private final static String signAlgorithm = "MD5WithRSA";
 	
-	private final static int secretKeyLength = 1024;
+	private final static int secretKeyLength = 2048;
 	
 	/**
 	 * create pub & private from KeyPairGenerator
