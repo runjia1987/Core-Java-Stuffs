@@ -34,7 +34,8 @@ public class Child extends Parent {
 		// 由于父类的初始化早于子类的初始化，如果此时调用的方法被子类覆盖，而子类中的此覆盖方法中又引用了子类中尚未初始化的成员变量，
 		// 这将很容易导致NullPointerException异常被抛出.
 
-		new Child().unifiedJob();
+		Child child = new Child();
+		child.unifiedJob();
 
 		// new Parent().dosth();
 
@@ -46,6 +47,8 @@ public class Child extends Parent {
 		System.out.println(instance.getStr());
 
 		System.out.println(instance.getABC());
+		System.out.println(child.getVal());
+		System.out.println(child.val);
 	}
 
 	@Override

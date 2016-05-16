@@ -10,6 +10,10 @@ public class Parent {
 	static String getStr() {
 		return XYZ;
 	}
+	
+	public int getVal() {
+		return this.val;
+	}
 
 	public Parent() {
 	}
@@ -39,7 +43,7 @@ public class Parent {
 		return null;
 	}
 
-	private int ABC = 999;
+	private int ABC = 1000000;
 
 	public int getABC() {
 		return ABC;
