@@ -49,8 +49,8 @@ public class Child extends Parent {
 		System.out.println(instance.getABC());
 		System.out.println(child.getVal());  // 100
 		System.out.println(child.val); // 999
-		Parent _p = child;
-		System.out.println(_p.val);  // 100
+		Parent parent_trans = child;
+		System.out.println(parent_trans.val);  // 100
 	}
 
 	@Override
