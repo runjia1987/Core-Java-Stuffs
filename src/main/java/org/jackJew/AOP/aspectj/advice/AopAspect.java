@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AopAspect {
 	
-	@Pointcut("execution(public * *..JoinpointOperation.*(..))")
+	@Pointcut("execution(* *..JoinpointOperation.*(..))")
 	private void pointcutDef(){  }
 	
 	private @Pointcut("execution(public * org.jackJew.spring.controller.*.*(..))")
@@ -60,7 +60,7 @@ public class AopAspect {
 	 * within = declaring type
 	 * this = proxy type, this(com.xyz.service.AccountService)
 	 * target = target object type
-	 * args = runtime object takes argument with the given type, args(java.io.Serializable)
+	 * args = runtime object takes argument with the given type, args(java.io.Serializable). requires that method is public
 	 * @within, @within(org.springframework.transaction.annotation.Transactional)
 	 * @target, @target(org.springframework.transaction.annotation.Transactional)
 	 * @annotation = joinpoint methods take this annotation, @annotation(org.springframework.transaction.annotation.Transactional)
