@@ -1,5 +1,8 @@
 package org.jack.MVEL.test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class User {
 	
 	private String name;
@@ -32,6 +35,17 @@ public class User {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public static void main(String[] args) {
+		List<String> list = new ArrayList<String>();
+		list.add("1");
+		for(String c : list) {
+			System.out.println(c);
+			if(c.equals("1")) {
+				list.remove(c);
+			}
+		}
 	}
 
 }
