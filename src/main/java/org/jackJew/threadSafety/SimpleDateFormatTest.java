@@ -15,7 +15,8 @@ public class SimpleDateFormatTest {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		Date date1 = new Date();
 		Date date2 = new Date(date1.getTime() + 1000 * 60 * 60 * 24); // +1 day
-		System.out.println(sdf.format(date1) + "," + sdf.format(date2));
+		System.out.println("date1: " + sdf.format(date1));
+		System.out.println("date2: " + sdf.format(date2));
 
 		Thread thread1 = new Thread(new Thread1(sdf, date1));
 		Thread thread2 = new Thread(new Thread2(sdf, date2));
@@ -34,6 +35,7 @@ class Thread1 implements Runnable {
 		this.sdf = sdf;
 		this.date = date;
 		dateStr = new SimpleDateFormat("yyyy-MM-dd").format(this.date);
+		System.out.println("Thread1 dateStr: " + dateStr + ", date : " + date);
 	}
 
 	public void run() {
@@ -42,7 +44,7 @@ class Thread1 implements Runnable {
 			String temp = sdf.format(date);
 			if (!dateStr.equals(temp)) {
 				System.out.println("Thread1 format result: " + temp + ", successCount: " + successCount);
-				System.out.println("error1 today actually is: " + date);
+				System.out.println("Thread1 error, input date is: " + date);
 				break;
 			} else {
 		        successCount++;
@@ -60,6 +62,7 @@ class Thread2 implements Runnable {
 		this.sdf = sdf;
 		this.date = date;
 		dateStr = new SimpleDateFormat("yyyy-MM-dd").format(this.date);
+		System.out.println("Thread2 dateStr: " + dateStr + ", date : " + date);
 	}
 
 	public void run() {
@@ -68,7 +71,7 @@ class Thread2 implements Runnable {
 			String temp = sdf.format(date);
 			if (!dateStr.equals(temp)) {
 				System.out.println("Thread2 format result: " + temp + ", successCount: " + successCount);
-				System.out.println("error2 tomorrow actually is: " + date);
+				System.out.println("Thread2 error, input date is: " + date);
 				break;
 			} else {
 				successCount++;
