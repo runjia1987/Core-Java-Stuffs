@@ -116,7 +116,7 @@ public class TreeTraversing {
 	 */
 	public void createSiblingLinks() {
 		Queue<Node> queue = new LinkedList<Node>();
-		Queue<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes
+		Queue<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes of the same layer
 		queue.add(root);
 		int times = 0, expectedPollCount = 1;
 		while ( ! queue.isEmpty() ){
@@ -140,7 +140,7 @@ public class TreeTraversing {
 				siblingNodes.clear();  // empty the temp queue
 			}
 		}
-		siblingLink(siblingNodes);
+		siblingLink(siblingNodes);  // the bottom layer if any
 	}
 	
 	/**
