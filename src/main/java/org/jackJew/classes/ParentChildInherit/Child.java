@@ -29,6 +29,10 @@ public class Child extends Parent {
 		System.out.println("子类构造方法被调用.");
 	}
 
+	public int getVal() {
+		return val;
+	}
+	
 	public static void main(String[] args) {
 		// 不要在父类的构造函数中调用可能被子类覆盖的方法，如public和protected级别的域方法。
 		// 由于父类的初始化早于子类的初始化，如果此时调用的方法被子类覆盖，而子类中的此覆盖方法中又引用了子类中尚未初始化的成员变量，
@@ -47,10 +51,12 @@ public class Child extends Parent {
 		System.out.println(instance.getStr());
 
 		System.out.println(instance.getABC());
-		System.out.println(child.getVal());  // 100
+		System.out.println(child.getVal());  // 100 if getVal() is not present in Child; otherwise 999
 		System.out.println(child.val); // 999
+		
 		Parent parent_trans = child;
-		System.out.println(parent_trans.val);  // 100
+		System.out.println(parent_trans.val);  // 100		
+		System.out.println(parent_trans.getVal());  // 999, override
 	}
 
 	@Override

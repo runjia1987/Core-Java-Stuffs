@@ -12,7 +12,7 @@ public class Parent {
 	}
 	
 	public int getVal() {
-		return this.val;
+		return val;
 	}
 
 	public Parent() {
