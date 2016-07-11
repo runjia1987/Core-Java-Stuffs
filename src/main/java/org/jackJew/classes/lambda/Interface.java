@@ -13,6 +13,10 @@ public interface Interface {
 		return normal(param1, param2);
 	}
 	
+	default String defaultMethod2(String param1, int param2) {
+		return "defaultMethod2";
+	}
+	
 	static void func() {
 		System.out.println("func");
 	}
