@@ -4,6 +4,7 @@ import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESKeySpec;
+import javax.crypto.spec.DESedeKeySpec;
 import javax.crypto.spec.IvParameterSpec;
 
 import org.jackJew.algorithm.Base64Algorithm;
@@ -16,12 +17,16 @@ import org.jackJew.algorithm.Base64Algorithm;
 public class DesEncryptionUtils {
 
 	/**
-	 * size must be >= 8, <br/>
+	 * DES key size must be >= 8, <br/>
 	 * actually only the first 8-bytes is used, tailing bytes are ignored
 	 */
-	private final static String sourceKey = "hd7js791bgsks79dn";
+	/**
+	 * DESede key size must be >= 24, <br/>
+	 * actually only the first 24-bytes is used, tailing bytes are ignored
+	 */
+	private final static String sourceKey = "hd7js791s3kowmsl03malvqf";
 	
-	private final static String Algorithm = "DES";
+	private final static String Algorithm = "DESede";  // DESede
 	
 	private final static String EncryptMode_CBC = "CBC";
 	
@@ -31,7 +36,7 @@ public class DesEncryptionUtils {
 	
 	private final static String Encoding = "UTF-8";
 	
-	private IvParameterSpec ivSpec = new IvParameterSpec(new byte[]{ 18, 20, 31, 5, 127, 90, 65, 33 });
+	private IvParameterSpec ivSpec = new IvParameterSpec(new byte[]{ 18, 20, 31, 5, 127, 90, 65, 33 }); // initialization vector
 	
 	private final SecretKey secretKey;
 	
@@ -40,7 +45,7 @@ public class DesEncryptionUtils {
 	 */
 	public DesEncryptionUtils() {
 		try {
-			DESKeySpec spec = new DESKeySpec(sourceKey.getBytes(Encoding));
+			DESedeKeySpec spec = new DESedeKeySpec(sourceKey.getBytes(Encoding));
 			SecretKeyFactory skf = SecretKeyFactory.getInstance(Algorithm);
 			secretKey = skf.generateSecret(spec);
 			
@@ -99,7 +104,7 @@ public class DesEncryptionUtils {
 				cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec);
 			} else if(EncryptMode_ECB.equals(decryptMode)) {
 				// ECB
-				cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+				cipher.init(Cipher.DECRYPT_MODE, secretKey);
 			} else {
 				throw new IllegalArgumentException("wrong decryptMode.");
 			}
@@ -124,6 +129,9 @@ public class DesEncryptionUtils {
 		
 		String encodedString = deu.encrypt(content, EncryptMode_CBC);
 		deu.decrypt(encodedString, EncryptMode_CBC);
+		
+		encodedString = deu.encrypt(content, EncryptMode_ECB);
+		deu.decrypt(encodedString, EncryptMode_ECB);
 	}
 	
 }
