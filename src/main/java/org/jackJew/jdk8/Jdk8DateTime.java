@@ -23,6 +23,13 @@ public class Jdk8DateTime {
 		
 		date = date.plus(period);
 		System.out.println(date);  // 2016-08-27
+		
+		LocalDateTime datetime = date.atStartOfDay(); 
+		System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(datetime));  // 2016-08-27 00:00:00
+		Duration duration = Duration.ofHours(24).plusMinutes(10);
+		datetime = datetime.plus(duration);
+		System.out.println(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").format(datetime));  // 2016-08-28 00:10:00
+		System.out.println("---------------------------------------------------------------");
 	}
 	
 	public void testInstant() {
