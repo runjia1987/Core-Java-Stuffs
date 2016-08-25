@@ -29,8 +29,8 @@ public class TestClient {
 		class1.newInstance();
 		
 		Class<?> class_11 = fc2.loadClass("org.jackJew.classLoader.PrintClass");
-		//java.lang.ClassCastException: loaded by different classloaders
-		//System.out.println(class1.cast(class_11.newInstance()));
+		// will throw java.lang.ClassCastException: loaded by different classloader instances !!!
+		System.out.println(class1.cast(class_11.newInstance()));
 		
 		System.out.println("\ncustom NetworkClassLoader");
 		NetworkClassLoader ncl = new NetworkClassLoader("http://localhost:8080");
