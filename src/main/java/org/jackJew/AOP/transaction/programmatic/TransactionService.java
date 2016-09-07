@@ -8,6 +8,8 @@ import org.springframework.transaction.support.DefaultTransactionDefinition;
 /**
  * another way: use TransactionTemplate as inner anonymous bean in
  * TransactionService bean.
+ * transaction.execute((status) -> { // do sth. });
+ * TransactionCallback as parameter.
  */
 public class TransactionService {
 
