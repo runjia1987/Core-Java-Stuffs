@@ -75,6 +75,10 @@
         <!-- TransactionProxyFactoryBean, new DefaultPointcutAdvisor(poinut, TransactionInterceptor) -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
    </aop:config>
+   
+   <bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />
+	<bean id="transactionInValidService2" class="org.jackJew.AOP.transaction.declare.schema.InValidService" />
+	<bean id="transactionDao2" class="org.jackJew.AOP.transaction.declare.schema.PojoDao" />
     
 	<bean id="target" class="org.jackJew.AOP.proxyTest.TargetClass2" />
 	<bean id="beforeAdvice" class="org.jackJew.AOP.proxyTest.BeforeAdvice" />
@@ -135,11 +139,7 @@
 	
 	<bean id="phantomConnectionProviderService"
 		class="org.jackJew.garbageCollection.phantomReference.ProviderService" lazy-init="true">
-	</bean>
-	
-	<bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />
-	<bean id="transactionInValidService2" class="org.jackJew.AOP.transaction.declare.schema.InValidService" />
-	<bean id="transactionDao2" class="org.jackJew.AOP.transaction.declare.schema.PojoDao" />
+	</bean>	
 	
 	<bean id="transactionService" class="org.jackJew.AOP.transaction.programmatic.TransactionService"
 		autowire="byType">

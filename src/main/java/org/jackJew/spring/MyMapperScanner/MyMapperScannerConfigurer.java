@@ -37,6 +37,8 @@ public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProc
 
 	@Override
 	public void postProcessBeanDefinitionRegistry(BeanDefinitionRegistry registry) throws BeansException {
+		System.out.println("postProcessBeanDefinitionRegistry hook started.");
+		
 		// default behavior, unlike MyBatis MapperScannerConfigurer
 		processPropertyPlaceHolders();
 		
@@ -51,8 +53,8 @@ public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProc
 	/*
 	   * BeanDefinitionRegistries are called early in application startup, before
 	   * BeanFactoryPostProcessors. This means that PropertyResourceConfigurers will not have been
-	   * loaded and any property substitution of this class' properties will fail. To avoid this, find
-	   * any PropertyResourceConfigurers defined in the context and run them on this class' bean
+	   * loaded and any property substitution of this class's properties will fail. To avoid this, find
+	   * any PropertyResourceConfigurers defined in the context and run them on this class's bean
 	   * definition. Then update the values.
 	*/
 	private void processPropertyPlaceHolders() {

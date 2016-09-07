@@ -63,7 +63,7 @@ public class PropertiesLoaderSupportBeanTest extends PropertiesLoaderSupport
 		} finally {			
 			ins.close();
 		}
-		logger.info(prop.get("jdbc.driverClassName"));
+		// key: jdbc.driverClassName
 	}	
 }
 
