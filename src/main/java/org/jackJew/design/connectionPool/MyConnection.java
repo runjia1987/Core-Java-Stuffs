@@ -10,8 +10,7 @@ public class MyConnection {
 	private String password;	
 	private Set<Object> resultSet;
 	
-	public MyConnection(){
-		System.out.println("MyConnection created new.");
+	public MyConnection() {
 		this.user = "jack";
 		this.password = "123456";
 		

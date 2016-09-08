@@ -6,7 +6,7 @@ public class MyObjectFactory implements PoolableObjectFactory {
 
 	@Override
 	public Object makeObject() throws Exception {
-		System.out.println("makeObject");
+		System.out.println("create new connection.");
 		return new MyConnection();
 	}
 

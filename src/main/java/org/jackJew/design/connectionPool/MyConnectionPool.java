@@ -8,7 +8,7 @@ public class MyConnectionPool extends GenericObjectPool {
 	public MyConnectionPool(PoolableObjectFactory factory){
 		super(factory);
 		setMaxActive(5);
-		setMaxIdle(10);
+		setMaxIdle(5);
 		setWhenExhaustedAction(WHEN_EXHAUSTED_BLOCK);
 		setTestOnBorrow(true);
 		setTestWhileIdle(false);
@@ -23,7 +23,7 @@ public class MyConnectionPool extends GenericObjectPool {
 	@Override
 	public void returnObject(Object connection) throws Exception {		
 		super.returnObject(connection);
-		System.out.println("MyConnectionPool already returns an instance to pool, the pool has: "
+		System.out.println("MyConnectionPool returned an instance to pool, the pool has: "
 					+ this.getNumIdle() + " idle connections.");
 	}
 	
