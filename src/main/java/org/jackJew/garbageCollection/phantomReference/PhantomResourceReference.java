@@ -18,8 +18,8 @@ public class PhantomResourceReference extends PhantomReference<Resource> {
 	private Map<String, Object> field;
 	
 	public PhantomResourceReference(Resource referent,
-			ReferenceQueue<? super Resource> q) {
-		super(referent, q);
+			ReferenceQueue<? super Resource> queue) {
+		super(referent, queue);
 		this.field = referent.getField();
 	}
 

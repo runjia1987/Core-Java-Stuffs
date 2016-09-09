@@ -22,7 +22,7 @@ public class TestClient {
 			thread.start();
 		}
 		
-		Thread.sleep(10000); // expect all threads have ended in 10 sec
+		Thread.sleep(10000); // expect all threads will have been ended in 10 sec
 		pool.close();  // will invoke PoolableObjectFactory.destroyObject()
 	}
 

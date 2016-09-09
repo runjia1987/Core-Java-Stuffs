@@ -42,10 +42,8 @@ public class ProviderService implements InitializingBean {
 	 * <br> 
 	 */
 	@Override
-	public void afterPropertiesSet() throws Exception {
-		CleanTask task = new CleanTask();
-		
-		Thread thread = new Thread(task, "CleanTask");		
+	public void afterPropertiesSet() throws Exception {		
+		Thread thread = new Thread(new CleanTask(), "CleanTask");
 		thread.start();
 		
 		System.out.println("CleanTask is started.");

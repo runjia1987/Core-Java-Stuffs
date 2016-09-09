@@ -11,9 +11,12 @@ public class MyObjectFactory implements PoolableObjectFactory {
 	}
 
 	@Override
-	public void destroyObject(Object arg0) throws Exception {
+	public void destroyObject(Object object) throws Exception {
+		if(object instanceof MyConnection){
+			MyConnection conn = (MyConnection)object;
+			conn.getResultSet().clear();
+		}
 		System.out.println("destroy this connection.");
-
 	}
 
 	@Override
@@ -30,13 +33,13 @@ public class MyObjectFactory implements PoolableObjectFactory {
 	}
 	
 	@Override
-	public void activateObject(Object arg0) throws Exception {
+	public void activateObject(Object object) throws Exception {
 		System.out.println("activate this connection.");
 
 	}
 	
 	@Override
-	public void passivateObject(Object arg0) throws Exception {
+	public void passivateObject(Object object) throws Exception {
 		System.out.println("passivate this connection.");
 	}
 
