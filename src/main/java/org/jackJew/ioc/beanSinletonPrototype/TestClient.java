@@ -1,5 +1,6 @@
 package org.jackJew.ioc.beanSinletonPrototype;
 
+import org.jackJew.classes.initialization.AbstractParent;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
@@ -20,6 +21,10 @@ public class TestClient {
 		singletonBean.setName("单例bean");
 		singletonBean.print();
 		singletonBean.print();
+		
+		AbstractParent parent = context.getBean(AbstractParent.class);
+		System.out.println("parent: " + parent);
+		
 		((AbstractApplicationContext)context).close();
 	}
 

@@ -9,6 +9,7 @@
 		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
 	<context:component-scan base-package="org.jackJew.ioc.spring.autowired" />
+	<context:component-scan base-package="org.jackJew.classes.initialization" />
 	
 	<bean id="startDate" class="java.util.Date">
 		<constructor-arg index="0" type="long" value="104823432423"/>
@@ -17,5 +18,5 @@
 	<bean id="endDate" class="java.util.Date">
 		<constructor-arg index="0" type="long" value="104999932423"/>
 	</bean>
-
+	
 </beans>

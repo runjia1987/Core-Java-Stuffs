@@ -1,5 +1,7 @@
 package org.jackJew.classes.initialization;
 
+import org.springframework.stereotype.Service;
+
 
 /**
  * [父子继承类的实例化时执行顺序]<br>
@@ -8,6 +10,7 @@ package org.jackJew.classes.initialization;
  * 									子类实例变量-普通初始化块 → 子类构造器
  * @author zhurunjia
  */
+@Service
 public class Child extends AbstractParent {
 	
 	private int number = 100;	//初始化为0, 直至<当前类>被实例化时才正常赋值
@@ -19,6 +22,10 @@ public class Child extends AbstractParent {
 	
 	static {
 		System.out.println("子类静态代码块");
+	}
+	
+	public Child() {
+		
 	}
 	
 	//父类的构造方法不能被子类继承
@@ -40,6 +47,10 @@ public class Child extends AbstractParent {
 		//number++;
 		System.out.println("子类add()方法: number@" + number + "  " + (character == '\u0000'));
 	
+	}
+
+	@Override
+	protected void func() {
 	}
 
 }

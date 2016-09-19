@@ -1,5 +1,8 @@
 package org.jackJew.classes.initialization;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public abstract class AbstractParent {
 	
 	protected abstract void print();
@@ -31,5 +34,7 @@ public abstract class AbstractParent {
 	public static void main(String[] args) {
 		System.out.println(new Child(1));
 	}
+	
+	abstract void func();
 
 }

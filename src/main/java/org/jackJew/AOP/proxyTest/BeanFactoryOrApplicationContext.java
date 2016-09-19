@@ -72,7 +72,6 @@ public class BeanFactoryOrApplicationContext {
 	 */
 }
 
-@Component("MyBeanFactoryPostProcessor")
 class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 
 	@Override
