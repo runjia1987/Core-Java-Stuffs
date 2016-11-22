@@ -43,15 +43,15 @@ public class TreeTraversing {
 	public void setUpTree(){
 		int i = 0;
 		int maxIndex = array.length - 1;
-		LinkedList<Node> nodeList = new LinkedList<Node>();  // for space efficiency, use LinkedList, we use add & delete
+		Queue<Node> nodeList = new LinkedList<Node>();  // for space efficiency, use LinkedList, we use offer & poll
 		while( true ) {
 			Node node = null;
 			if ( root == null ){
 				root = new Node(array[i]);
-				nodeList.add(root);
+				nodeList.offer(root);
 				node = root;
 			} else {
-				node = nodeList.getFirst();
+				node = nodeList.poll();
 			}
 			System.out.println(i);
 			int leftIndex = (i << 1) + 1, rightIndex = leftIndex + 1;
@@ -59,15 +59,14 @@ public class TreeTraversing {
 				break;
 			}
 			node.left = new Node(array[leftIndex]);
-			nodeList.add(node.left);
+			nodeList.offer(node.left);
 			
 			if (rightIndex <= maxIndex) {
 				node.right = new Node(array[rightIndex]);
-				nodeList.add(node.right);
+				nodeList.offer(node.right);
 			} else {
 				break;
 			}
-			nodeList.removeFirst();   // delete the first node in list
 			
 			i++;
 		}
@@ -103,10 +102,10 @@ public class TreeTraversing {
 			System.out.println(node.value);
 			
 			if(node.left != null) 
-				queue.add(node.left);
+				queue.offer(node.left);
 			
 			if(node.right != null)
-				queue.add(node.right);
+				queue.offer(node.right);
 		}
 	}
 	
@@ -117,20 +116,20 @@ public class TreeTraversing {
 	public void createSiblingLinks() {
 		Queue<Node> queue = new LinkedList<Node>();
 		Queue<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes of the same layer
-		queue.add(root);
+		queue.offer(root);
 		int times = 0, expectedPollCount = 1;
 		while ( ! queue.isEmpty() ){
 			Node node = queue.poll();
 			times++;			
 			
 			if(node.left != null) {
-				queue.add(node.left);
-				siblingNodes.add(node.left);
+				queue.offer(node.left);
+				siblingNodes.offer(node.left);
 			}
 
 			if(node.right != null) {
-				queue.add(node.right);
-				siblingNodes.add(node.right);
+				queue.offer(node.right);
+				siblingNodes.offer(node.right);
 			}
 			
 			if ( times == expectedPollCount) {

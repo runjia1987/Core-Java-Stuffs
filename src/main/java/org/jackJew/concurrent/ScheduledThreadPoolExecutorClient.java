@@ -26,18 +26,23 @@ public class ScheduledThreadPoolExecutorClient {
 		};
 		
 		//When submit a task to the executor, it returns you a FutureTask instance,
-		//FutureTask.get() will re-throw any exception thrown by the task as an ExecutorException.
+		//FutureTask.get() will re-throw any exception thrown by the task wrapped in an ExecutorException.
 
 		ExecutorService pool = new ThreadPoolExecutor(2, 2, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 		
 		Runnable task = () -> {
+			try {
+				Thread.sleep(1000L);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			System.out.println("123");
 			throw new IllegalArgumentException("test");
 		};
 		
 		pool.execute(task);
-		// Future<?> future = pool.submit(task);
-		// future.get();
+		//Future<?> future = pool.submit(task);
+		//future.get();
 		pool.shutdown();
 	}
 
