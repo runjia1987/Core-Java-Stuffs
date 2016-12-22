@@ -29,7 +29,11 @@ public class Parent {
 	}
 
 	protected void dosth() {
-		System.out.println("parent dosth()");
+		System.out.println("parent dosth(), " + getField());
+	}
+	
+	private int getField() {
+		return 100;
 	}
 
 	/**
