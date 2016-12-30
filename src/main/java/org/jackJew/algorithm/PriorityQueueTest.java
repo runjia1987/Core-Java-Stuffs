@@ -39,7 +39,7 @@ public class PriorityQueueTest {
 
 		Integer ele = 0;
 		while ((ele = pq.poll()) != null) {
-			// poll: siftDown, k = 0 ; (k+1) << 1,while loop, find where less
+			// poll: siftDown, k = 0 ; (k << 1) + 1|2,while loop, find where less
 			// than/equal to its children, or is the leaf
 			// poll: always poll the least element by siftDown method before
 			// return
