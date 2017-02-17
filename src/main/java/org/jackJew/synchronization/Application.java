@@ -2,6 +2,7 @@ package org.jackJew.synchronization;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Application {
 
@@ -15,7 +16,7 @@ public class Application {
 	public static AtomicInteger num2 = new AtomicInteger(0);
 	public final static Object ob = new Object();
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String args) throws InterruptedException {
 		long start = System.currentTimeMillis();
 		
 		Thread[] threads = new Thread[300];
@@ -35,6 +36,19 @@ public class Application {
 		System.out.println("value:" + num2 + ", Time elapsed(ms): "
 					+ (System.currentTimeMillis() - start));
 
+	}
+	
+	public static void main(String[] args) throws Exception {
+		ReentrantLock lock = new ReentrantLock();
+		lock.lock();
+		lock.lock();
+		lock.unlock();
+		System.out.println(lock.getHoldCount());
+		lock.unlock();
+		System.out.println(lock.getHoldCount());
+		
+		Thread.sleep(50);
+		lock.unlock();  // java.lang.IllegalMonitorStateException
 	}
 
 }
