@@ -14,7 +14,7 @@ public class ThreadOne extends Thread {
 	public void run() {
 		while (true) {
 			if (timesCount == times) { // completed
-				
+				System.out.println("threadOne exit");
 				lock.lock();
 				A_condition.signal();
 				lock.unlock();
