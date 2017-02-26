@@ -17,10 +17,12 @@ public class TestAroundClient {
 		Interface1 target = new TargetClass1("自定义的一个构造参数");		
 		ProxyFactoryBean bean = new ProxyFactoryBean();
 		
-		bean.addAdvice(new BeforeAdvice());
+		
 		bean.addAdvice(new AroundAdvice());	
-		bean.addAdvice(new AfterReturnAdvice());
+		
 		bean.addAdvice(new ThrowingAdvice());
+		bean.addAdvice(new BeforeAdvice());
+		bean.addAdvice(new AfterReturnAdvice());
 		bean.setTarget(target);
 		
 		//若setProxyTargetClass(true), 将使用Cglib2AopProxy创建AOP代理, which requires Cglib.jar on classpath;

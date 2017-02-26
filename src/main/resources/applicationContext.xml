@@ -68,15 +68,15 @@
         <tx:attributes>
             <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>    
-   </tx:advice>
+   	</tx:advice>
       
-   <aop:config>
+   	<aop:config>
    		<aop:pointcut id="txPointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
         <!-- TransactionProxyFactoryBean, new DefaultPointcutAdvisor(poinut, TransactionInterceptor) -->
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut" />
-   </aop:config>
+   	</aop:config>
    
-   <bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />
+   	<bean id="validService2" class="org.jackJew.AOP.transaction.declare.schema.ValidService" />
 	<bean id="transactionInValidService2" class="org.jackJew.AOP.transaction.declare.schema.InValidService" />
 	<bean id="transactionDao2" class="org.jackJew.AOP.transaction.declare.schema.PojoDao" />
     

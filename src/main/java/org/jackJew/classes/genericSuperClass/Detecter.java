@@ -2,7 +2,10 @@ package org.jackJew.classes.genericSuperClass;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 /**
@@ -32,6 +35,12 @@ public class Detecter {
 		ParameterizedType pt2 = (ParameterizedType)t2[0];
 		System.out.println(Arrays.toString(pt2.getActualTypeArguments()));
 		
+		Map<String, String> params = new HashMap<>();
+		params.put("url", "https://www.baidu.com");
+		String serialize = new Gson().toJson(params);
+		System.out.println(serialize);
+		Map<String, String> deserialize = new Gson().fromJson(serialize, Map.class);
+		System.out.println(deserialize.get("url"));
 	}
 
 }
