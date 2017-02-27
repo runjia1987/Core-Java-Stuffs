@@ -20,7 +20,7 @@ import java.util.Random;
  */
 public class NIOServer {
 	
-	final int PORT = 9999;
+	final static int PORT = 9999;
 	final int MAX_REQUESTS = 100;
 	private ByteBuffer buffer = ByteBuffer.allocate(1 << 10);
 	private String serverName;
@@ -72,11 +72,11 @@ public class NIOServer {
 				SocketChannel channel = sc.accept();
 				channel.configureBlocking(false);
 				System.out.println(this.serverName + " receives request from " +
-						channel.socket().getInetAddress());
+						channel.socket().getRemoteSocketAddress());
 				channel.write(ByteBuffer.wrap(
 								("Hello, welcome to " + this.serverName).getBytes()));
 				
-				channel.register(selector, SelectionKey.OP_READ);				
+				channel.register(selector, SelectionKey.OP_READ);
 			} else if(key.isReadable()){
 				SocketChannel channel = (SocketChannel) key.channel();
 				buffer.clear();  // notice !!!
@@ -90,7 +90,7 @@ public class NIOServer {
 							System.out.println("server request comes from client: " + rcvContent);							
 						}
 						System.out.println("server receive message: " + rcvContent);
-						channel.register(selector, SelectionKey.OP_WRITE);
+						key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
 					} else if(read == -1) {
 						// de-register the channel with OP_READ to avoid infinite events loop which
 						// is unnecessarily wasting CPU
@@ -100,19 +100,19 @@ public class NIOServer {
 					}
 				} catch(IOException cce){
 					closeChannel(channel);
-				}
-								
+				}								
 			} else if(key.isWritable()){
 				SocketChannel channel = (SocketChannel) key.channel();
 				buffer.clear();
 				String content = String.valueOf(RAND.nextInt(100000));				
 				buffer.put(content.getBytes());
+				final int size = buffer.position();
 				buffer.flip();
 				try {
 					System.out.println("server send: " + content);
-					channel.write(buffer);
-					channel.register(selector, SelectionKey.OP_READ);
-					
+					if(channel.write(buffer) == size) {
+						key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+					}	
 				} catch(IOException ioe){
 					closeChannel(channel);
 				}

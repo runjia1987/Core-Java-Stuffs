@@ -17,11 +17,9 @@ import java.util.UUID;
 public class NIOClient {
 
 	final String HOST = "127.0.0.1";
-	final int PORT = 9999;
 	final int MAX_REQUESTS = 10;
 	private ByteBuffer buffer = ByteBuffer.allocate(1 << 10);
 	private String clientName;
-	private boolean firstContact = true;
 	
 	public NIOClient(String name){
 		this.clientName = name;
@@ -29,27 +27,31 @@ public class NIOClient {
 
 	public void startListen() {
 		SocketChannel channel = null;
-		Selector selector = null;
+		Selector selector = null;		
 		try {
 			channel = SocketChannel.open();
 			selector = Selector.open();
 			channel.configureBlocking(false);
 			channel.register(selector, SelectionKey.OP_CONNECT);
-			channel.connect(new InetSocketAddress(HOST, PORT));
+			channel.connect(new InetSocketAddress(HOST, NIOServer.PORT));
 			
 			int requestTimes = 0;
 			while(requestTimes++ < MAX_REQUESTS){
 				System.out.println(this.clientName + " wait for incoming events... times: " + requestTimes);
-				// a blocking selection operation waiting for incomming events
-				selector.select();
-				
-				Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
-				while(keysItr.hasNext()){
-					SelectionKey key = keysItr.next();
-					keysItr.remove();
-					if(key.isValid()) {
-						handleKey(key, selector);
+				try {
+					// a blocking selection operation waiting for incomming events
+					selector.select();
+					
+					Iterator<SelectionKey> keysItr = selector.selectedKeys().iterator();
+					while(keysItr.hasNext()){
+						SelectionKey key = keysItr.next();
+						keysItr.remove();
+						if(key.isValid()) {
+							handleKey(key, selector);
+						}
 					}
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
@@ -66,7 +68,7 @@ public class NIOClient {
 	}
 	
 	private void handleKey(SelectionKey key, Selector selector) throws Exception {
-		System.out.println(key.isConnectable() + "," + key.isReadable() + "," + key.isWritable());
+		System.out.println(this.clientName + " key status: read " + key.isReadable() + ", write " + key.isWritable());
 		SocketChannel channel = (SocketChannel) key.channel();
 		if(key.isConnectable()){
 			boolean connected = true;
@@ -74,7 +76,7 @@ public class NIOClient {
 				if(channel.finishConnect()){
 					// A non-blocking connection operation,
 					// true if, and only if, this channel's socket is now connected
-					System.out.println(this.clientName + " connected to " + channel.socket().getInetAddress());
+					System.out.println(this.clientName + " connected to " + channel.socket().getRemoteSocketAddress());
 				} else{
 					// fail to connect in this try
 					connected = false;
@@ -92,7 +94,8 @@ public class NIOClient {
 				buffer.flip();
 				System.out.println(this.clientName + " receive: " + new String(buffer.array(), 0, read));
 				// don't register channels for OP_WRITE until you have something to write
-				channel.register(selector, SelectionKey.OP_WRITE);
+				key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
+				key.attach("firstContact");
 			} else if(read == -1) {
 				// de-register OP_READ to avoid infinite EOS events loop
 				key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
@@ -101,16 +104,21 @@ public class NIOClient {
 			}
 		} else if(key.isWritable()){
 			System.out.println(this.clientName + " will write...");
-			if( firstContact ) {
-				firstContact = false;
+			if( "firstContact".equals(key.attachment()) ) {
+				key.attach(null);
 				// write client name to server
-				channel.write(ByteBuffer.wrap(this.clientName.getBytes()));
+				byte[] writeContent = this.clientName.getBytes();
+				if(channel.write(ByteBuffer.wrap(writeContent)) == writeContent.length)  {
+					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);					
+				}
 			} else {
 				String uuidStr = UUID.randomUUID().toString();
 				System.out.println(this.clientName + " sends response: " + uuidStr);
-				channel.write(ByteBuffer.wrap(uuidStr.getBytes()));
+				byte[] writeContent = uuidStr.getBytes();
+				if(channel.write(ByteBuffer.wrap(writeContent)) == writeContent.length) {
+					key.interestOps(key.interestOps() & ~SelectionKey.OP_WRITE);
+				}
 			}
-			channel.register(selector, SelectionKey.OP_READ);
 		}
 	}
 
