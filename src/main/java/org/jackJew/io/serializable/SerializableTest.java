@@ -20,8 +20,8 @@ public class SerializableTest {
 	
 	public static void main(String[] args){
 		
-		//new SerializableTest().byteArrayReadWrite();
-		new SerializableTest().fileSystemReadWrite();
+		new SerializableTest().byteArrayReadWrite();
+		//new SerializableTest().fileSystemReadWrite();
 		
 	}
 	
@@ -57,6 +57,7 @@ public class SerializableTest {
 		try {
 			ByteArrayOutputStream bos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(bos);
+			user.setMethod(java.lang.String.class.getMethod("valueOf", new Class<?>[] {int.class}));
 			oos.writeObject(user);
 			oos.flush();
 			
@@ -68,7 +69,7 @@ public class SerializableTest {
 			System.out.println("恢复的对象是否==：" + (u == user));  //false
 			
 			System.out.println(u.getId() + "," + u.getUsername() + "," + u.getPassword());
-			
+			System.out.println(u.getMethod());  // null, because java.lang.reflect.Method is not serialized.
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

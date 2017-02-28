@@ -1,6 +1,5 @@
 package org.jackJew.mockito.implementation;
 
-import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,11 +8,11 @@ import org.objenesis.ObjenesisStd;
 
 public class Mock {
 	
-	public final static Map<Method, Object> methodsMap = new HashMap<Method, Object>();
+	public final static Map<MethodInvocation, Object> methodsMap = new HashMap<MethodInvocation, Object>();
 	
-	public final static Map<Method, Integer> methodExecutionMap = new HashMap<Method, Integer>();
+	public final static Map<MethodInvocation, Integer> methodExecutionMap = new HashMap<MethodInvocation, Integer>();
 	
-	public final static ThreadLocal<Method> methodLocal = new ThreadLocal<Method>();
+	public final static ThreadLocal<MethodInvocation> methodLocal = new ThreadLocal<MethodInvocation>();
 	
 	private final static Objenesis OBJENESIS = new ObjenesisStd();
 	
@@ -26,8 +25,16 @@ public class Mock {
 		return new OngoingStub<T>(methodLocal.get());
 	}
 	
+	public static <T> T verify(T object, int count) {
+		return new Verifier<T>(object, count).getProxy();
+	}
+	
 	public static <T> T verify(T object) {
-		return null;
+		return new Verifier<T>(object, 1).getProxy();
+	}
+	
+	public static int times(int count) {
+		return count;
 	}
 
 }

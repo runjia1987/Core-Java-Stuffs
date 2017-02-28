@@ -1,23 +1,21 @@
 package org.jackJew.mockito.implementation;
 
-import java.lang.reflect.Method;
-
 public class OngoingStub<T> {
 	
-	private Method invokedMethod;
+	private MethodInvocation invokedMethodInvocation;
 	
-	public OngoingStub(Method invokedMethod) {
-		this.invokedMethod = invokedMethod;
+	public OngoingStub(MethodInvocation invokedMethodInvocation) {
+		this.invokedMethodInvocation = invokedMethodInvocation;
 	}
 	
 	public OngoingStub<T> thenReturn(T returnVal) {
-		Mock.methodsMap.put(this.invokedMethod, returnVal);
+		Mock.methodsMap.put(this.invokedMethodInvocation, returnVal);
 		
-		Integer executionCount = Mock.methodExecutionMap.get(this.invokedMethod);
+		Integer executionCount = Mock.methodExecutionMap.get(this.invokedMethodInvocation);
 		if(executionCount == null) {
 			// do nothing
 		} else {
-			Mock.methodExecutionMap.put(this.invokedMethod, --executionCount);
+			Mock.methodExecutionMap.put(this.invokedMethodInvocation, --executionCount);
 		}
 		return this;
 	}

@@ -21,18 +21,19 @@ public class CglibClassSubclassing {
 		@Override
 		public Object intercept(Object obj, Method method, Object[] args,
 				MethodProxy proxy) throws Throwable {
-			Mock.methodLocal.set(method);
+			MethodInvocation methodInvocation = new MethodInvocation(method, args);
+			Mock.methodLocal.set(methodInvocation);
+			
+			Integer executionCount = Mock.methodExecutionMap.get(methodInvocation);
+			if(executionCount == null) {
+				Mock.methodExecutionMap.put(methodInvocation, 1);
+			} else {
+				Mock.methodExecutionMap.put(methodInvocation, ++executionCount);
+			}
 			
 			Object value = Mock.methodsMap.get(method);
 			if(value != null) {
 				return value;
-			}
-			
-			Integer executionCount = Mock.methodExecutionMap.get(method);
-			if(executionCount == null) {
-				Mock.methodExecutionMap.put(method, 1);
-			} else {
-				Mock.methodExecutionMap.put(method, ++executionCount);
 			}
 			return proxy.invokeSuper(obj, args);
 		}

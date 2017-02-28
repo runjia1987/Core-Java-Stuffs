@@ -3,6 +3,7 @@ package org.jackJew.io.serializable;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.lang.reflect.Method;
 
 /**
  * <i>一个序列化与反序列化的方法执行顺序</i>:
@@ -21,7 +22,18 @@ public class UserInfo implements java.io.Serializable {
 	private String username;
 	private transient String password;	//不定义transient关键字也可实现此字段不被序列化;
 										//定义了transient关键字也可实现此字段被序列化.
-	public static String XXX = "XXX";
+	public static String XXX = "XXX";   // static variable won't be serialized
+	
+	private Method method;  // Method is not serializable class, won't be serialized
+	
+	/**
+	 * 在writeObject()方法前调用，在序列化之前替换对象. <br/>
+	 * 最高优先级，直接序列化写进流，反序列化后也是该值
+	 */
+	private Object writeReplace() {
+		System.out.println("writeReplace method.");
+        return "write replace string";
+	}
 	
 	/**
 	 * 自定义<i>私有</i>的writeObject方法,
@@ -54,22 +66,13 @@ public class UserInfo implements java.io.Serializable {
 	}
 	
 	/**
-	 * 在writeObject()方法前调用，在序列化之前替换对象. <br/>
-	 * 最高优先级，直接序列化写进流，反序列化后也是该值
-	 */
-	private Object writeReplace() {
-		System.out.println("writeReplace method.");
-        return "write replace string";  
-    }
-	
-	/**
 	 * 在readObject()方法后调用，在反序列化之后返回对象.
 	 * <br> 可用来替代使用保护性拷贝的readObject方法, 例如返回单一实例(所有实例变量都应为transient)
 	 */
 	private Object readResolve() {
 		System.out.println("readResolve method.");
         return "readResolve string";  
-    }
+	}
     
 	public UserInfo(Integer id, String name, String password){
 		this.id = id;
@@ -103,6 +106,14 @@ public class UserInfo implements java.io.Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public Method getMethod() {
+		return method;
+	}
+
+	public void setMethod(Method method) {
+		this.method = method;
 	}
 
 }
