@@ -36,13 +36,13 @@ public class SerializableTest {
 			oos.close();
 			
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("d:\\data.bin"));
-			UserInfo u = (UserInfo)ois.readObject();	//注意在此方法调用时，对传递的实现了Serializable接口的对象，检查其是否实现了private的readObject(ois)方法，如有则调用该方法，否则调用默认方法
+			Object u = ois.readObject();	//注意在此方法调用时，对传递的实现了Serializable接口的对象，检查其是否实现了private的readObject(ois)方法，如有则调用该方法，否则调用默认方法
 			ois.close();
 
 			//下面的语句为false, 因为新建对象了. 可改写readResolve方法返回同一个实例(Singleton单例)
 			System.out.println("恢复的对象是否==：" + (u == user));  //false
 			
-			System.out.println(u.getId() + "," + u.getUsername() + "," + u.getPassword());
+			System.out.println(u.toString());
 			//System.out.println(u.getSerialversionuid());
 			
 		} catch (Exception e) {

@@ -54,11 +54,12 @@ public class UserInfo implements java.io.Serializable {
 	}
 	
 	/**
-	 * 在writeObject()方法前调用，在序列化之前替换对象.
+	 * 在writeObject()方法前调用，在序列化之前替换对象. <br/>
+	 * 最高优先级，直接序列化写进流，反序列化后也是该值
 	 */
 	private Object writeReplace() {
 		System.out.println("writeReplace method.");
-        return this;  
+        return "write replace string";  
     }
 	
 	/**
@@ -67,7 +68,7 @@ public class UserInfo implements java.io.Serializable {
 	 */
 	private Object readResolve() {
 		System.out.println("readResolve method.");
-        return this;  
+        return "readResolve string";  
     }
     
 	public UserInfo(Integer id, String name, String password){
