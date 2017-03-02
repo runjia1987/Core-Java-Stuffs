@@ -8,7 +8,7 @@ import net.sf.cglib.proxy.MethodProxy;
 
 public class CglibClassSubclassing {	
 	
-	public static Class<?> createClass(Class<?> cls) {
+	public Class<?> createClass(Class<?> cls) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(cls);
 		enhancer.setCallbackType(Callback.class);
@@ -16,11 +16,19 @@ public class CglibClassSubclassing {
 		return enhancer.createClass();
 	}
 	
-	public static class Callback implements MethodInterceptor {
+	public Class<?> createClass(Class<?> cls, Class<?> advisedInterface) {
+		Enhancer enhancer = new Enhancer();
+		enhancer.setSuperclass(cls);
+		enhancer.setCallbackType(Noop.class);
+		enhancer.setInterfaces(new Class<?>[] {advisedInterface });
+		return enhancer.createClass();
+	}
+	
+	public class Callback implements MethodInterceptor {
 
 		@Override
-		public Object intercept(Object obj, Method method, Object[] args,
-				MethodProxy proxy) throws Throwable {
+		public Object intercept(Object proxy, Method method, Object[] args,
+				MethodProxy methodproxy) throws Throwable {
 			MethodInvocation methodInvocation = new MethodInvocation(method, args);
 			Mock.methodLocal.set(methodInvocation);
 			
@@ -31,11 +39,21 @@ public class CglibClassSubclassing {
 				Mock.methodExecutionMap.put(methodInvocation, ++executionCount);
 			}
 			
-			Object value = Mock.methodsMap.get(method);
+			Object value = Mock.methodsMap.get(methodInvocation);
 			if(value != null) {
 				return value;
 			}
-			return proxy.invokeSuper(obj, args);
+			return null;
+		}
+		
+	}
+	
+	public class Noop implements MethodInterceptor {
+
+		@Override
+		public Object intercept(Object obj, Method method, Object[] args,
+				MethodProxy proxy) throws Throwable {
+			return null;
 		}
 		
 	}

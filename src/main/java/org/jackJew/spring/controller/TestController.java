@@ -1,5 +1,10 @@
 package org.jackJew.spring.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.jackJew.ioc.beanSinletonPrototype.SingletonBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +26,10 @@ public class TestController {
 	@Autowired
 	private SingletonBean singletonBean;
 	
+	private Map<String, String> map;
+	
+	private HashMap<String, String> hashMap;
+	
 	@RequestMapping(value = "/call", method = RequestMethod.GET)
 	public String call() {
 		return "{OK:1}";
@@ -29,6 +38,20 @@ public class TestController {
 	@RequestMapping(value = "/testRequestParam", method = RequestMethod.GET)
 	public String testRequestParam(@RequestParam String tid) {
 		return "tid: " + tid;
+	}
+	
+	/**
+	 * for test of {@link org.jackJew.mockito.implementation.Mock }
+	 */
+	public String test() {
+		return map.get("key");
+	}
+	
+	/**
+	 * for test of {@link org.jackJew.mockito.implementation.Mock }
+	 */
+	public String testFormat() {
+		return hashMap.get("key");
 	}
 
 }
