@@ -25,7 +25,7 @@ public class TestClient {
 		Assert.assertEquals("value", result);
 		
 		verify(map, times(1)).get("key");
-		System.out.println("Assert.assertEquals true");
+		System.out.println("Assert.assertEquals true, verify true");
 		
 		// -----------------------------------------------------------------------------
 		
@@ -34,11 +34,27 @@ public class TestClient {
 		
 		when(hashMap.get("key2")).thenReturn("value2");
 		
-		result = testController.test();
+		result = testController.test2();
 		
-		verify(hashMap, times(1)).get("key");
+		verify(hashMap, times(1)).get("key2");
 		Assert.assertEquals("value2", result);
 		
+		System.out.println("Assert.assertEquals true, verify true");
+		
+		try {
+			verify(hashMap, times(1)).get("key");  // fail
+		} catch(IllegalArgumentException e) {
+			Assert.assertNotNull(e);
+		}
+		try {
+			verify(hashMap, times(2)).get("key2");  // fail
+		} catch(IllegalArgumentException e) {
+			Assert.assertNotNull(e);
+		}
+		
+		when(hashMap.get(any(String.class))).thenReturn("value3");
+		
+		result = testController.test2();
 	}
 		
 }

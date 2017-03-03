@@ -29,6 +29,7 @@ public class ObjenesisCglibProxyGenerator<T> {
 		this.target = target;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public T generateProxy() {
 		Class<T> subClass = new CglibSubClassingStrategy().createClass(target);
 		System.out.println(subClass);   // subClass extends T implements Factory, SpringProxy, Advised
@@ -36,7 +37,7 @@ public class ObjenesisCglibProxyGenerator<T> {
 		Factory factoryProxy = (Factory) objenesis.getInstantiatorOf(subClass).newInstance(); //not by constructor, instead via ReflectionFactory
 		factoryProxy.setCallback(0, new AdvisedCallback());
 		
-		return (T)factoryProxy;
+		return (T) factoryProxy;
 	}
 	
 	public class AdvisedCallback implements MethodInterceptor {

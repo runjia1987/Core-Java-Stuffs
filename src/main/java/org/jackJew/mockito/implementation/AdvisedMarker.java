@@ -6,5 +6,5 @@ package org.jackJew.mockito.implementation;
  *
  */
 public interface AdvisedMarker {
-
+	int serialVersion = 9876543;
 }

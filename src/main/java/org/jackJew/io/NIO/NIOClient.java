@@ -95,7 +95,9 @@ public class NIOClient {
 				System.out.println(this.clientName + " receive: " + new String(buffer.array(), 0, read));
 				// don't register channels for OP_WRITE until you have something to write
 				key.interestOps(key.interestOps() | SelectionKey.OP_WRITE);
-				key.attach("firstContact");
+				if(!"contacted".equals(key.attachment())) {
+					key.attach("firstContact");
+				}
 			} else if(read == -1) {
 				// de-register OP_READ to avoid infinite EOS events loop
 				key.interestOps(key.interestOps() & ~SelectionKey.OP_READ);
@@ -105,7 +107,7 @@ public class NIOClient {
 		} else if(key.isWritable()){
 			System.out.println(this.clientName + " will write...");
 			if( "firstContact".equals(key.attachment()) ) {
-				key.attach(null);
+				key.attach("contacted");
 				// write client name to server
 				byte[] writeContent = this.clientName.getBytes();
 				if(channel.write(ByteBuffer.wrap(writeContent)) == writeContent.length)  {

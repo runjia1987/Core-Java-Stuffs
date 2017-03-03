@@ -12,6 +12,7 @@ import net.sf.cglib.proxy.Enhancer;
  */
 public class CglibSubClassingStrategy {
 	
+	@SuppressWarnings("unchecked")
 	public <T> Class<T> createClass(T target) {
 		Enhancer enhancer = new Enhancer();
 		enhancer.setSuperclass(target.getClass());

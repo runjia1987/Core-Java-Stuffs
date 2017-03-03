@@ -1,7 +1,5 @@
 package org.jackJew.spring.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,8 +48,8 @@ public class TestController {
 	/**
 	 * for test of {@link org.jackJew.mockito.implementation.Mock }
 	 */
-	public String testFormat() {
-		return hashMap.get("key");
+	public String test2() {
+		return hashMap.get("key2");
 	}
 
 }

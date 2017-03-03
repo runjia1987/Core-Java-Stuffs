@@ -1,21 +1,37 @@
 package org.jackJew.mockito.implementation;
 
 import java.lang.reflect.Method;
-import java.util.Arrays;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import org.jackJew.mockito.implementation.Mock.AnyAny;
 
 public class MethodInvocation {
 	
 	private Method method;
 	private Object[] arguments;
 	
-	public MethodInvocation(Method method, Object[] arguments) {
+	MethodInvocation(Method method, Object[] arguments) {
 		this.method = method;
 		this.arguments = arguments;
+		if(arguments != null && arguments.length > 0) {
+			Set<Entry<Class<?>, AnyAny>> set = Mock.anyObjectMap.entrySet();
+			for(int i = 0; i < arguments.length; i++) {				
+				for(Entry<Class<?>, AnyAny> entry : set) {
+					if(method.getParameterTypes()[i].isAssignableFrom(entry.getKey())) {
+						if(entry.getValue() != null && (entry.getValue().getAnyObject() == arguments[i]
+														 || entry.getValue().getAnyObject() == null)) {
+							entry.getValue().setUsed(true);
+						}
+					}
+				}
+			}
+		}
 	}
 	
 	public boolean equals(Object obj) {
 		if(obj instanceof MethodInvocation) {
-			MethodInvocation methodInvocation = (MethodInvocation)obj;
+			MethodInvocation methodInvocation = (MethodInvocation) obj;
 			if(!method.equals(methodInvocation.method)) {
 				return false;
 			}
@@ -30,14 +46,35 @@ public class MethodInvocation {
 				if(size0 != size1) {
 					return false;
 				} else {
+					Set<Entry<Class<?>, AnyAny>> set = Mock.anyObjectMap.entrySet();
 					int i = 0;
 					boolean allEqual = true;
 					while(i < size0) {
-						if(arguments[i] == methodInvocation.arguments[i] ||
-								(arguments[i] != null && arguments[i].equals(methodInvocation.arguments[i]))) {
+						if(arguments[i] == methodInvocation.arguments[i]
+								|| (arguments[i] == null && methodInvocation.arguments[i] instanceof AdvisedMarker)
+								|| (arguments[i] != null && (
+										arguments[i].equals(methodInvocation.arguments[i])
+										|| methodInvocation.arguments[i] instanceof AdvisedMarker
+										))
+								|| (arguments[i] instanceof AdvisedMarker && methodInvocation.arguments[i] instanceof AdvisedMarker)) {
 							i++;
 							continue;
 						} else {
+							if(arguments[i] != null) {
+								boolean matched = false;
+								for(Entry<Class<?>, AnyAny> entry : set) {
+									if(method.getParameterTypes()[i].isAssignableFrom(entry.getKey())) {
+										if(entry.getValue() != null && entry.getValue().getAnyObject() == methodInvocation.arguments[i]) {
+											matched = true;
+											break;
+										}
+									}
+								}
+								if(matched) {
+									i++;
+									continue;
+								}
+							}
 							allEqual = false;
 							break;
 						}
@@ -50,7 +87,7 @@ public class MethodInvocation {
 	}
 	
 	public int hashCode() {
-		return method.hashCode() << 1 + (arguments == null ? 0 : Arrays.toString(arguments).hashCode());
+		return method.hashCode();
 	}
 
 }
