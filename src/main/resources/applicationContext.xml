@@ -62,14 +62,18 @@
 	<tx:annotation-driven transaction-manager="transactionManager"/>
 	
 	<!-- TransactionInterceptor extends TransactionAspectSupport implements MethodInterceptor,
-			transactionManager, transactionAttributes, invokeWithInTransaction() -->
+			setTransactionManager(), setTransactionAttributes(), invokeWithInTransaction() -->
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<!-- TransactionAttributes -->
+		<!-- NameMatchTransactionAttributeSource.setProperties(transactionAttributes),
+			 holds nameMap<methodName, TransactionAttribute>,  TransactionAttribute extends TransactionDefinition -->
         <tx:attributes>
             <tx:method name="insert*" propagation="REQUIRED" />
         </tx:attributes>    
    	</tx:advice>
-      
+    
+    <!-- TransactionProxyFactoryBean extends AbstractSingleProxyFactoryBean, 
+    	 createMainInterceptor() -> new TransactionInterceptor(), setPointcut(),
+    	 dependency injection call setTransactionManager()/setTransactionAttributes() invoked on transactionInterceptor -->
    	<aop:config>
    		<aop:pointcut id="txPointcut" expression="execution(* org.jackJew.AOP.transaction.declare.schema.*Service*.*(..))" />  
         <!-- TransactionProxyFactoryBean, new DefaultPointcutAdvisor(poinut, TransactionInterceptor) -->
