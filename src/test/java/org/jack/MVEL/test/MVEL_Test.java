@@ -1,6 +1,7 @@
 package org.jack.MVEL.test;
 
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -20,6 +21,8 @@ public class MVEL_Test {
 	@BeforeClass
 	public static void beforeClass(){
 		//
+		DecimalFormat format = new DecimalFormat(",##0.00");
+		System.out.println(format.format(79832183.78782d));
 	}
 	
 	/**
