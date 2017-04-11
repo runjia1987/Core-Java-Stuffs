@@ -41,23 +41,27 @@ public class InstantiationStrategy {
 			return (T) null;
 		}
 	}
+
+	public final Object invokeAndReturn(Method method, Object[] args) {
+		MethodInvocation methodInvocation = new MethodInvocation(method, args);
+		Mock.methodLocal.set(methodInvocation);
+
+		Integer executionCount = Mock.methodExecutionMap.get(methodInvocation);
+		if(executionCount == null) {
+			Mock.methodExecutionMap.put(methodInvocation, 1);
+		} else {
+			Mock.methodExecutionMap.put(methodInvocation, ++executionCount);
+		}
+		Object value = Mock.methodsMap.get(methodInvocation);
+		return value;
+	}
 	
 	public class Callback implements MethodInterceptor {
 
 		@Override
 		public Object intercept(Object proxy, Method method, Object[] args,
 				MethodProxy methodproxy) throws Throwable {
-			MethodInvocation methodInvocation = new MethodInvocation(method, args);
-			Mock.methodLocal.set(methodInvocation);
-			
-			Integer executionCount = Mock.methodExecutionMap.get(methodInvocation);
-			if(executionCount == null) {
-				Mock.methodExecutionMap.put(methodInvocation, 1);
-			} else {
-				Mock.methodExecutionMap.put(methodInvocation, ++executionCount);
-			}
-			Object value = Mock.methodsMap.get(methodInvocation);
-			return value;
+			return invokeAndReturn(method, args);
 		}
 		
 	}
@@ -77,19 +81,8 @@ public class InstantiationStrategy {
 		@Override
 		public Object invoke(Object proxy, Method method, Object[] args)
 				throws Throwable {
-			MethodInvocation methodInvocation = new MethodInvocation(method, args);
-			Mock.methodLocal.set(methodInvocation);
-			
-			Integer executionCount = Mock.methodExecutionMap.get(methodInvocation);
-			if(executionCount == null) {
-				Mock.methodExecutionMap.put(methodInvocation, 1);
-			} else {
-				Mock.methodExecutionMap.put(methodInvocation, ++executionCount);
-			}
-			Object value = Mock.methodsMap.get(methodInvocation);
-			return value;
+			return invokeAndReturn(method, args);
 		}
-		
 	}
 	
 	public class JdkCallbackNoop implements InvocationHandler {
