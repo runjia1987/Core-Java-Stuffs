@@ -3,6 +3,7 @@ package org.jackJew.AOP.proxyTest;
 import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
 
+import org.jackJew.classes.interfaces.Interface;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
@@ -39,6 +40,18 @@ public class AtConfigurationAtBeanWithBeanLifecycle {
 	@Bean(name={"BB", "BBBBB"})   //self define bean alias names, could be array[]
 	ABB getBB(){
 		return new BB();
+	}
+
+	@Bean
+	Integer createInt() { // only create once
+		System.out.println("create int");
+		return Integer.MAX_VALUE;
+	}
+
+	@Bean
+	String createString() { // only create once
+		System.out.println("create string");
+		return String.valueOf(createInt());
 	}
 
 	public static void main(String[] args) {

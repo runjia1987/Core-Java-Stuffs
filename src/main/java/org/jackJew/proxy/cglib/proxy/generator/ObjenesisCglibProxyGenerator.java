@@ -1,6 +1,7 @@
 package org.jackJew.proxy.cglib.proxy.generator;
 
 import java.lang.reflect.Method;
+import java.util.Arrays;
 
 import org.springframework.objenesis.Objenesis;
 import org.springframework.objenesis.ObjenesisStd;
@@ -32,7 +33,8 @@ public class ObjenesisCglibProxyGenerator<T> {
 	@SuppressWarnings("unchecked")
 	public T generateProxy() {
 		Class<T> subClass = new CglibSubClassingStrategy().createClass(target);
-		System.out.println(subClass);   // subClass extends T implements Factory, SpringProxy, Advised
+		Arrays.asList(subClass.getInterfaces()).forEach(System.out::println);
+		// subClass extends T implements Factory, SpringProxy, Advised
 		
 		Factory factoryProxy = (Factory) objenesis.getInstantiatorOf(subClass).newInstance(); //not by constructor, instead via ReflectionFactory
 		factoryProxy.setCallback(0, new AdvisedCallback());

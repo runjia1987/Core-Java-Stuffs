@@ -59,30 +59,3 @@ public class SubjectTest {
 	}
 
 }
-
-class SubjectTest2 extends TestCase {
-
-	/**
-	 * Junit 3.x 方式
-	 * like @Before in JUnit 4.x
-	 */
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		System.out.println("setUp()");
-	}
-
-	/**
-	 * like @After in JUnit 4.x
-	 */
-	@Override
-	protected void tearDown() throws Exception {
-		super.tearDown();
-		System.out.println("tearDown()");
-	}
-	
-	public void testAdd(){
-		System.out.println("testAdd");
-	}
-	
-}

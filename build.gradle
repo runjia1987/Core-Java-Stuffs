@@ -1,0 +1,104 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.1.4-3'
+    id "org.jetbrains.kotlin.plugin.spring" version '1.1.4-3'
+    id "org.jetbrains.kotlin.plugin.jpa" version '1.1.4-3'
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: "kotlin-spring"
+    apply plugin: "kotlin-jpa"
+
+    apply plugin: 'idea'
+    apply plugin: 'eclipse'
+    apply plugin: 'maven'
+    apply plugin: "war"
+    apply plugin: "jetty"
+
+    [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+
+    sourceCompatibility = '1.8'
+    targetCompatibility = '1.8'
+
+    repositories {
+        println "repo locating"
+        mavenLocal()
+        mavenCentral()
+        println "repo located"
+    }
+
+    configurations {
+        provided
+    }
+
+    sourceSets {
+        main.compileClasspath += configurations.provided
+        test.compileClasspath += configurations.provided
+        test.runtimeClasspath += configurations.provided
+    }
+
+    war {
+        baseName = 'Core-Xapp'
+    }
+
+    dependencies {
+        def spring_ver = "4.1.6.RELEASE"
+        compile 'org.jetbrains.kotlin:kotlin-stdlib:1.1.4-3',
+                'com.google.guava:guava:18.0'
+        compile("cglib:cglib:3.2.2") {
+            exclude group: "org.ow2.asm"
+            exclude group: "org.apache.ant"
+            exclude group: "junit"
+        }
+        compile "org.objenesis:objenesis:2.3",
+                "org.ow2.asm:asm:5.1",
+                "aopalliance:aopalliance:1.0",
+                "org.aspectj:aspectjweaver:1.8.6",
+
+                "org.springframework:spring-core:${spring_ver}",
+                "org.springframework:spring-orm:${spring_ver}",
+                "org.springframework:spring-jdbc:${spring_ver}",
+                "org.springframework:spring-tx:${spring_ver}",
+                "org.springframework:spring-context:${spring_ver}",
+                "org.springframework:spring-aop:${spring_ver}",
+                "org.springframework:spring-test:${spring_ver}",
+                "org.springframework:spring-webmvc:${spring_ver}",
+
+                'junit:junit:4.11',
+                "com.google.code.gson:gson:2.6.1",
+                "commons-logging:commons-logging:1.1.3",
+                "org.slf4j:slf4j-api:1.7.5",
+                "org.slf4j:slf4j-log4j12:1.7.5",
+                'org.apache.poi:poi:3.15',
+                'org.apache.poi:poi-ooxml:3.15',
+                'org.apache.poi:poi-ooxml-schemas:3.15'
+
+        provided "javax.servlet:servlet-api:2.5"
+        provided "javax.servlet.jsp:jsp-api:2.1"
+
+        compile("org.quartz-scheduler:quartz:2.2.1") {
+            exclude group: "c3p0"
+        }
+        compile("org.apache.commons:commons-dbcp2:2.1.1") {
+            exclude group: "junit"
+            exclude group: "tomcat"
+            exclude group: "org.apache.geronimo.modules"
+        }
+        compile "mysql:mysql-connector-java:5.1.29"
+        compile("org.mvel:mvel2:2.2.8.Final") {
+            exclude group: "junit"
+            exclude module: "xstream"
+        }
+        compile("org.apache.httpcomponents:httpclient:4.5.2") {
+            exclude module: "commons-logging"
+        }
+        compile "org.projectlombok:lombok:1.16.10",
+                "org.jack:crawler-common:1.2-SNAPSHOT"
+    }
+
+    test.includes = ['org/**']
+
+    jettyRun.contextPath = 'Core-Xapp'
+    jettyRunWar.contextPath = 'Core-Xapp'
+}

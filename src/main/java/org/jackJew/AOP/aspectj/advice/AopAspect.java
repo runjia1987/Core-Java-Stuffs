@@ -22,7 +22,7 @@ import org.springframework.stereotype.Component;
 @Aspect
 public class AopAspect {
 	
-	@Pointcut("execution(* *..JoinpointOperation.*(..))")
+	@Pointcut("execution(* *..JoinpointOperation.*(..)) || execution(* *..JoinpointOperation.save*(..))")
 	private void pointcutDef(){  }
 	
 	private @Pointcut("execution(public * org.jackJew.spring.controller.*.*(..))")

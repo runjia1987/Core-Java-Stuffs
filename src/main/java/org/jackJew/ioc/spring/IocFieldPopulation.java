@@ -2,6 +2,7 @@ package org.jackJew.ioc.spring;
 
 import javax.annotation.Resource;
 
+import lombok.Getter;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor;
@@ -32,7 +33,8 @@ import org.springframework.util.StringUtils;
  *
  */
 @Service
-public class IocFieldPopulation {
+@Getter
+public class IocFieldPopulation extends Parent {
 	
 	/**
 	 * handled by CommonAnnotationBeanPostProcessor
@@ -99,6 +101,7 @@ public class IocFieldPopulation {
 		System.out.println(bean.jdbc_userName);   	//autowiring success
 		System.out.println(bean.child1);
 		System.out.println(bean.child2);
+		System.out.println(bean.getParentField());  // 123 in parent
 		
 		beanFactory.destroySingletons();		
 	}

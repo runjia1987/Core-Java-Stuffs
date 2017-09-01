@@ -1,9 +1,19 @@
 package org.jackJew.design.connectionPool;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
+import org.apache.commons.pool2.PooledObject;
+
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
 public class MyConnection {
 	
 	private String user;	
@@ -14,27 +24,8 @@ public class MyConnection {
 		this.user = "jack";
 		this.password = "123456";
 		
-		this.resultSet = new HashSet<Object>(1 << 8);
+		this.resultSet = new HashSet<>(1 << 8);
 		this.resultSet.add(new Date());
-	}
-	
-	public String getUser() {
-		return user;
-	}
-	public void setUser(String user) {
-		this.user = user;
-	}
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	public Set<Object> getResultSet() {
-		return resultSet;
-	}
-	public void setResultSet(Set<Object> resultSet) {
-		this.resultSet = resultSet;
 	}
 
 }

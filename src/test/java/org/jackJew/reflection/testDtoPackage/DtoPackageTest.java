@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.List;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
@@ -22,6 +23,7 @@ public class DtoPackageTest {
 	private final Objenesis objenesis = new ObjenesisStd();
 
 	@Test
+	@Ignore
 	public void testDtoMethods() {
 		String usePackage = "org/jackJew/test/dto/**/*";
 		String baseClassPackage = DtoPackageTest.class.getPackage().getName();
