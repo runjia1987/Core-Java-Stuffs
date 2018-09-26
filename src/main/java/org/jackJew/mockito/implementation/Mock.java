@@ -6,15 +6,15 @@ import java.util.Map;
 
 public class Mock {
 	
-	public final static Map<Object, Class<?>> objectTypeMap = new IdentityHashMap<>();
+	final static Map<Object, Class<?>> objectTypeMap = new IdentityHashMap<>();
 	
-	public final static Map<MethodInvocation, Object> methodsMap = new HashMap<>();
+	final static Map<MethodInvocation, Object> methodsMap = new HashMap<>();
 	
-	public final static Map<MethodInvocation, Integer> methodExecutionMap = new HashMap<>();
+	final static Map<MethodInvocation, Integer> methodExecutionMap = new HashMap<>();
 	
-	public final static Map<Class<?>, AnyAny> anyObjectMap = new HashMap<>();
+	final static Map<Class<?>, AnyAny> anyObjectMap = new HashMap<>();
 	
-	public final static ThreadLocal<MethodInvocation> methodLocal = new ThreadLocal<>();
+	final static ThreadLocal<MethodInvocation> methodLocal = new ThreadLocal<>();
 	
 	public static <T> T mock(Class<T> cls) {
 		T mockedObject = new InstantiationStrategy().instantiate(cls);
@@ -23,7 +23,7 @@ public class Mock {
 	}
 	
 	public static <T> OngoingStub<T> when(T methodCall) {
-		return new OngoingStub<T>(methodLocal.get());
+		return new OngoingStub<>(methodLocal.get());
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -68,10 +68,6 @@ public class Mock {
 
 		public AdvisedMarker getAnyObject() {
 			return anyObject;
-		}
-
-		public boolean isUsed() {
-			return used;
 		}
 	}
 

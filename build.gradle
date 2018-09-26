@@ -14,7 +14,6 @@ allprojects {
     apply plugin: 'eclipse'
     apply plugin: 'maven'
     apply plugin: "war"
-    apply plugin: "jetty"
 
     [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
@@ -98,7 +97,4 @@ allprojects {
     }
 
     test.includes = ['org/**']
-
-    jettyRun.contextPath = 'Core-Xapp'
-    jettyRunWar.contextPath = 'Core-Xapp'
 }

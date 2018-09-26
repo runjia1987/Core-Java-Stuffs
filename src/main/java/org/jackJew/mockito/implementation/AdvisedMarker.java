@@ -5,6 +5,5 @@ package org.jackJew.mockito.implementation;
  * @author zhurunjia192
  *
  */
-public interface AdvisedMarker {
-	int serialVersion = 9876543;
+interface AdvisedMarker {
 }
