@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -17,7 +16,7 @@ import java.util.concurrent.Future;
 public class CyclicBarrierClient {
 	
 	// 三个参与者即三个独立的线程
-	final static int NUMBER = 3;
+	private static final int NUMBER = 3;
 	/**
 	 * A CyclicBarrier supports an optional Runnable command that is run once
 	 * per barrier point when the last thread arrives, but before any threads
@@ -40,7 +39,7 @@ public class CyclicBarrierClient {
 	}
 
 	public void increment() {
-		this.index++;
+		index++;
 	}
     
     //内部类, 描述过程
@@ -75,10 +74,8 @@ public class CyclicBarrierClient {
 				System.out.println(journeyName + "到达杭州");
 				_barrier.await();
 				
-			} catch(InterruptedException ie){
-				ie.printStackTrace();
-			} catch (BrokenBarrierException e) {
-				e.printStackTrace();
+			} catch(InterruptedException | BrokenBarrierException ex){
+				ex.printStackTrace();
 			}
 		}
     	
@@ -86,21 +83,21 @@ public class CyclicBarrierClient {
 
 	public static void main(String[] args) throws Exception {
 		final CyclicBarrierClient cbc = new CyclicBarrierClient();
-		List<Future<?>> futureList = new ArrayList<Future<?>>();
+		List<Future<?>> futureList = new ArrayList<>();
 		
-		cbc.barrier = new CyclicBarrier(NUMBER, new Runnable() {
-			@Override
-			public void run() {
-				if(cbc.getIndex() == 0)System.out.println(":::已到达北京");
-				else if(cbc.getIndex() == 1)System.out.println(":::已到达上海");
-				else if(cbc.getIndex() == 2)System.out.println(":::已达到合肥");
-				else if(cbc.getIndex() == 3)System.out.println(":::已达到杭州");
+		cbc.barrier = new CyclicBarrier(NUMBER, () ->
+			{
+				if(cbc.getIndex() == 0)System.out.println(":::已到达北京\n");
+				else if(cbc.getIndex() == 1)System.out.println(":::已到达上海\n");
+				else if(cbc.getIndex() == 2)System.out.println(":::已达到合肥\n");
+				else if(cbc.getIndex() == 3)System.out.println(":::已达到杭州\n");
+
 				cbc.increment();
 			}
-		});
+		);
 		
 		ExecutorService es = Executors.newFixedThreadPool(NUMBER);
-		System.out.println("开始出发...");
+		System.out.println("开始出发...\n");
 		
 		futureList.add(es.submit(new Journey(cbc.barrier, "walk", cbc.timeWalk)));
 		futureList.add(es.submit(new Journey(cbc.barrier, "drive", cbc.timeDrive)));
@@ -110,7 +107,7 @@ public class CyclicBarrierClient {
 			futureList.get(i).get();
 		}
 		
-		System.out.println("全部队伍都已到达终点!!!");
+		System.out.println("\n全部队伍都已到达终点!!!");
 		es.shutdown();
 	}
 

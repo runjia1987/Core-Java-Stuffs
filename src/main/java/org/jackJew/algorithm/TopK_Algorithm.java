@@ -91,23 +91,22 @@ public class TopK_Algorithm {
 	 * time cost: n*logK
 	 */
 	public void getTopKByMinHeap(int[] array, int k) {
-		int i = 0, index = 0, max = array.length;
+		int i = 0, max = array.length;
 		int[] store = new int[k];
 		// set up k-size array
 		while (i < k) {
 			if (i == 0) {
-				store[0] = array[index];
+				store[0] = array[0];
 			} else {
-				siftUp(store, i, array[index]);
+				siftUp(store, i, array[i]);
 			}
 			i++;
-			index++;
 		}
 
 		System.out.println("k-size heap is setUp: " + Arrays.toString(store));
 
-		while (index < max) {
-			int element = array[index++];
+		while (i < max) {
+			int element = array[i++];
 			if (element > store[0]) {
 				siftDown(store, 0, element);
 			}
@@ -121,9 +120,8 @@ public class TopK_Algorithm {
 	 * @param element
 	 */
 	public void siftUp(int[] array, int i, int element) {
-		int parent = 0;
 		while (i > 0) {
-			parent = i >>> 1;
+			int parent = i >>> 1;
 			if (element >= array[parent]) {
 				break;
 			}
@@ -141,12 +139,10 @@ public class TopK_Algorithm {
 	 * @param element
 	 */
 	public void siftDown(int[] array, int i, int element) {
-		int child1 = 0, child2 = 0;
 		int threshold = array.length >>> 1;
 		while (i < threshold) {
-			child1 = (i << 1) + 1;
+			int child1 = (i << 1) + 1, child2 = child1 + 1;
 			int childElement = array[child1];
-			child2 = child1 + 1;
 			// find the least child
 			if (child2 < array.length && array[child2] < childElement) {
 				childElement = array[child1 = child2];
@@ -179,9 +175,9 @@ public class TopK_Algorithm {
 	
 	public void getTopLByQuickSortNonRecursive(int[] array, int k, int left, int right) {
 		if(left < right) {
-			Stack<Integer> stack = new Stack<Integer>();
+			Stack<Integer> stack = new Stack<>();
 			int index = findPivotIndex(array, left, right);
-			if(index == -1) {
+			if(index == -1 || index == k - 1) {
 				return;
 			}
 			if(index - left > 1) {
@@ -195,7 +191,7 @@ public class TopK_Algorithm {
 			while(!stack.isEmpty()) {
 				int _highBound = stack.pop(), _lowBound = stack.pop();
 				index = findPivotIndex(array, _lowBound, _highBound);
-				if(index == -1) {
+				if(index == -1 || index == k - 1) {
 					return;
 				}
 				if(index - _lowBound > 1) {
@@ -219,13 +215,11 @@ public class TopK_Algorithm {
 				while(i < j && array[j] <= pivot) {
 					j--;
 				}
-				if(i < j)
-					array[i] = array[j];
+				array[i] = array[j];
 				while(i < j && array[i] > pivot) {
 					i++;
 				}
-				if(i < j)
-					array[j] = array[i];
+				array[j] = array[i];
 			}
 			array[i] = pivot;
 			return i;

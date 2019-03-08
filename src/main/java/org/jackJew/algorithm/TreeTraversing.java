@@ -40,35 +40,32 @@ public class TreeTraversing {
 	/**
 	 * contruct a tree
 	 */
-	public void setUpTree(){
+	public void setUpTree() {
 		int i = 0;
-		int maxIndex = array.length - 1;
-		Queue<Node> nodeList = new LinkedList<Node>();  // for space efficiency, use LinkedList, we use offer & poll
+		final int maxIndex = array.length - 1;
+		Queue<Node> nodeList = new LinkedList<>();  // for space efficiency, use LinkedList, we use offer & poll
 		while( true ) {
-			Node node = null;
 			if ( root == null ){
 				root = new Node(array[i]);
 				nodeList.offer(root);
-				node = root;
 			} else {
-				node = nodeList.poll();
+				Node node = nodeList.poll();
+				System.out.println(i);
+				int leftIndex = (i << 1) + 1, rightIndex = leftIndex + 1;
+				if( leftIndex > maxIndex ) {
+					break;
+				}
+				node.left = new Node(array[leftIndex]);
+				nodeList.offer(node.left);
+
+				if (rightIndex <= maxIndex) {
+					node.right = new Node(array[rightIndex]);
+					nodeList.offer(node.right);
+				} else {
+					break;
+				}
+				i++;
 			}
-			System.out.println(i);
-			int leftIndex = (i << 1) + 1, rightIndex = leftIndex + 1;
-			if( leftIndex > maxIndex ) {
-				break;
-			}
-			node.left = new Node(array[leftIndex]);
-			nodeList.offer(node.left);
-			
-			if (rightIndex <= maxIndex) {
-				node.right = new Node(array[rightIndex]);
-				nodeList.offer(node.right);
-			} else {
-				break;
-			}
-			
-			i++;
 		}
 	}
 	
@@ -82,12 +79,87 @@ public class TreeTraversing {
 		while ( ! stack.isEmpty() ) {
 			Node node = stack.pop();
 			System.out.println(node.value);
-			
+
 			if(node.right != null)   // first push right-branch
 				stack.push(node.right);
-			
+
 			if(node.left != null)	 // then push left-branch
 				stack.push(node.left);
+		}
+	}
+
+	class TempNode {
+		Node node;
+		boolean reput;
+
+		TempNode(Node node) {
+			this.node = node;
+		}
+
+		TempNode(Node node, boolean reput) {
+			this.node = node;
+			this.reput = reput;
+		}
+	}
+
+	/**
+	 * traverse in middle-root order
+	 */
+	public void middleOrderTraverse() {
+		Stack<TempNode> stack = new Stack<>();
+		stack.push(new TempNode(root));
+		TempNode curr;
+		boolean printParent = false;
+		while (! stack.isEmpty()) {
+			curr = stack.pop();
+			if (printParent || curr.reput) {
+				System.out.println(curr.node.value);
+				printParent = false; // reset to false
+			} else {
+				if (curr.node.right == null && curr.node.left == null) {
+					System.out.println(curr.node.value);
+					printParent = true;
+				} else {
+					if (curr.node.right != null)   // first push right-branch
+						stack.push(new TempNode(curr.node.right));
+
+					stack.push(new TempNode(curr.node, true)); //  re-put current node
+
+					if (curr.node.left != null)     // then push left-branch
+						stack.push(new TempNode(curr.node.left));
+				}
+			}
+		}
+	}
+
+	/**
+	 * traverse in post-root order
+	 */
+	public void postOrderTraverse() {
+		Stack<TempNode> stack = new Stack<>();
+		stack.push(new TempNode(root));
+		TempNode curr;
+		boolean printRight = false;
+		while (! stack.isEmpty()) {
+			curr = stack.pop();
+			if (printRight || curr.reput) {
+				System.out.println(curr.node.value);
+				printRight = false; // reset to false
+			} else {
+				if (curr.node.right == null && curr.node.left == null) {
+					System.out.println(curr.node.value);
+					printRight = true;
+				} else {
+					stack.push(new TempNode(curr.node, true)); //  re-put current node
+
+					if (curr.node.right != null)   // push right-branch
+						stack.push(new TempNode(curr.node.right));
+
+					if (curr.node.left != null)     // then push left-branch
+						stack.push(new TempNode(curr.node.left));
+
+				}
+			}
 		}
 	}
 	
@@ -108,38 +180,81 @@ public class TreeTraversing {
 				queue.offer(node.right);
 		}
 	}
+
+	/**
+	 * Get min depth. level N count < 1 pow (N-1)
+	 */
+	public int getMinDepth() {
+		Queue<Node> queue = new LinkedList<>();
+		queue.offer(root);
+		int level = 1;
+		while ( ! queue.isEmpty() ) {
+			int count = queue.size(), i = 0;
+			while (i++ < count) {
+				Node node = queue.poll();
+				if(node.left != null) {
+					queue.offer(node.left);
+				}
+				if(node.right != null) {
+					queue.offer(node.right);
+				}
+			}
+			level++;
+		}
+		return level;
+	}
+
+	/**
+	 * Get max depth.
+	 */
+	public int getMaxDepth() {
+		Queue<Node> queue = new LinkedList<>();
+		queue.offer(root);
+		int level = 1;
+		while ( ! queue.isEmpty() ) {
+			if (queue.size() != 1 << (level -1)) {
+				break; // get it.
+			}
+			int count = queue.size(), i = 0;
+			while (i++ < count) {
+				Node node = queue.poll();
+				if(node.left != null) {
+					queue.offer(node.left);
+				}
+				if(node.right != null) {
+					queue.offer(node.right);
+				}
+			}
+			level++;
+		}
+		return level;
+	}
 	
 	/**
 	 * create sibling linkes for all nodes in the existing tree,
 	 * based on breadth traversing
 	 */
 	public void createSiblingLinks() {
-		Queue<Node> queue = new LinkedList<Node>();
-		Queue<Node> siblingNodes = new LinkedList<Node>();  // hold the siblings nodes of the same layer
+		Queue<Node> queue = new LinkedList<>();
 		queue.offer(root);
-		int times = 0, expectedPollCount = 1;
-		while ( ! queue.isEmpty() ){
-			Node node = queue.poll();
-			times++;			
-			
-			if(node.left != null) {
-				queue.offer(node.left);
-				siblingNodes.offer(node.left);
-			}
+		while ( ! queue.isEmpty() ) {
+			Queue<Node> siblingNodes = new LinkedList<>();  // hold the siblings nodes of the same layer
 
-			if(node.right != null) {
-				queue.offer(node.right);
-				siblingNodes.offer(node.right);
+			int count = queue.size(), i = 0;
+			while (i++ < count) {
+				Node node = queue.poll();
+				if(node.left != null) {
+					queue.offer(node.left);
+					siblingNodes.offer(node.left);
+				}
+				if(node.right != null) {
+					queue.offer(node.right);
+					siblingNodes.offer(node.right);
+				}
 			}
-			
-			if ( times == expectedPollCount) {
-				siblingLink(siblingNodes);
-				expectedPollCount <<= 1;  // double it
-				times = 0;  // reset it
-				siblingNodes.clear();  // empty the temp queue
-			}
+			siblingLink(siblingNodes);  // the bottom layer if any
+			siblingNodes.clear();
 		}
-		siblingLink(siblingNodes);  // the bottom layer if any
 	}
 	
 	/**
@@ -180,7 +295,16 @@ public class TreeTraversing {
 		System.out.println("complete to depthTraverse a binary tree\n");
 		
 		tt.createSiblingLinks();
-		
+
+		System.out.println("start to middleOrderTraverse a binary tree\n");
+		tt.middleOrderTraverse();
+
+		System.out.println("start to postOrderTraverse a binary tree\n");
+		tt.postOrderTraverse();
+
+		System.out.println("\nGot min length of tree is " + tt.getMinDepth());
+
+		System.out.println("\nGot max length of tree is " + tt.getMaxDepth());
 	}
 	
 	public void setArray(int[] array) {

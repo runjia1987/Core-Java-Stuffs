@@ -42,11 +42,11 @@ public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProc
 		// default behavior, unlike MyBatis MapperScannerConfigurer
 		processPropertyPlaceHolders();
 		
-		ClassPathMapperScanner classPathMapperScanner = new ClassPathMapperScanner(registry);
-		classPathMapperScanner.setJdbcTemplateName(jdbcTemplateName);
-		classPathMapperScanner.setResourceLoader(applicationContext);
-		classPathMapperScanner.registerFilters();
-		classPathMapperScanner.scan(
+		ClassPathScanner scanner = new ClassPathScanner(registry);
+		scanner.setJdbcTemplateName(jdbcTemplateName);
+		scanner.setResourceLoader(applicationContext);
+		scanner.registerFilters();
+		scanner.scan(
 				StringUtils.tokenizeToStringArray(this.basePackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS));
 	}
 	

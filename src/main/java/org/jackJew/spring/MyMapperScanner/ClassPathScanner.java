@@ -10,11 +10,11 @@ import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.annotation.ClassPathBeanDefinitionScanner;
 import org.springframework.util.StringUtils;
 
-public class ClassPathMapperScanner extends ClassPathBeanDefinitionScanner {
+public class ClassPathScanner extends ClassPathBeanDefinitionScanner {
 	
 	private String jdbcTemplateName;
 	
-	public ClassPathMapperScanner(BeanDefinitionRegistry registry) {
+	public ClassPathScanner(BeanDefinitionRegistry registry) {
 		super(registry, false);
 	}
 
