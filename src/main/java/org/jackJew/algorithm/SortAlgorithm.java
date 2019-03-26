@@ -265,17 +265,17 @@ public class SortAlgorithm {
 	 * 选择排序
 	 */
 	public static void selectSort(int[] array, int length) {
-		int temp, minJ;
 		for (int i = 0; i < length - 1; i++) {
-			temp = array[i];
-			minJ = i;
+			int temp = array[i];
+			int minJ = i;
 			for (int j = i + 1; j < length; j++) { // 将本次循环的最小值与当前首元素交换
-				if (array[i] > array[j]) {
+				if (temp > array[j]) {
 					minJ = j;
+					temp = array[j];
 				}
 			}
-			array[i] = array[minJ];
-			array[minJ] = temp;
+			array[minJ] = array[i];
+			array[i] = temp;
 		}
 	}
 

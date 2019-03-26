@@ -30,16 +30,13 @@ public class MaxTimeoutNotifyThread implements Runnable {
 			final ExecutorService es = Executors.newFixedThreadPool(taskThreadsnumber + 1);
 			final List<Future<?>> futureList = new ArrayList<Future<?>>(taskThreadsnumber);
 			
-			Runnable controlDaemon = new Runnable(){
-				@Override
-				public void run() {
-					try {
-						Thread.sleep(maxTime0ut);
-					} catch (InterruptedException e) {}
-					logger.info("max timeout is reached, shutdown tasks mannually.");
-					for(Future<?> f : futureList){
-						f.cancel(true);
-					}
+			Runnable controlDaemon = () -> {
+				try {
+					Thread.sleep(maxTime0ut);
+				} catch (InterruptedException e) {}
+				logger.info("max timeout is reached, shutdown tasks mannually.");
+				for(Future<?> f : futureList){
+					f.cancel(true);
 				}
 			};
 			
