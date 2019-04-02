@@ -3,7 +3,6 @@ package org.jackJew.AOP.transaction.declare.annotation;
 import java.util.List;
 
 import javax.annotation.Resource;
-import java.sql.SQLException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,7 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
  * @author runjia
  */
 @Service("transactionValidService")
-public class ValidService {
+@Anno(name = "ValidService annotation")
+public class ValidService implements IService {
 
 	@Resource(name = "transactionDao")
 	private PojoDao pojoDao;

@@ -2,6 +2,8 @@ package org.jackJew.AOP.proxyTest;
 
 import javax.annotation.Resource;
 
+import org.jackJew.AOP.transaction.declare.annotation.Anno;
+import org.jackJew.AOP.transaction.declare.schema.ValidService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -43,8 +45,9 @@ public class BeanFactoryOrApplicationContext {
 		
 		BeanFactoryPostProcessor bfp = new MyBeanFactoryPostProcessor();
 		bfp.postProcessBeanFactory(factory);  // print all beanDefinitions
-		
+
 		factory.addBeanPostProcessor(new MyBeanPostProcessor());
+    factory.getBean(ValidService.class);
 		
 		MyBeanTest myBeanTest = factory.getBean("MyBeanTest", MyBeanTest.class);		//prototype
 		System.out.println(myBeanTest.getProp1() + ", " + myBeanTest.getNumber() + ", " + myBeanTest.isPassed());
@@ -84,30 +87,12 @@ class MyBeanFactoryPostProcessor implements BeanFactoryPostProcessor {
 			BeanDefinition definition = beanFactory.getMergedBeanDefinition(name);
 			String scope = definition.getScope();
 			
-			System.out.println(definition.getBeanClassName() + "\t"
-					+ (StringUtils.isEmpty(scope) ? ConfigurableBeanFactory.SCOPE_SINGLETON : scope));
+			//System.out.println(definition.getBeanClassName() + "\t"
+			//		+ (StringUtils.isEmpty(scope) ? ConfigurableBeanFactory.SCOPE_SINGLETON : scope));
 		}		
 		System.out.println("BeanFactoryPostProcessor postProcessBeanFactory end.");
 	}
 	
-}
-
-@Component("MyBeanPostProcessor")
-class MyBeanPostProcessor implements BeanPostProcessor {
-
-	@Override
-	public Object postProcessBeforeInitialization(Object bean, String beanName)
-			throws BeansException {
-		System.out.println("MyBeanPostProcessor beforeInit: " + beanName + ", type: " + bean.getClass());
-		return bean;
-	}
-
-	@Override
-	public Object postProcessAfterInitialization(Object bean, String beanName)
-			throws BeansException {
-		System.out.println("MyBeanPostProcessor afterInit: " + beanName);
-		return bean;
-	}	
 }
 
 @Component("MyBeanTest")

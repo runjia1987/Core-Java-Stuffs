@@ -3,7 +3,9 @@ package org.jackJew.AOP.transaction.declare.annotation;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.beans.factory.config.ConfigurableBeanFactory;
+import org.jackJew.AOP.proxyTest.Interface1;
+import org.jackJew.AOP.proxyTest.MyBeanPostProcessor;
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -22,6 +24,12 @@ public class TestClient {
 	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext(
 				"applicationContext.xml");
+
+		DefaultListableBeanFactory factory = (DefaultListableBeanFactory) context.getAutowireCapableBeanFactory();
+
+		factory.addBeanPostProcessor(new MyBeanPostProcessor());
+
+    context.getBean(IService.class);
 
 		List<Pojo> list = new ArrayList<Pojo>(2);
 		Pojo pojo = new Pojo(1, "runjia", "123456");
