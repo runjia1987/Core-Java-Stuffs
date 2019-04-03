@@ -2,16 +2,18 @@ package org.jackJew.spring.MyMapperScanner;
 
 import java.util.Map;
 
+import com.google.common.collect.Maps;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.PlaceholderConfigurerSupport;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
-import org.springframework.beans.factory.config.PropertyResourceConfigurer;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import org.springframework.util.StringUtils;
 
 public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProcessor, ApplicationContextAware {
@@ -58,14 +60,18 @@ public class MyMapperScannerConfigurer implements BeanDefinitionRegistryPostProc
 	   * definition. Then update the values.
 	*/
 	private void processPropertyPlaceHolders() {
-	    Map<String, PropertyPlaceholderConfigurer> ppcs = applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class);
+	    Map<String, PlaceholderConfigurerSupport> ppcs = Maps.newHashMap();
+	    applicationContext.getBeansOfType(PropertyPlaceholderConfigurer.class).forEach(
+          ppcs::put);
+	    applicationContext.getBeansOfType(PropertySourcesPlaceholderConfigurer.class).forEach(
+          ppcs::put);
 
 	    System.out.println("PropertyPlaceholderConfigurers detected.");
 	    AutowireCapableBeanFactory beanFactory = applicationContext.getAutowireCapableBeanFactory();
 	    
 	    if (!ppcs.isEmpty() && beanFactory instanceof ConfigurableListableBeanFactory) {
 	    	System.out.println("PropertyPlaceholderConfigurers postProcessBeanFactory beanfctory.");
-	    	for (PropertyResourceConfigurer ppc : ppcs.values()) {
+	    	for (PlaceholderConfigurerSupport ppc : ppcs.values()) {
 		        ppc.postProcessBeanFactory((ConfigurableListableBeanFactory)beanFactory);
 		      }
 	    } else {

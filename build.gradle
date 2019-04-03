@@ -84,7 +84,7 @@ allprojects {
             exclude group: "tomcat"
             exclude group: "org.apache.geronimo.modules"
         }
-        compile "mysql:mysql-connector-java:5.1.29"
+        compile "mysql:mysql-connector-java:5.1.40"
         compile("org.mvel:mvel2:2.2.8.Final") {
             exclude group: "junit"
             exclude module: "xstream"

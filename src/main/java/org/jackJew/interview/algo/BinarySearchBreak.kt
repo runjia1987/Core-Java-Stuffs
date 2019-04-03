@@ -9,17 +9,17 @@ fun binarySearchBreak(array: IntArray, left: Int, right: Int, ele: Int): Int {
     return left
   }
   while (left < right) {
-    var mid = (left + right) ushr 1
-    if (ele == array[mid])
-      return mid
+    val mid = (left + right) ushr 1
+    return if (ele == array[mid])
+      mid
     else if (ele < array[mid]) {
-      return if (ele < array[left]) {
+      if (ele < array[left]) {
         binarySearchBreak(array, mid, right, ele)
       } else {
         binarySearchBreak(array, left, mid, ele)
       }
     } else {
-      return if (ele < array[left]) {
+      if (ele < array[left]) {
         binarySearchBreak(array, mid, right, ele)
       } else {
         binarySearchBreak(array, left, mid, ele)

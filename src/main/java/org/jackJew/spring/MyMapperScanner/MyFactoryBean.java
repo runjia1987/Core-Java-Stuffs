@@ -28,7 +28,7 @@ public class MyFactoryBean<T> implements FactoryBean<T>, InitializingBean {
 	}
 	
 	@Override
-	public void afterPropertiesSet() throws Exception {
+	public void afterPropertiesSet() {
 		if(mapperInterface == null) {
 			throw new IllegalArgumentException("mapperInterface is not set.");
 		}
@@ -39,7 +39,7 @@ public class MyFactoryBean<T> implements FactoryBean<T>, InitializingBean {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public T getObject() throws Exception {
+	public T getObject() {
 		Object proxy = new DaoProxy().createProxy();
 		return (T) proxy;
 	}
@@ -66,7 +66,7 @@ public class MyFactoryBean<T> implements FactoryBean<T>, InitializingBean {
 		}
 
 		@Override
-		public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+		public Object invoke(Object proxy, Method method, Object[] args) {
 			String key = method.getDeclaringClass().getName()+ "." + method.getName();
 			
 			String statement = sqlCache.get(key);
