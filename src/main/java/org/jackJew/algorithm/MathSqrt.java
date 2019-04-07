@@ -9,9 +9,7 @@ package org.jackJew.algorithm;
 public class MathSqrt {
 
 	/**
-	 * newton way
-	 * 
-	 * @return
+	 * sqrt in newton way.
 	 */
 	double newtonSqrt(double d, double precision) {
 		if(d == 0) {
@@ -19,7 +17,7 @@ public class MathSqrt {
 		}
 		long startTime = System.currentTimeMillis();
 		double s = d / 2;
-		while(true) {			
+		while(true) {
 			s = (s + d / s) / 2;
 			if (Math.abs(s * s - d) <= precision) {
 				break;
@@ -30,8 +28,7 @@ public class MathSqrt {
 	}
 	
 	/**
-	 * binary
-	 * @return
+	 * binary sqrt.
 	 */
 	double binarySqrt(double d, int scale) {
 		long startTime = System.currentTimeMillis();
@@ -66,16 +63,17 @@ public class MathSqrt {
 				break;
 		}
 		System.out.println("binarySqrt time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
-		return trim(mid, scale);
+		return mid;
 	}
 	
 	/**
-	 * find cube
+	 * cube in newton way.
 	 */
 	public double cube(double d, double precision) {
 		if(d == 0) {
 			return 0;
 		}
+		long startTime = System.currentTimeMillis();
 		double s = d / 3;
 		while(true) {
 			double square = s * s;
@@ -85,6 +83,7 @@ public class MathSqrt {
 				break;
 			}
 		}
+		System.out.println("cube time cost: " + (System.currentTimeMillis() - startTime) + " ms.");
 		return s;
 	}
 
@@ -104,28 +103,13 @@ public class MathSqrt {
 			return (d2 + 1) * 1000d;
 		}
 	}
-	
-	private double trim(double result, int scale) {
-		String s = String.valueOf(result);
-		String[] array = s.split("\\.");
-		if (array.length == 2) {
-			StringBuilder builder = new StringBuilder(array[0]);
-			builder.append(".");
-			int i = 0;
-			while (i < scale) {
-				builder.append(array[1].charAt(i++));
-			}
-			return Double.valueOf(builder.toString());
-		}
-		return result;
-	}
 
 	public static void main(String[] args) {
 		MathSqrt ms = new MathSqrt();
 
-		System.out.println(ms.binarySqrt(91000009d, 11));
+		System.out.println(ms.binarySqrt(91000009d, 11) +"\n");
 
-		System.out.println(ms.newtonSqrt(91000009d, 0.01d));
+		System.out.println(ms.newtonSqrt(91000009d, 0.01d)  +"\n");
 		
 		System.out.println(ms.cube(27000, 0.01d));
 	}
