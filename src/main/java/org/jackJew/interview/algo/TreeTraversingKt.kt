@@ -64,11 +64,11 @@ fun postOrder(): List<Int> {
 
 fun main() {
   println("\npreOrder...")
-  preOrder()
+  println(preOrder())
 
   println("\nmiddleOrder...")
-  middleOrder()
+  println(middleOrder())
 
   println("\npostOrder...")
-  postOrder()
+  println(postOrder())
 }

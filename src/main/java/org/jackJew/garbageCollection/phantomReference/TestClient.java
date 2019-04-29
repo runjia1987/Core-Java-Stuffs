@@ -10,7 +10,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class TestClient {
 	
-	public static void main(String[] args) throws Exception{
+	public static void main(String[] args) {
 		ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
 		final ProviderService service = context.getBean("phantomConnectionProviderService", ProviderService.class);		
 		
@@ -18,19 +18,16 @@ public class TestClient {
 		while (i++ < 10) {
 			// likewise in real occasions, multi - threads simulation.
 			
-			Thread t = new Thread(){
-				public void run(){
-					try {
-						Resource resourceW = service.getResource();
-						resourceW.doSth();				
-						System.gc();
-						
-					} catch (Exception e) {
-						e.printStackTrace();
-					}					
+			new Thread(() -> {
+				try {
+					Resource resourceW = service.getResource();
+					resourceW.doSth();
+					System.gc();
+
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			};
-			t.start();
+			}).start();
 		}		
 	}
 

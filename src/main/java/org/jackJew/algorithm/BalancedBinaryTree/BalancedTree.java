@@ -26,7 +26,6 @@ public final class BalancedTree {
 			root = new TreeNode(data);
 			return;
 		}
-		
 		TreeNode current = root;	//当前节点
 		TreeNode parent;	//父节点
 		while(true){
@@ -37,8 +36,7 @@ public final class BalancedTree {
 					parent.left = new TreeNode(data);
 					return;
 				}
-			}
-			else{
+			} else {
 				current = current.right;
 				if(current == null) {	//右节点为空, 将值作为新节点置入这个位置
 					parent.right = new TreeNode(data);
@@ -86,39 +84,30 @@ public final class BalancedTree {
 	 * 删除指定值的节点
 	 * <br> recursion 递归
 	 */
-	public void deleteNode(TreeNode node, int data){
+	public void deleteNode(TreeNode parent, TreeNode node, int data){
 		if(node == null)
 			return;
 		
 		if(data == node.value){		//找到节点
-			//如何删除此节点
-			if(node.left == null && node.right == null)		//完全是叶子节点
-				node = null;
-			else if(node.left != null && node.right == null)	//左节点非空
-				node = node.left;
-			else if(node.left == null && node.right != null)	//右节点非空
-				node = node.right;
-			else {	//左右节点都存在, 查找右子树的最左节点
-				TreeNode currentParent = node.right;
-				TreeNode current = currentParent;
-				while(current.left != null){
-					currentParent = current;
-					current = current.left;
-				}
-				
-				if(currentParent.value != current.value){
-					currentParent.left = null;
-					currentParent.left = current.right;
-				}
-				node.value = current.value;	//设为新值
-				
-				System.out.println("node value: " + node.value);
+			TreeNode currentParent = parent.right;
+			TreeNode current = currentParent;
+			while(current.left != null){
+				currentParent = current;
+				current = current.left;
 			}
+
+			if(currentParent.value != current.value){
+				currentParent.left = null;
+				currentParent.left = current.right;
+			}
+			parent.value = current.value;	//设为新值
+
+			System.out.println("node value: " + node.value);
 		}
 		else if(data < node.value)
-			deleteNode(node.left, data);
+			deleteNode(node, node.left, data);
 		else
-			deleteNode(node.right, data);
+			deleteNode(node, node.right, data);
 		
 		this.size--;
 	}
@@ -133,26 +122,6 @@ public final class BalancedTree {
 			
 			displayByTree(node.left);
 			displayByTree(node.right);
-		}
-	}
-	
-	/**
-	 * 按二叉树 根, 左, 右节点输出 (前序遍历非递归版)
-	 * <br> recursion 递归
-	 */
-	public void displayByTreeNonRecursive(TreeNode node){
-		if(node != null){
-			System.out.print(node.value + ", ");
-			TreeNode temp;
-			while(node != null){				
-				temp = node.left;
-				if(temp != null){  // 根
-					System.out.print(node.value + ", ");
-				} else {
-					System.out.print(node.value + ", ");
-				}
-				node = temp;
-			}
 		}
 	}
 	

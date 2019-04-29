@@ -1,7 +1,6 @@
 package org.jackJew.garbageCollection.phantomReference;
 
 import java.lang.ref.ReferenceQueue;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -19,16 +18,16 @@ public class ProviderService implements InitializingBean {
 	 * Before a connection object will be garbage collected,
 	 * <br> its phantom reference will be enqueued into the referenceQueue.
 	 */
-	private final ReferenceQueue<Resource> queue = new ReferenceQueue<Resource>();
+	private final ReferenceQueue<Resource> queue = new ReferenceQueue<>();
 	
 	/**
 	 * This is necessary to ensure that phantom references are not garbage collected
 	 * <br> as long as they have not been handled by the reference queue.
 	 */
 	private final List<PhantomResourceReference> referenceList =
-			Collections.synchronizedList(new ArrayList<PhantomResourceReference>());
+			Collections.synchronizedList(new ArrayList<>());
 
-	public Resource getResource() throws SQLException{
+	public Resource getResource() {
 		Resource resource = new Resource();
 		
 		PhantomResourceReference reference = new PhantomResourceReference(resource, queue);
@@ -42,7 +41,7 @@ public class ProviderService implements InitializingBean {
 	 * <br> 
 	 */
 	@Override
-	public void afterPropertiesSet() throws Exception {		
+	public void afterPropertiesSet() {
 		Thread thread = new Thread(new CleanTask(), "CleanTask");
 		thread.start();
 		
@@ -63,15 +62,14 @@ public class ProviderService implements InitializingBean {
 				PhantomResourceReference reference = null;
 				try {
 					// use remove(timeout)
-					reference = (PhantomResourceReference)queue.remove(10 * 1000L);
+					reference = (PhantomResourceReference) queue.remove(10 * 1000L);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 				if( reference != null) {
 					reference.cleanup();
+					referenceList.remove(reference);
 					System.out.println(Thread.currentThread().getName() + " successfully cleanUp a resource.");
-					
-					referenceList.remove(reference);				
 				} else {
 					System.out.println("queue is empty.");
 					break;

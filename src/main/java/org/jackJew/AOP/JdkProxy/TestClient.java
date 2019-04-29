@@ -17,7 +17,7 @@ public class TestClient {
 		
 		proxy.add(100, 200);
 		
-		Calculator proxy2 = (Calculator)new CalculatorArgsValidatorInvication(ac).getProxy();//生成代理
+		Calculator proxy2 = (Calculator)new CalculatorArgsValidatorInvocation(ac).getProxy();//生成代理
 		
 		proxy2.add(100, -200);
 	}

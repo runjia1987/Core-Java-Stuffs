@@ -38,7 +38,7 @@ fun calcBinary2(postOrders: List<Int>, startPost: Int, endPost: Int,
     return null
   val root = Node(postOrders[endPost])
   for (index in startMiddle..endMiddle) {
-    if (postOrders[endPost] == middleOrders[index]) {
+    if (middleOrders[index] == postOrders[endPost]) {
       root.left = calcBinary2(postOrders, startPost, startPost + index - startMiddle - 1,
           middleOrders, startMiddle, index - 1)
       root.right = calcBinary2(postOrders, startPost + index - startMiddle, endPost - 1,

@@ -23,8 +23,6 @@ public class TreeNode {
 	public TreeNode(int data) {
 		this.value = data;
 	}
-	
-	public TreeNode() { }
 
 	String fullValue(){
 		return (this.value + ", 左节点: " + this.left + ", 右节点: " + this.right);

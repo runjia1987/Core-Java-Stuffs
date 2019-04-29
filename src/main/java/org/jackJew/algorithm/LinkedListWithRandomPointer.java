@@ -1,9 +1,7 @@
 package org.jackJew.algorithm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 /**
@@ -13,45 +11,21 @@ import java.util.Random;
 public class LinkedListWithRandomPointer<E> {
 	
 	private Node<E> head;
-	private int count;
-	
-	static class Node<E> {		
-		E value;
-		Node<E> next;
-		Node<E> rand;
-		
-		public Node(E value) {
-			this.value = value;
-		}
-		
-		public String toString() {
-			StringBuilder builder = new StringBuilder("{" + value.toString());
-			if(next != null) {
-				builder.append(",").append(next.value);
-			}
-			if(rand != null) {
-				builder.append(",").append(rand.value);
-			}
-			return builder.append("}").toString();
-		}
-	}
+	private final static int count = 50000;
 	
 	/**
-	 * based on array and map
+	 * based on array and ArrayList
 	 */
 	public Node<E> deepCopy() {
-		if(head == null) {
-			return null;
-		}
 		// create mapping
-		Map<Node<E>, Integer> map = new HashMap<>();
-		Node<E> previous = new Node<E>(head.value);
+		List<Node<E>> list = new ArrayList<>();
+		Node<E> previous = new Node<>(head.value);
 		List<Node<E>> newNodes = new ArrayList<>(count);
 		int i = 0;
 		for(Node<E> node = head; node != null; node = node.next, i++) {
-			map.put(node, i);
+			list.add(node);
 			if(i > 0) {
-				previous.next = new Node<E>(node.value);
+				previous.next = new Node<>(node.value);
 				previous = previous.next;				
 			}
 			newNodes.add(previous);
@@ -63,11 +37,10 @@ public class LinkedListWithRandomPointer<E> {
 			if(randomPointer == null) {
 				array[i] = -1;
 			} else {
-				Integer pos = map.get(randomPointer);
-				array[i] = (pos == null ? -1 : pos);
+				array[i] = list.indexOf(randomPointer);
 			}
 		}
-		map.clear();
+		list.clear();
 
 		i = 0;
 		Node<E> newHead = newNodes.get(0);
@@ -78,7 +51,45 @@ public class LinkedListWithRandomPointer<E> {
 				node.rand = newNodes.get(pos);
 			}
 		}
-		array = null;
+		return newHead;
+	}
+
+	/**
+	 * based on LinkedList
+	 */
+	public Node<E> deepCopyInPlace() {
+		Node<E> current = head, copy = null, temp;
+		// copy in place
+		while (current != null) {
+			copy = new Node<>(current.value);
+			temp = current.next;
+			current.next = copy;
+			copy.next = temp;
+			current = temp;
+		}
+		// set rand ptr in place
+		current = head;
+		while (current != null) {
+			temp = current.next;
+			if (current.rand != null) {
+				temp.rand = current.rand.next;
+			}
+			current = temp.next;
+		}
+		// split between
+		current = head;
+		Node<E> newHead = null;
+		while (current != null) {
+			temp = current.next;
+			if (newHead == null) {
+				newHead = temp;
+			}
+			current.next = temp.next;  // maintain the old linkedlist
+			current = temp.next;
+			if (current != null) {
+				temp.next = current.next;
+			}
+		}
 		return newHead;
 	}
 	
@@ -98,37 +109,54 @@ public class LinkedListWithRandomPointer<E> {
 		Random rand = new Random();
 		while(i < size - 1) {
 			Node<E> current = nodes.get(i);
+			if (head == null) {
+				head = current;
+			}
 			// next pointer
 			current.next = nodes.get(i + 1);
 			// random pointer
 			current.rand = nodes.get(rand.nextInt(size - 1));
 			i++;
 		}
-		head = nodes.get(0);
-		count = nodes.size();
 	}	
 
 	public static void main(String[] args) {
-		final int count = 100;
+		int printNum = 10, index = 0;
 		LinkedListWithRandomPointer<Integer> list = new LinkedListWithRandomPointer<>();
-		Integer[] array = createRandomArray(count);
+		Integer[] array = createRandomArray();
 		list.create(array);
+
 		long startTime = System.currentTimeMillis();
-		
+		// deepCopy
+		Node<Integer> newHead = list.deepCopy();
+		System.out.println("\ntime cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+		for(Node<Integer> node = newHead; node != null; node = node.next) {
+			if (++index > printNum) break;
+			System.out.print(node + ", ");
+		}
+
+		startTime = System.currentTimeMillis();
+		// deepCopy in place (faster by 20+ times)
+		newHead = list.deepCopyInPlace();
+		System.out.println("\ntime cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+		index = 0;
+		for(Node<Integer> node = newHead; node != null; node = node.next) {
+			if (++index > printNum) break;
+			System.out.print(node + ", ");
+		}
+
 		// print
+		System.out.println();
+		index = 0;
 		for(Node<Integer> node = list.head; node != null; node = node.next) {
+			if (++index > printNum) break;
 			System.out.print(node + ", ");
 		}
 		System.out.println();
-		// deepCopy
-		Node<Integer> newHead = list.deepCopy();
-		for(Node<Integer> node = newHead; node != null; node = node.next) {
-			System.out.print(node + ", ");
-		}
-		System.out.println("\ntime cost: " + (System.currentTimeMillis() - startTime) + " ms.");
+
 	}
 	
-	private static Integer[] createRandomArray(int count) {
+	private static Integer[] createRandomArray() {
 		Random rand = new Random();
 		Integer[] array = new Integer[count];
 		for(int i = 0; i < count; i++) {
@@ -136,5 +164,30 @@ public class LinkedListWithRandomPointer<E> {
 		}
 		return array;
 	}
+}
 
+class Node<E> {
+	E value;
+	Node<E> next;
+	Node<E> rand;
+
+	public Node(E value) {
+		this.value = value;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		return this == o;
+	}
+
+	public String toString() {
+		StringBuilder builder = new StringBuilder("{" + value.toString());
+		if(next != null) {
+			builder.append(",").append(next.value);
+		}
+		if(rand != null) {
+			builder.append(",").append(rand.value);
+		}
+		return builder.append("}").toString();
+	}
 }

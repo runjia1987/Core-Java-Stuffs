@@ -14,7 +14,7 @@ public class Resource {
 	/**
 	 * sth to exhaust memory
 	 */
-	private Map<String, Object> field = new TreeMap<String, Object>();
+	private Map<String, Object> field = new TreeMap<>();
 	
 	public Resource(){
 		int size = 1 << 10;

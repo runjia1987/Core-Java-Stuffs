@@ -17,8 +17,6 @@ public class TestClient {
 		//tree.searchNode(44);
 		
 		tree.displayByTree(tree.getRoot());
-		//tree.displayByASC();
-		
 	}
 
 }
