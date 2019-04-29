@@ -44,23 +44,22 @@ public class TopK_Algorithm {
 	 * @param k
 	 */
 	public void getTopKByArray(int[] array, int k) {
-		int element = 0, index = 0, max = array.length;
+		int element, index, max = array.length;
 		int[] store = new int[k];
 		System.arraycopy(array, 0, store, 0, k);
 		index = k;
 
-		System.out.println("the first k elements: " + Arrays.toString(store));
-		// asc sort the store array
-		int a, b;
-		for (a = 0; a < k - 1; a++) {
-			int c1 = store[a], indexB = a;
-			for (b = a + 1; b < k; b++) {
-				if (store[b] < c1) {
-					c1 = store[indexB = b];
+		// asc sort the store array by selection.
+		int i, j;
+		for (i = 0; i < k - 1; i++) {
+			int temp = store[i], indexJ = i;
+			for (j = i + 1; j < k; j++) {
+				if (store[j] < temp) {
+					temp = store[indexJ = j];
 				}
 			}
-			store[indexB] = store[a];
-			store[a] = c1;
+			store[indexJ] = store[i];
+			store[i] = temp;
 		}
 		System.out.println("after asc sort: " + Arrays.toString(store));
 
@@ -68,17 +67,15 @@ public class TopK_Algorithm {
 		while (index < max) {
 			element = array[index++];
 			if (element > store[0]) {
-				// replace first node and shift array
-				// find the index
-				int j = 1;
+				// replace first node and shift array, find the index
+				j = 1;
 				while (j < k) {
-					if (store[j++] > element) {
-						j--;
+					if (store[j] > element) {
 						break;
 					}
+					j++;
 				}
-				j--;
-				shiftArray(store, 1, 0, j);
+				shiftArray(store, 1, 0, --j);
 				store[j] = element;
 			}
 		}
@@ -102,7 +99,6 @@ public class TopK_Algorithm {
 			}
 			i++;
 		}
-
 		System.out.println("k-size heap is setUp: " + Arrays.toString(store));
 
 		while (i < max) {
@@ -266,8 +262,8 @@ public class TopK_Algorithm {
 		System.out.println();
 		endTime = System.nanoTime();
 		System.out.println("getTopLByQuickSortNonRecursive cost: " + (endTime - startTime) + "ns.");
-		/**
-		 * summary: from stdout, getTopKByMinHeap is about 10% faster than getTopKByArray.
+
+		/*
 		 * <br> getTopLByQuickSortNonRecursive is the best in performance, far beyond others.
 		 */
 	}

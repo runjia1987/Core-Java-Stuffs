@@ -35,10 +35,10 @@ fun compute(expr: String): Int {
       while (operStack.isNotEmpty()) {
         nums.push(numStack.pop())
         val op = operStack.pop()
-        ops.push(op)
         if (op == '(') { // find nearest embracing ( character
           break
         }
+        ops.push(op)
       }
       val temp = calc(nums, ops)
       if (operStack.peek() ==  '/' || operStack.peek() == '*') { // preceding calc
@@ -64,13 +64,6 @@ fun calc(numStack: Stack<Int>, operStack: Stack<Char>): Int {
 
   if (operStack.isNotEmpty()) {
     var op = operStack.pop()
-    if (op == '(') {
-      if (operStack.isEmpty()) {
-        return numStack.pop().toInt()
-      } else {
-        op = operStack.pop()
-      }
-    }
 
     val a = numStack.pop()
     val b = numStack.pop()
