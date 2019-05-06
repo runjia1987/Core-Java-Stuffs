@@ -31,8 +31,8 @@ public class InstanceFactoryBeanTest {
 		
 		// use wildcard resource searching
 		ResourcePatternResolver rpr = new PathMatchingResourcePatternResolver();
-		Resource[] resources = rpr.getResources("classpath*:applicationContext*.xml");
-		definitionReader.loadBeanDefinitions(resources);
+		definitionReader.loadBeanDefinitions(
+				rpr.getResources("classpath*:applicationContext*.xml"));
 		
 		// instanceFactoryBean is a factory-bean defined in xml schema
 		Object instance = factory.getBean("instanceFactoryBean");

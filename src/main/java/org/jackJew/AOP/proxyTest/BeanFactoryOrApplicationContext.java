@@ -47,10 +47,11 @@ public class BeanFactoryOrApplicationContext {
 		bfp.postProcessBeanFactory(factory);  // print all beanDefinitions
 
 		factory.addBeanPostProcessor(new MyBeanPostProcessor());
-    factory.getBean(ValidService.class);
+		factory.getBean(ValidService.class);
 		
-		MyBeanTest myBeanTest = factory.getBean("MyBeanTest", MyBeanTest.class);		//prototype
+		MyBeanTest myBeanTest = factory.getBean(MyBeanTest.class);		//prototype
 		System.out.println(myBeanTest.getProp1() + ", " + myBeanTest.getNumber() + ", " + myBeanTest.isPassed());
+		System.out.println("prototype instances equals: " + (myBeanTest == factory.getBean(MyBeanTest.class)));
 		
 		// DefaultListableBeanfactory implements ConfigurableBeanFactory#destroySingletons()
 		factory.destroySingletons();

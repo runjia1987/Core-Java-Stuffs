@@ -167,9 +167,9 @@ public class TreeTraversing {
   public int getMinDepth() {
     Queue<Node> queue = new LinkedList<>();
     queue.offer(root);
-    int level = 1;
+    int level = 0;
     while (!queue.isEmpty()) {
-      if (queue.size() != 1 << (level - 1)) {
+      if (queue.size() != 1 << level) {
         break; // get it.
       }
       int count = queue.size(), i = 0;
@@ -193,7 +193,7 @@ public class TreeTraversing {
   public int getMaxDepth() {
     Queue<Node> queue = new LinkedList<>();
     queue.offer(root);
-    int level = 1;
+    int level = 0;
     while (!queue.isEmpty()) {
       int count = queue.size(), i = 0;
       while (i++ < count) {

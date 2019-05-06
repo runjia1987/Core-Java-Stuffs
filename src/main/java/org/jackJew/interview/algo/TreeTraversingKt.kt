@@ -62,6 +62,24 @@ fun postOrder(): List<Int> {
   return list
 }
 
+fun getMinDepth(head: Node?): Int {
+  if (head == null)
+    return 0
+  if (head.left == null)
+    return getMinDepth(head.right) + 1
+  if (head.right == null)
+    return getMinDepth(head.left) + 1
+  return Math.min(getMinDepth(head.left), getMinDepth(head.right)) + 1
+}
+
+fun getMaxDepth(head: Node?): Int {
+  if (head == null)
+    return 0
+  val left = getMaxDepth(head.left)
+  val right = getMaxDepth(head.right)
+  return Math.max(left, right) + 1
+}
+
 fun main() {
   println("\npreOrder...")
   println(preOrder())
@@ -71,4 +89,11 @@ fun main() {
 
   println("\npostOrder...")
   println(postOrder())
+
+  println("minDepth: ${getMinDepth(root)}")
+  println("maxDepth: ${getMaxDepth(root)}")
+
+  val node = TreeTraversing.Node(100)
+  node.right = TreeTraversing.Node(9)
+  println("minDepth: ${getMinDepth(node)}")
 }
