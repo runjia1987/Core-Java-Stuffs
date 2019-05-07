@@ -12,7 +12,7 @@ import java.util.Stack;
  */
 public class TopK_Algorithm {
 
-	private final int Range = 9999999;
+	private final int Range = 999999;
 
 	/**
 	 * create a random string array
@@ -117,7 +117,7 @@ public class TopK_Algorithm {
 	 */
 	public void siftUp(int[] array, int i, int element) {
 		while (i > 0) {
-			int parent = i >>> 1;
+			int parent = (i - 1) >>> 1;
 			if (element >= array[parent]) {
 				break;
 			}

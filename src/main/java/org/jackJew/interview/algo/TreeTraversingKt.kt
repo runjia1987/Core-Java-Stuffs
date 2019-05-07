@@ -2,7 +2,8 @@ package org.jackJew.interview.algo
 
 import org.jackJew.algorithm.TreeTraversing
 import org.jackJew.algorithm.TreeTraversing.Node
-import java.util.*
+import java.util.Stack
+import java.util.LinkedList
 
 val root = TreeTraversing().run {
   setArray(intArrayOf(100, 90, 43, 456, 34, 0, 46, 9, 677, 1001, 78, 321, 2))
@@ -93,7 +94,7 @@ fun main() {
   println("minDepth: ${getMinDepth(root)}")
   println("maxDepth: ${getMaxDepth(root)}")
 
-  val node = TreeTraversing.Node(100)
-  node.right = TreeTraversing.Node(9)
+  val node = Node(100)
+  node.right = Node(9)
   println("minDepth: ${getMinDepth(node)}")
 }
