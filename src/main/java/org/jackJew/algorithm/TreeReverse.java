@@ -30,8 +30,8 @@ public class TreeReverse {
 			// reverse
 			parent.left = rightNode;
 			parent.right = leftNode;
-			stack.push(rightNode);
-			stack.push(leftNode);
+			if (rightNode != null) stack.push(rightNode);
+			if (leftNode != null) stack.push(leftNode);
 		}
 	}
 

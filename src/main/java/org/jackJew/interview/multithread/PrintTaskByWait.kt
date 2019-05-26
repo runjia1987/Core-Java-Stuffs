@@ -5,7 +5,6 @@ package org.jackJew.interview.multithread
  */
 
 val obj = Object()
-@Volatile
 var steps = 0
 var lastStr: String = "0"
 
@@ -45,7 +44,7 @@ class PrintLetter : Thread() {
         if (steps >= 26) {
           return // thread exit
         }
-        lastStr = (steps + 65).toChar().toString()
+        lastStr = ('A' + steps).toString()
         print(lastStr)
         steps++
         obj.notify()

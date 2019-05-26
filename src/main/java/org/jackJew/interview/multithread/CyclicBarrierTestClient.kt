@@ -8,7 +8,6 @@ import java.util.concurrent.CyclicBarrier
 fun main() {
   val threads = arrayOf(PrintNumberTask(), PrintLetterTask())
   threads.forEach { it.start() }
-  threads.forEach { it.join() }
 }
 
 val list = ArrayList<String>()

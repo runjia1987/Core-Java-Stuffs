@@ -15,5 +15,5 @@ fun soldOut(array: IntArray): Int {
 }
 
 fun main() {
-  println(soldOut(intArrayOf(5,6,7,3,8,9,6,7)))
+  println(soldOut(intArrayOf(8, 4, 6, 7, 3, 4, 5)))
 }
