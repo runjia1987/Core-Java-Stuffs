@@ -56,7 +56,7 @@ fun doMergeByMinHeap(arrays: List<IntArray>): IntArray {
           var heapIndex = i * 2 + 1
           if (i * 2 + 2 < heapSize) {
             val right = minHeap[i * 2 + 2].value
-            if (left > right) {
+            if (left > right) { // choose least
               left = right; heapIndex = i * 2 + 2
             }
           }
