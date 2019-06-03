@@ -21,10 +21,9 @@ import java.util.Random;
 public class NIOServer {
 	
 	final static int PORT = 9999;
-	final int MAX_REQUESTS = 100;
 	private ByteBuffer buffer = ByteBuffer.allocate(1 << 10);
 	private String serverName;
-	private Map<SocketChannel, Boolean> contactMap = new HashMap<SocketChannel, Boolean>(20);
+	private Map<SocketChannel, Boolean> contactMap = new HashMap<>(20);
 	private final Random RAND = new Random();
 	
 	public NIOServer(String name){
@@ -35,8 +34,8 @@ public class NIOServer {
 	 * start service
 	 */
 	public void startServ(){
-		ServerSocketChannel channel = null;
-		Selector selector = null;
+		ServerSocketChannel channel;
+		Selector selector;
 		try {
 			channel = ServerSocketChannel.open();
 			selector = Selector.open();

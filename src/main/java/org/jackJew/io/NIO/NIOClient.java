@@ -17,7 +17,7 @@ import java.util.UUID;
 public class NIOClient {
 
 	final String HOST = "127.0.0.1";
-	final int MAX_REQUESTS = 10;
+	final int MAX_REQUESTS = 100000;
 	private ByteBuffer buffer = ByteBuffer.allocate(1 << 10);
 	private String clientName;
 	
@@ -25,7 +25,7 @@ public class NIOClient {
 		this.clientName = name;
 	}
 
-	public void startListen() {
+	public void startRequest() {
 		SocketChannel channel = null;
 		Selector selector = null;		
 		try {
@@ -58,8 +58,10 @@ public class NIOClient {
 			e.printStackTrace();
 		} finally {
 			try {
-				selector.close();
-				channel.close();
+			  if (selector != null) {
+          selector.close();
+          channel.close();
+        }
 				System.out.println(this.clientName + " closed channel.");
 			} catch (Exception e) {
 				e.printStackTrace();
