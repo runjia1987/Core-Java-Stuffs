@@ -3,33 +3,36 @@ package org.jackJew.interview.algo
 /**
  * 折叠二分查找
  */
-val array = intArrayOf(100, 108, 150, 388, 988, 1000, 6, 26, 38, 72, 80, 81, 82, 83, 84)
-//(100,110,120,1,2,30,40,50,60,70,80,90)
+val array = intArrayOf(100,110,120,1,2,30,40,50,60,70,80,90)
+//(100, 108, 150, 388, 988, 1000, 6, 26, 38, 72, 80, 81, 82, 83, 84)
+//
 
 fun binarySearchBreak(array: IntArray, left: Int, right: Int, ele: Int): Int {
   if (left == right) {
     return left
   }
-  while (left < right) {
-    val mid = (left + right) ushr 1
-    return if (ele == array[mid])
-      mid
-    else if (mid == left && ele != array[right])
-      -1
-    else if (array[left] < array[mid]) {
-      if (ele > array[left] && ele < array[mid]) {
-        binarySearchBreak(array, left, mid, ele)
+  var i = left
+  var j = right
+  while (i < j) {
+    val mid = (i + j) ushr 1
+    if (ele == array[mid])
+      return mid
+    else if (array[i] < array[mid]) {
+      if (ele >= array[i] && ele < array[mid]) {
+        j = mid - 1
       } else {
-        binarySearchBreak(array, mid, right, ele)
+        i = mid + 1
       }
     } else {
-      if (ele < array[right] && ele < array[mid]) {
-        binarySearchBreak(array, left, mid, ele)
+      if (ele <= array[j] && ele > array[mid]) {
+        i = mid + 1
       } else {
-        binarySearchBreak(array, mid, right, ele)
+        j = mid - 1
       }
     }
   }
+  if (i == j && array[i] == ele)
+    return i
   return -1
 }
 

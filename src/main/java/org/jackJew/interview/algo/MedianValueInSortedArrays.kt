@@ -70,5 +70,5 @@ fun main() {
   // testing
   println(findMedian(intArrayOf(1,7,8), intArrayOf(2, 3,10,11,12,13,14,15,16, 17, 18, 22)))
 
-  println(findTopK(intArrayOf(1, 3, 14,15,16), intArrayOf( 2,9,10,11,12,13), 4))
+  println(findTopK(intArrayOf(1, 3, 14,15,16), intArrayOf( 2,9,10,11,12,13), 2))
 }

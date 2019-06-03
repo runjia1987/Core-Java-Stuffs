@@ -5,9 +5,9 @@ import org.jackJew.algorithm.TreeTraversing.Node
 /**
  * 二叉树推导
  */
-val preOrders = preOrder()
-val middleOrders = middleOrder()
-val postOrders = postOrder()
+val preOrders = preOrder().apply { println(this.joinToString(",")) }
+val middleOrders = middleOrder().apply { println(this.joinToString(",")) }
+val postOrders = postOrder().apply { println(this.joinToString(",")) }
 
 /**
  * 推导树 from preOrders & middleOrders
