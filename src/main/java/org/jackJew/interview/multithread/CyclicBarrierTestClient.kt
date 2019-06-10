@@ -10,14 +10,10 @@ fun main() {
   threads.forEach { it.start() }
 }
 
-val list = ArrayList<String>()
+val list = arrayOfNulls<String>(3)
 val barrier = CyclicBarrier(2, Runnable {
   if (list.size == 3) {
-    list.apply {
-      sort()
-      forEach { print(it) }
-      clear()
-    }
+    list.forEach { print(it) }
   }
   step++
 })
@@ -29,8 +25,8 @@ class PrintNumberTask: Thread() {
     while(true) {
       if (step >= 26)
         break
-      list.add("${step * 2 + 1}")
-      list.add("${step * 2 + 2}")
+      list[0] = "${step * 2 + 1}"
+      list[1] = "${step * 2 + 2}"
       barrier.await()
     }
   }
@@ -42,7 +38,7 @@ class PrintLetterTask: Thread() {
     while(true) {
       if (step >= 26)
         break
-      list.add((step + 65).toChar().toString())
+      list[2] = (step + 65).toChar().toString()
       barrier.await()
     }
   }

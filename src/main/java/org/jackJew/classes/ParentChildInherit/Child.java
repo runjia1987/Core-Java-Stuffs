@@ -55,10 +55,10 @@ public class Child extends Parent {
 		System.out.println(instance.getStr());
 
 		System.out.println("instance.getABC():" + instance.getABC());
-		System.out.println("child.getVal():" + child.getVal());  // 100 if getVal() is not present in Child; otherwise 999
+		System.out.println("child.getVal():" + child.getVal());  // 100 if Child not override getVal(); otherwise 999
 		System.out.println("child.val:" + child.val); // 999
 		child.dosth();
-		
+
 		Parent parent_trans = child;
 		System.out.println("parent_trans.val:" + parent_trans.val);  // 100		
 		System.out.println("parent_trans.getVal():" + parent_trans.getVal());  // 999, override
