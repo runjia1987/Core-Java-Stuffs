@@ -19,13 +19,12 @@ fun compute(expr: String): Int {
   var index = 0
   while (index < expr.length) {
     val c = expr[index]
-    if (c.toInt() in 48..57) {
-      numStack.push("$c".toInt())
-    } else if (c == '/' || c == '*') {
-      val c2 = expr[index + 1]
-      if (c2.toInt() in 48..57) {
-        index++
-        numStack.push(oper(numStack.pop(), "$c2".toInt(), c))
+    if (c == '/' || c == '*') {
+      val c2 = getDigit(expr, index + 1)
+      if (c2 != null) {
+        numStack.push(oper(numStack.pop(), c2, c))
+        index += c2.toString().length + 1
+        continue
       } else {
         operStack.push(c)
       }
@@ -46,8 +45,16 @@ fun compute(expr: String): Int {
       } else {
         numStack.push(temp)
       }
-    } else {
+    } else if (c == '+' || c == '-') {
       operStack.push(c)
+    } else {
+      val number = getDigit(expr, index)
+      if (number != null) {
+        numStack.push(number)
+        index += number.toString().length
+        continue
+      } else
+        operStack.push(c)
     }
     index++
   }
@@ -60,19 +67,14 @@ fun compute(expr: String): Int {
  * Calculate + - for final result.
  */
 fun calc(numStack: Stack<Int>, operStack: Stack<Char>): Int {
-  var result = 0
-
-  if (operStack.isNotEmpty()) {
-    var op = operStack.pop()
-
-    val a = numStack.pop()
-    val b = numStack.pop()
-    result = oper(a, b, op)
-  }
   while (operStack.isNotEmpty()) {
-    result = oper(result, numStack.pop(), operStack.pop())
+    val op = operStack.pop()
+    val num1 = numStack.pop()
+    val num2 = numStack.pop()
+
+    numStack.push(oper(num1, num2, op))
   }
-  return result
+  return numStack.pop()
 }
 
 /**
@@ -86,3 +88,13 @@ fun oper(a: Int, b: Int, op: Char) =
       '-' -> a - b
       else -> 0
     }
+
+fun getDigit(input: String, i: Int): Int? {
+  var j = i
+  while (j < input.length) {
+    val ch = input[j]
+    if (ch in '0' .. '9') j++
+    else break
+  }
+  return if(j > i) Integer.valueOf(input.substring(i, j)) else null
+}

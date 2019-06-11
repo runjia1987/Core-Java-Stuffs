@@ -31,19 +31,25 @@ class StringMatch {
   fun kmp(string: String, model: String): Int {
     // 从model模式串构造公共长度数组
     val m = model.length
-    val s = IntArray(m) { 0 } // 初始化为0
-    s[0] = 0
-    var j = 0
-    var k = -1
+    val lps = IntArray(m) { 0 } // 初始化为0
+    lps[0] = 0
+    var j = 1    // the loop calculates lps[i]
+    var len = 0  // length of the previous longest prefix suffix
     while (j < m) {
-      if (k == -1 || model[j] == model[k]) {
+      if (model[j] == model[len]) {
+        len++
+        lps[j] = len
         j++
-        k++
-        s[j] = k
-      } else
-        k = s[k]
+      } else {
+        // This is tricky. Consider the example.
+        // AAACAAAA and i = 7. The idea is similar to search step.
+        if (len != 0) len = lps[len - 1]
+        else {
+          lps[j] = 0
+          j++
+        }
+      }
     }
-
     var i = 0  // 文本串开始匹配的下标
     j = 0      // 模式串下标
     while (i <= string.length - m) {
@@ -53,7 +59,7 @@ class StringMatch {
       } else if (j == 0) {
         i++
       } else {
-        i += (j - s[j - 1])
+        i += (j - lps[j - 1])
       }
     }
     return -1
