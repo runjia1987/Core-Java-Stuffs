@@ -1,18 +1,77 @@
 package org.jackJew.interview.algo.graph
 
-import org.jackJew.interview.algo.Node
+import java.util.LinkedList
+import java.util.Stack
 
-class Graph(val nexts: List<Graph>,
-            val id: Int, // from 0
-            val length: Double)
+// 无向有向图的遍历
+data class Point(val id: Int,
+                 val neighbours: List<Point>)
 
-val visits = listOf<Boolean>()
+class Graph(val root: Point) {
 
-// 广度优先搜索 TODO
-fun search(source: Graph, target: Graph): List<Node> {
-  return listOf()
+  // 广度优先搜索
+  fun bfs() {
+    val visited = mutableSetOf<Int>()  // id集合
+    val queue = LinkedList<Point>()
+    queue.offer(root)
+
+    while (!queue.isEmpty()) {
+      val cur = queue.poll()
+      if (!visited.contains(cur.id))
+        println(" $cur")
+
+      for (point in cur.neighbours) {
+        if (visited.add(point.id)) {
+          queue.offer(point)
+          println(" $point")
+        }
+      }
+    }
+  }
+
+  // 深度优先遍历
+  fun dfs() {
+    val visited = mutableSetOf<Int>()
+    val stack = Stack<Point>()
+    stack.push(root)
+    visited.add(root.id)
+    var isRoot = true
+
+    while (!stack.isEmpty()) {
+      val cur = stack.pop()
+      if (isRoot || !visited.contains(cur.id)) {
+        println(" $cur")
+        isRoot = false
+      }
+      for (point in cur.neighbours) {
+        if (visited.add(point.id)) {
+          stack.push(cur)
+          stack.push(point)
+          println(" $point")
+          break  // 取某个邻居后退出for循环
+        }
+      }
+    }
+  }
 }
 
 fun main() {
+  val graph = Graph(Point(1, listOf(
+      Point(2, listOf(
+          Point(5, listOf()),
+          Point(6, listOf())
+      )),
+      Point(3, listOf(
+          Point(7, listOf()),
+          Point(8, listOf())
+      )),
+      Point(4, listOf(
+          Point(9, listOf())
+      ))
+  )))
+  println("bfs:")
+  graph.bfs()
 
+  println("dfs:")
+  graph.dfs()
 }

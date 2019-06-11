@@ -2,9 +2,7 @@ package org.jackJew.interview.algo
 
 import kotlin.random.Random
 
-// 计算两个有序数组的中位数，或者topK问题. 目标时间复杂度为: log(max(m,n))
-
-// 中位数
+// 计算两个有序数组的中位数， 目标时间复杂度为: log(max(m,n))
 // 插入虚拟节点符号保证奇数size
 fun findMedian(array1: IntArray, array2: IntArray): Double {
   val m = array1.size  // choose smaller array
@@ -37,7 +35,7 @@ fun findMedian(array1: IntArray, array2: IntArray): Double {
   return (Math.max(L1, L2) + Math.min(r1, r2)).toDouble() / 2
 }
 
-// topK
+// 计算两个有序数组的 topK
 fun findTopK(array1: IntArray, array2: IntArray, k: Int): Int {
   val m = array1.size
   val n = array2.size
@@ -68,7 +66,7 @@ fun findTopK(array1: IntArray, array2: IntArray, k: Int): Int {
   return Math.max(L1, L2)
 }
 
-// 对于非有序数组的中值或topk问题, 应随机选取数组的某个值a, 两个数组分别进行一轮ASC快排, 获得两个index(m1,m2);
+// 对于无序数组的中值或topk问题, 应随机选取数组的某个值a, 两个数组分别进行一轮ASC快排, 获得两个index(m1,m2);
 // 若 m1+m2 = k 则退出,
 // 若 < k, 随机取比a大的值, 在两个数组[m1,),[m2,)部分 重复进行;
 // 若 > k, 随机取比a小的值, 在两个数组(,m1],(,m2]部分 重复进行.
@@ -77,28 +75,29 @@ fun findTopKByQuickSort(array1: IntArray, array2: IntArray, k: Int): Int {
     return -1  // not exists
 
   var pivot = Math.max(array1[0], array2[0]) // 第一轮
-  var L1 = 0
-  var r1 = array1.size - 1
-  var L2 = 0
-  var r2 = array2.size - 1
+  val r1 = array1.size - 1
+  val r2 = array2.size - 1
+  val olds = hashSetOf(pivot)  // 已分配的pivots, 防止死循环
   while (true) {
-    val m1 = findPivotIndex(array1, L1, r1, pivot)
-    val m2 = findPivotIndex(array2, L2, r2, pivot)
-    val sum = m1 + m2
-    if (sum == k - 1) return pivot
-    else if (sum > k) {  // 偏大
-      pivot = if (m1 > 0 && m1 < array1.size - 1) array1[m1 - 1] else array2[m2 - 1]
-      if (m1 > 0 && m1 < array1.size - 1) {
-        r1 = m1
-      } else {
-        r2 = m2
+    val m1 = findPivotIndex(array1, 0, r1, pivot)
+    val m2 = findPivotIndex(array2, 0, r2, pivot)
+
+    val L1 = if (array1[m1] <= pivot) m1 + 1 else m1
+    val L2 = if (array2[m2] <= pivot) m2 + 1 else m2
+
+    if (L1 + L2 == k)
+      return pivot
+    else if (L1 + L2 > k) {  // 偏大
+      while(!olds.add(pivot)) {
+        pivot = array1[Random.nextInt(m1)]
+        if (olds.add(pivot)) break
+        else pivot = array2[Random.nextInt(m2)]
       }
     } else {  // 偏小
-      pivot = if (m1 > 0 && m1 < array1.size - 1) array1[m1 + 1] else array2[m2 + 1]
-      if (m1 > 0 && m1 < array1.size - 1) {
-        L1 = m1
-      } else {
-        L2 = m2
+      while(!olds.add(pivot)) {
+        pivot = array1[Random.nextInt(m1, array1.size)]
+        if (olds.add(pivot)) break
+        else pivot = array2[Random.nextInt(m2, array2.size)]
       }
     }
   }
@@ -106,15 +105,17 @@ fun findTopKByQuickSort(array1: IntArray, array2: IntArray, k: Int): Int {
 
 fun findPivotIndex(array: IntArray, left: Int, right: Int, pivot: Int): Int {  // ASC
   if (left < right) {
-    var i = left
-    var j = right
+    var i = if (left < 0) 0 else left
+    var j = if (right >= array.size) array.size - 1 else right
     val temp = array[i]
     while (i < j) {
-      while ( i < j && array[j] > pivot)
+      while ( i < j && array[j] > pivot) {
         j--
+      }
       array[i] = array[j]
-      while (i < j && array[i] <= pivot)
+      while (i < j && array[i] <= pivot) {
         i++
+      }
       array[j] = array[i]
     }
     array[i] = temp
@@ -127,10 +128,12 @@ fun main() {
   // testing
   println(findMedian(intArrayOf(1,7,8), intArrayOf(2, 3,10,11,12,13,14,15,16, 17, 18, 22)))
 
-  println(findTopK(intArrayOf(1, 3, 14,15,16), intArrayOf( 2,9,10,11,12,13), 2))
+  println(findTopK(intArrayOf(1, 3, 14,15,16), intArrayOf( 2,9,10,11,12,13), 4))
 
-  println(findTopKByQuickSort(intArrayOf(14, 15, 16, 1, 3), intArrayOf( 11,12,13,2, 9,10), 2))
+//  println(findPivotIndex(intArrayOf(30,40, 10,20), 0, 3, 1))  // 0
+//  println(findPivotIndex(intArrayOf(30,40, 10,20), 0, 3, 11)) // 1
+//  println(findPivotIndex(intArrayOf(30,40, 10,20), 0, 3, 31)) // 2
+//  println(findPivotIndex(intArrayOf(30,40, 10,20), 0, 3, 100)) // 3
 
-  println(findPivotIndex(intArrayOf(10,20,30,40), 0, 0, 1))   // left-most
-  println(findPivotIndex(intArrayOf(10,20,30,40), 0, 3, 100)) // right-most
+  println(findTopKByQuickSort(intArrayOf(14, 15, 16, 1, 3), intArrayOf( 11,12,13,2, 9,10), 4))
 }

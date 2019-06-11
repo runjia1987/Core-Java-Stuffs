@@ -1,6 +1,6 @@
 package org.jackJew.interview.algo.graph
 
-// Dijkstra shortest path calculation.
+// Dijkstra shortest path. 适用于带权重的图路径计算.
 class Dijkstra {
   private val NUM = 5 // points size
   // MAX_VALUE = unreachable
@@ -69,8 +69,8 @@ class Dijkstra {
 }
 
 fun main() {
-  val outer = Dijkstra()
-  val distance = outer.calc(0)
+  val dijkstra = Dijkstra()
+  val distance = dijkstra.calc(0)
   println(distance.joinToString(", "))
-  println(outer.pre.joinToString(", "))
+  println(dijkstra.pre.joinToString(", "))
 }

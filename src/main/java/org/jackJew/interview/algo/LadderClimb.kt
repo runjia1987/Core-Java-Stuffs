@@ -7,11 +7,11 @@ fun solution(n: Int) : Int {
     return solution(n-1) + solution(n-2)
 }
 
-fun solution2(n: Int) : Int {
+fun solution2(n: Int) : Long {
   if (n == 1) return 1
   if (n == 2) return 2
   var index = 2
-  val array = intArrayOf(1,2,0)
+  val array = longArrayOf(1,2,0)
   while (index < n) {
     array[2] = array[0] + array[1]
     array[0] = array[1]
@@ -22,5 +22,5 @@ fun solution2(n: Int) : Int {
 }
 
 fun main() {
-  print(solution2(100))
+  print(solution2(25))
 }
