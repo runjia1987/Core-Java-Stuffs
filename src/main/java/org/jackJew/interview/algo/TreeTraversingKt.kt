@@ -122,6 +122,11 @@ fun traverseToLeafs(): List<String> {
   return results
 }
 
+// 返回两个节点的最长公共先导节点, based on fun traverseToLeafs()
+fun findLcp(node1: Int, Node2: Int): List<Node> {
+  return listOf()
+}
+
 fun main() {
   println("\npreOrder...")
   println(preOrder())
