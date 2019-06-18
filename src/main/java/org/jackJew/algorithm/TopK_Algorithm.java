@@ -33,53 +33,25 @@ public class TopK_Algorithm {
 		return array;
 	}
 
-	public void shiftArray(int[] array, int srcIndex, int destIndex, int length) {
-		System.arraycopy(array, srcIndex, array, destIndex, length);
-	}
-
 	/**
-	 * use k-size array and array shifting to find top k asc
-	 * 
-	 * @param array
-	 * @param k
+	 * use k-size array and array shifting to find top k asc.
 	 */
 	public void getTopKByArray(int[] array, int k) {
-		int element, index, max = array.length;
+		// desc sort the store array by selection.
+		int i, j;
+		for (i = 0; i < k; i++) {
+			int temp = array[i], indexJ = i;
+			for (j = i + 1; j < array.length; j++) {
+				if (array[j] > temp) {
+					temp = array[indexJ = j];
+				}
+			}
+      array[indexJ] = array[i];
+      array[i] = temp;
+		}
+
 		int[] store = new int[k];
 		System.arraycopy(array, 0, store, 0, k);
-		index = k;
-
-		// asc sort the store array by selection.
-		int i, j;
-		for (i = 0; i < k - 1; i++) {
-			int temp = store[i], indexJ = i;
-			for (j = i + 1; j < k; j++) {
-				if (store[j] < temp) {
-					temp = store[indexJ = j];
-				}
-			}
-			store[indexJ] = store[i];
-			store[i] = temp;
-		}
-		System.out.println("after asc sort: " + Arrays.toString(store));
-
-		// iterator over the rest
-		while (index < max) {
-			element = array[index++];
-			if (element > store[0]) {
-				// replace first node and shift array, find the index
-				j = 1;
-				while (j < k) {
-					if (store[j] > element) {
-						break;
-					}
-					j++;
-				}
-				shiftArray(store, 1, 0, --j);
-				store[j] = element;
-			}
-		}
-		// print the store arrays holding top K elements;
 		System.out.println("getTopKByArray final result: " + Arrays.toString(store));
 	}
 
