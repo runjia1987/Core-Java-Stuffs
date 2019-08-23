@@ -77,7 +77,7 @@ fun findTopKByQuickSort(array1: IntArray, array2: IntArray, k: Int): Int {
   var pivot = Math.max(array1[0], array2[0]) // 第一轮
   val r1 = array1.size - 1
   val r2 = array2.size - 1
-  val olds = hashSetOf(pivot)  // 已分配的pivots, 防止死循环
+  val exists = hashSetOf(pivot)  // 已分配的pivots, 防止死循环
   while (true) {
     val m1 = findPivotIndex(array1, 0, r1, pivot)
     val m2 = findPivotIndex(array2, 0, r2, pivot)
@@ -88,21 +88,26 @@ fun findTopKByQuickSort(array1: IntArray, array2: IntArray, k: Int): Int {
     if (L1 + L2 == k)
       return pivot
     else if (L1 + L2 > k) {  // 偏大
-      while(!olds.add(pivot)) {
+      while(!exists.add(pivot)) {
         pivot = array1[Random.nextInt(m1)]
-        if (olds.add(pivot)) break
+        if (exists.add(pivot)) break
         else pivot = array2[Random.nextInt(m2)]
       }
     } else {  // 偏小
-      while(!olds.add(pivot)) {
+      while(!exists.add(pivot)) {
         pivot = array1[Random.nextInt(m1, array1.size)]
-        if (olds.add(pivot)) break
+        if (exists.add(pivot)) break
         else pivot = array2[Random.nextInt(m2, array2.size)]
       }
     }
   }
 }
 
+// 对于巨量（20亿个）整型数据的topk问题（k较小，k=10000左右），首先siftUp建立k-size小顶堆，暂停，
+// 分组100w一组，循环每个分组（每个分组内做快排，找topk，对前k对小顶堆做siftDown）。
+// 最终k堆就是结果。
+
+// 快排 index
 fun findPivotIndex(array: IntArray, left: Int, right: Int, pivot: Int): Int {  // ASC
   if (left < right) {
     var i = if (left < 0) 0 else left

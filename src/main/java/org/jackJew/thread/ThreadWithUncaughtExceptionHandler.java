@@ -4,6 +4,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 public class ThreadWithUncaughtExceptionHandler {
 	
@@ -14,17 +15,15 @@ public class ThreadWithUncaughtExceptionHandler {
 	 * <br>处理办法: 自定义线程工厂,调用setUncaughtExceptionHandler()定义异常处理器,
 	 * <br>可以捕获run()方法抛出的unchecked exception
 	 */
-	public static void main(String... args){
+	public static void main(String... args) throws Exception {
 		
 		ThreadFactory threadFactory = new SpecificThreadFactory();
 		ExecutorService es = Executors.newFixedThreadPool(1, threadFactory);
 		es.execute(new SpecificThread("test-thread"));
+		// if submit(wrapped by FutureTask), no exception is caught by UncaughtExceptionHandler,
+    // because exception throwable is set to FutureTask.outcome in catch clause of run() method.
 		es.shutdown();
-		
-		Thread thread = threadFactory.newThread(() -> {
-				System.out.println("this is a task.");}
-		);
-		thread.start();
+		es.awaitTermination(1000, TimeUnit.SECONDS);
 	}
 
 }

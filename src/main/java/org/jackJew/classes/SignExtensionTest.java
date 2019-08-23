@@ -23,7 +23,7 @@ public class SignExtensionTest<E> {
 		
 		int i2 = (int) (b & 0xffff);  // 65535
 		System.out.println("(int) (b & 0xffff)： " + i2);
-		
+
 		int i3 = (char)b;   // 65535
 		System.out.println("(char)b: " + i3);
 		

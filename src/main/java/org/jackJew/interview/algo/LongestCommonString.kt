@@ -33,4 +33,5 @@ class LongestCommonString {
 
 fun main() {
   println(LongestCommonString().find("1ab432", "cab12345"))
+  println(LongestCommonString().find("1ab432", "1ba000532"))
 }

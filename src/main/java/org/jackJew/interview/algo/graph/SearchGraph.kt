@@ -7,7 +7,7 @@ import java.util.Stack
 data class Point(val id: Int,
                  val neighbours: List<Point>)
 
-class Graph(val root: Point) {
+class Graph(private val root: Point) {
 
   // 广度优先搜索
   fun bfs() {
@@ -35,20 +35,13 @@ class Graph(val root: Point) {
     val stack = Stack<Point>()
     stack.push(root)
     visited.add(root.id)
-    var isRoot = true
 
     while (!stack.isEmpty()) {
       val cur = stack.pop()
-      if (isRoot || !visited.contains(cur.id)) {
-        println(" $cur")
-        isRoot = false
-      }
-      for (point in cur.neighbours) {
+      println(" $cur")
+      for (point in cur.neighbours.reversed()) {
         if (visited.add(point.id)) {
-          stack.push(cur)
           stack.push(point)
-          println(" $point")
-          break  // 取某个邻居后退出for循环
         }
       }
     }

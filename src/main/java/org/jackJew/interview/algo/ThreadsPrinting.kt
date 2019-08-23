@@ -36,12 +36,12 @@ class Normal: Thread() {
   override fun run() {
     while (true) {
       synchronized(lock) {
+        while (set.contains(lastChar + 1)) {
+          lock.wait()
+        }
         if (lastChar == 'z') {
           lock.notify()
           return
-        }
-        while (set.contains(lastChar + 1)) {
-          lock.wait()
         }
         print(++lastChar)
         lock.notify()

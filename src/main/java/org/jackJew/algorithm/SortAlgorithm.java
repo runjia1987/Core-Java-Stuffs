@@ -183,34 +183,23 @@ public class SortAlgorithm {
 	 * 快排可用于查找中位数 median value.
 	 */
 	public static void quickSort_nonRecursive(int[] array, int left, int right) {
-		Stack<Integer> stack = new Stack<Integer>();
-		int index = findPivotIndex(array, left, right);
-
-		if (index != -1 && left < right) {
-			if (left + 1 < index) {
-				stack.push(left);
+		Stack<Integer> stack = new Stack<>();
+		stack.push(right);
+		stack.push(left);
+		while (stack.size() > 0) {
+			int lowBound = stack.pop();
+			int highBound = stack.pop();
+			int index = findPivotIndex(array, lowBound, highBound);
+			if (index == -1)
+				break;
+			// repeat
+			if (lowBound + 1 < index) {
 				stack.push(index - 1);
+				stack.push(lowBound);
 			}
-			if (index + 1 < right) {
+			if (index + 1 < highBound) {
+				stack.push(highBound);
 				stack.push(index + 1);
-				stack.push(right);
-			}
-
-			while (stack.size() > 0) {
-				int highBound = (Integer) stack.pop();
-				int lowBound = (Integer) stack.pop();
-				index = findPivotIndex(array, lowBound, highBound);
-				if (index == -1)
-					break;
-				// repeat
-				if (lowBound + 1 < index) {
-					stack.push(lowBound);
-					stack.push(index - 1);
-				}
-				if (index + 1 < highBound) {
-					stack.push(index + 1);
-					stack.push(highBound);
-				}
 			}
 		}
 	}

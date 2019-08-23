@@ -127,6 +127,69 @@ fun findLcp(node1: Int, Node2: Int): List<Node> {
   return listOf()
 }
 
+// 平衡树判断
+fun isBalanced(root: Node) = getDepth(root) != -1
+
+fun getDepth(node: Node?): Int {
+  if (node == null) return 0
+  val leftDepth = getDepth(node.left)
+  if (leftDepth == -1) return -1
+  val rightDepth = getDepth(node.right)
+  if (rightDepth == -1) return -1
+
+  return if (Math.abs(leftDepth - rightDepth) > 1) -1 else Math.max(leftDepth, rightDepth) + 1
+}
+
+// 对称镜像树判断
+fun isSymmetric(root: Node) = symmetric(root.left, root.right)
+
+fun symmetric(left: Node?, right: Node?): Boolean {
+  if (left == null && right == null) {
+    return true
+  }
+  if (left == null || right == null) {
+    return false
+  }
+  if (left.value == right.value) {
+    return symmetric(left.left, right.right) && symmetric(left.right, right.left)
+  }
+  return false
+}
+
+// 层级遍历, arrayList 对称判断
+fun isSymmetricNonRecursive(root: Node): Boolean {
+  var list = ArrayList<Node?>()
+  list.add(root)
+  while (list.isNotEmpty()) {
+    val size = list.size
+    if (size == 0) return true
+    val mid = (size - 1) / 2
+    val innerList = ArrayList<Node?>(size * 2)
+    for (i in 0..mid) {
+      val left = list[i]
+      val right = list[size - i - 1]
+      if (left?.value != right?.value) return false
+
+      if (left != null) {
+        innerList.add(left.left)
+        innerList.add(left.right)
+      }
+      if (left != right && right != null) {
+        innerList.add(right.left)
+        innerList.add(right.right)
+      }
+    }
+    list = innerList
+  }
+  return true
+}
+
+// 完全二叉树判断, 层级遍历，每一层为2的n-1幂次
+fun isCompleteTree(root: Node): Boolean = false
+
+// 二叉搜索树判断, 中序遍历是否递增
+fun isBST(root: Node): Boolean = false
+
 fun main() {
   println("\npreOrder...")
   println(preOrder())
@@ -144,8 +207,12 @@ fun main() {
   node.right = Node(9)
   println("minDepth: ${getMinDepth(node)}")
 
-  println(hasNode(root, Node(677)))  // true
-  println(hasNode(root, Node(677)))  // false
+  println("hasNode: " + hasNode(root, Node(677)))  // true
+  println("hasNode: " + hasNode(root, Node(677)))  // false
 
-  println(traverseToLeafs())
+  println("traverseToLeafs: " + traverseToLeafs())
+
+  println("isBalanced: " + isBalanced(root))
+
+  println("isSymmeric: " + isSymmetric(root))
 }
