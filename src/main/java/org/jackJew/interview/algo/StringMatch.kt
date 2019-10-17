@@ -41,16 +41,13 @@ class StringMatch {
     var len = 0  // length of the previous longest prefix suffix
     while(j < model.length) {
       if (model[j] == model[len]) {
-        len++
-        lps[j] = len
-        j++
+        lps[j++] = ++len
       } else {
         // This is tricky. Consider the example.
         // AAACAAAA and i = 7. The idea is similar to search step.
         if (len > 0) len = lps[len - 1]
         else {
-          lps[j] = 0
-          j++
+          lps[j++] = 0
         }
       }
     }

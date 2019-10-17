@@ -57,6 +57,10 @@ public class ConcurrentLockQueue<E> {	//JDK java.util.Queue 接口
 	}
 	
 	public static void main(String[] args) {
+		SynchronousQueue<Integer> sq = new SynchronousQueue<>();
+		sq.offer(1);
+		sq.offer(2);
+
 		ConcurrentLockQueue<String> clq = new ConcurrentLockQueue<String>();
 
 		try {

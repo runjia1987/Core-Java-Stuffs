@@ -1,5 +1,7 @@
 package org.jackJew.interview.algo
 
+import kotlin.math.abs
+
 /**
  * 求开方
  */
@@ -26,7 +28,7 @@ fun cube(input: Double, precision: Double): Double {
   var r: Double
   while(true) {
     r = (t * 2 + input / (t * t)) / 3
-    if (Math.abs(r * r * r - input) <= precision) {
+    if (abs(r * r * r - input) <= precision) {
       break
     }
     t = r
