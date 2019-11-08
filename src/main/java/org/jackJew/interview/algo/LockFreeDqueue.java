@@ -47,7 +47,7 @@ public class LockFreeDqueue {
     while (true) {
       old = head.get();
       Node next = old.next.get();
-      if (next == DELETED) {
+      if (next == DELETED) { //上一次head未更新成功
         continue;
       }
       if (old.next.compareAndSet(next, DELETED)) {
