@@ -6,15 +6,18 @@ import java.util.Random;
 import java.util.Stack;
 
 /**
- * 
+ *
  * Description: 排序算法实现
- * 
+ *
  * @author zhurunjia
  *
  */
 public class SortAlgorithm {
 
 	private static int[] array = { 9999, 450, 0, 8, -20, 45555, 12, 45, 67, 90, 103, 666, 2, 103, 88, 344, 45, 1000 };
+
+	private static int[] array1 = { 1, 100, 2, 3,60, 55, 33 };
+
 	final static Random rand = new Random();
 
 	/**
@@ -50,7 +53,7 @@ public class SortAlgorithm {
 		for (i = 0; i < index; i++)
 			array[left + i] = temp[i];
 	}
-	
+
 	/**
 	 * 归并排序两个各自有序的数组
 	 */
@@ -89,9 +92,9 @@ public class SortAlgorithm {
 			}
 		}
 	}
-	
+
 	/**
-	 * merge and find out the identical elements from two sorted arrays,
+	 * merge and find out the median from two sorted arrays,
 	 * time complexity: O(m+n)/2
 	 */
 	public static int mergeForMedianValue(int[] array1, int[] array2) {
@@ -100,25 +103,19 @@ public class SortAlgorithm {
 		int limit = (array1.length + array2.length) / 2 + 1, count = 0;
 		System.out.println("limit: " + limit);
 		while (count++ < limit) { // 循环次数
+			a1 = a2;
 			if(i1 == array1.length) {
-				a1 = a2;
 				a2 = array2[i2++];
 				continue;
 			}
 			if(i2 == array2.length) {
-				a1 = a2;
 				a2 = array1[i1++];
 				continue;
 			}
-			if (array1[i1] < array2[i2]) { // less than	
-				a1 = a2;
+			if (array1[i1] <= array2[i2]) { // less equal
 				a2 = array1[i1++];
-			} else if (array1[i1] > array2[i2]){  // greater than	
-				a1 = a2;
+			} else if (array1[i1] > array2[i2]){  // greater than
 				a2 = array2[i2++];
-			} else {  // equal
-				a1 = a2;
-				a2 = array1[i1++];
 			}
 		}
 		System.out.println(a1 + "," + a2);
@@ -127,17 +124,17 @@ public class SortAlgorithm {
 		else
 			return a2;
 	}
-	
+
 	static class IndexAndValue {
-		int index;		
+		int index;
 		int value;
-		
+
 		public IndexAndValue(int index, int value) {
 			this.index = index;
 			this.value = value;
 		}
 	}
-	
+
 	/**
 	 * 快排查找中位数, ASC, 亦可解决第k小的数值问题
 	 * @param array
@@ -171,7 +168,7 @@ public class SortAlgorithm {
 	 */
 	public static void quickSort(int[] array, int left, int right) {
 		int index = findPivotIndex(array, left, right);
-		
+
 		if (index != -1 && left < right) {
 			quickSort(array, left, index - 1); // 排序左侧数据
 			quickSort(array, index + 1, right); // 排序右侧数据
@@ -271,12 +268,12 @@ public class SortAlgorithm {
 	/**
 	 * 排序测试
 	 */
-	public static void main(String[] args) throws Exception {		
+	public static void main(String[] args) throws Exception {
 		// mergeSort(0, array.length-1, array);
 
-		quickSort(array, 0, array.length-1);
+		quickSort(array1, 0, array1.length-1);
 		//quickSort_nonRecursive(array, 0, array.length - 1);
-		System.out.println(Arrays.toString(array));
+		System.out.println(Arrays.toString(array1));
 
 		// bubbleSort(array, array.length);
 		selectSort(array, array.length);
@@ -288,7 +285,7 @@ public class SortAlgorithm {
 		System.out.println("merge common: ");
 		int[] array1 = { -9, 22, 100, 600 }, array2 = { 7, 22, 45, 92, 100, 321, 500, 600, 1000, 4500, 9999 };
 		mergeCommon(array1, array2);
-		
+
 		int totalCount = array1.length + array2.length;
 		int[] mergedSort = new int[totalCount];
 		mergeArray(array1, array2, mergedSort);
@@ -296,19 +293,19 @@ public class SortAlgorithm {
 			System.out.print(i + ", ");
 		}
 		System.out.println("totalCount: " + totalCount);
-		
+
 		System.out.println("mergeForMedianValue: " + mergeForMedianValue(array1, array2));
-		
+
 		/**
 		 * find median value in odd-sized array
 		 */
 		array2 = new int[] {20, 9999, 600, 7, 22, 92, 100, 321, 500, 1000, 4500 };
 		System.out.println("array2 quickSortForMedianValue: " + quickSortForMedianValue(array2, 0, array2.length - 1, array2.length / 2));
-		
+
 		int k = 3;
 		System.out.println("quickSortForMedianValue the " + k +  " least value: "
 				+ quickSortForMedianValue(array2, 0, array2.length - 1, k - 1));
-		
+
 		/**
 		 * find median value in even-sized array
 		 */

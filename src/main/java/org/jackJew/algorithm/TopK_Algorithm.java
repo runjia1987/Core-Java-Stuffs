@@ -72,7 +72,7 @@ public class TopK_Algorithm {
     while (i < max) {
       int element = array[i++];
       if (element > store[0]) {
-        siftDown(store, 0, element);
+        siftDown(store, element);
       }
     }
     System.out.println(Arrays.toString(store));
@@ -102,7 +102,8 @@ public class TopK_Algorithm {
    * @param element
    * @see java.util.PriorityQueue#siftDown
    */
-  public void siftDown(int[] array, int i, int element) {
+  public void siftDown(int[] array, int element) {
+    int i = 0;
     int threshold = array.length >>> 1;
     while (i < threshold) {
       int child1 = (i << 1) + 1, child2 = child1 + 1;

@@ -29,40 +29,46 @@ public class LockFreeDqueue {
 
   public void offer(String element) {
     Node node = new Node(element);
-    Node old;
+    Node t;
     while (true) {
-      old = tail.get();
-      if (old.next.compareAndSet(null, node)) {
-        tail.compareAndSet(old, node);  // 允许失败
+      t = tail.get();
+      if (t.next.compareAndSet(null, node)) {
+        tail.compareAndSet(t, node);  // 允许失败
         return;
       }
     }
   }
 
   public String poll() {
-    if (head.get() == null)
-      return null;
-
-    Node old;
+    Node h;
     while (true) {
-      old = head.get();
-      Node next = old.next.get();
+      h = head.get();
+      Node next = h.next.get();
+      if (next == null) { //无元素可用
+        try {
+          Thread.sleep(100);
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+      }
       if (next == DELETED) { //上一次head未更新成功
+        System.out.println("上一次head未更新成功");
         continue;
       }
-      if (old.next.compareAndSet(next, DELETED)) {
-        head.compareAndSet(old, next);  // 允许失败
+      if (h.next.compareAndSet(next, DELETED)) {
+        head.compareAndSet(h, next);  // 允许失败
         break;
       }
     }
-    old.next = null; // help GC
-    return old.value;
+    return h.value;
   }
 
   public void iterate() {
     Node node = head.get();
     while (node != null) {
-      System.out.println(node.value);
+      if (node != pseudo) {
+        System.out.println(node.value);
+      }
       node = node.next.get();
     }
   }
@@ -70,8 +76,26 @@ public class LockFreeDqueue {
   public static void main(String[] args) throws Exception {
     LockFreeDqueue deque = new LockFreeDqueue();
     Random rand = new Random();
-    Runnable offer = () -> deque.offer("abcdefghijklmnopqrstuvwxyz".substring(rand.nextInt(20)));
-    Runnable poll = () -> System.out.println("poll: " + deque.poll());
+    Runnable offer = () -> {
+      while(true) {
+        try {
+          Thread.sleep(rand.nextInt(100));
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+        deque.offer("abcdefghijklmnopqrstuvwxyz".substring(rand.nextInt(20)));
+      }
+    };
+    Runnable poll = () -> {
+      while(true) {
+        try {
+          Thread.sleep(rand.nextInt(120));
+        } catch (Exception ex) {
+          ex.printStackTrace();
+        }
+        System.out.println("poll: " + deque.poll());
+      }
+    };
 
     Thread t1 = new Thread(offer);
     Thread t2 = new Thread(offer);

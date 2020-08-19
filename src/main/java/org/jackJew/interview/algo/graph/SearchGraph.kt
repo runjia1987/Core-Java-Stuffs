@@ -17,13 +17,11 @@ class Graph(private val root: Point) {
 
     while (!queue.isEmpty()) {
       val cur = queue.poll()
-      if (!visited.contains(cur.id))
-        println(" $cur")
+      println(" $cur")
 
       for (point in cur.neighbours) {
         if (visited.add(point.id)) {
           queue.offer(point)
-          println(" $point")
         }
       }
     }
@@ -34,7 +32,6 @@ class Graph(private val root: Point) {
     val visited = mutableSetOf<Int>()
     val stack = Stack<Point>()
     stack.push(root)
-    visited.add(root.id)
 
     while (!stack.isEmpty()) {
       val cur = stack.pop()

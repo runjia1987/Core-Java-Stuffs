@@ -11,7 +11,7 @@ val root = TreeTraversing().run {
   root
 }
 
-fun preOrder(): List<Int> {
+fun preOrder(): List<Int> {  //深度遍历 = 先根遍历
   val stack = Stack<Node>()
   stack.push(root)
   val list = mutableListOf<Int>()
@@ -21,46 +21,42 @@ fun preOrder(): List<Int> {
     node.right?.also { stack.push(it) }
     node.left?.also { stack.push(it) }
   }
-
   return list
 }
 
-fun middleOrder(): List<Int> {
+fun middleOrder() {
   val stack = Stack<Node>()
   var curr = root
 
-  val list = mutableListOf<Int>()
   while (curr != null || !stack.isEmpty()) {
     if (curr != null) {
       stack.push(curr)
       curr = curr.left
     } else {
       curr = stack.pop()
-      list.add(curr.value)
+      print("${curr.value}, ")
       curr = curr.right
     }
   }
-
-  return list
 }
 
 fun postOrder(): List<Int> {
   val stack = Stack<Node>()
   stack.push(root)
 
-  val list = LinkedList<Int>()
+  val queue = LinkedList<Int>()
   while (!stack.isEmpty()) {
     val node = stack.pop()
+    queue.offerFirst(node.value)  // 类似链表翻转
+
     node.left?.also {
       stack.push(it)
     }
     node.right?.also {
       stack.push(it)
     }
-    list.offerFirst(node.value)  // 类似链表翻转
   }
-
-  return list
+  return queue
 }
 
 fun getMinDepth(head: Node?): Int {
@@ -97,29 +93,27 @@ fun hasNode(root: Node, node: Node): Boolean {
 }
 
 // 打印根节点至全部叶子节点的路径
-fun traverseToLeafs(): List<String> {
+fun traverseToLeafs() {
   // BFS 模式
-  val results = LinkedList<String>()
   val nodeQueue = LinkedList<Node>()  //节点链表
   val strQueue= LinkedList<String>()  //字符串列表
   nodeQueue.offer(root)
-  strQueue.offer("")
+  strQueue.offer("${root.value}")
   while (!nodeQueue.isEmpty()) {
     val node = nodeQueue.poll()
-    val str = strQueue.poll()
-    if (node.left == null && node.right == null) { //走到叶子节点
-      results.add("$str -> ${node.value}") // 打印拼接的字符串
-    }
-    if (node.left != null) {
-      nodeQueue.offer(node.left)
-      strQueue.offer("$str -> ${node.value}")  // 字符串继续拼接
-    }
-    if (node.right != null) {
-      nodeQueue.offer(node.right)
-      strQueue.offer("$str -> ${node.value}")  // 字符串继续拼接
+    if (node.left != null || node.right != null) {
+      val str = strQueue.poll()
+      if (node.left != null) {
+        nodeQueue.offer(node.left)
+        strQueue.offer("$str -> ${node.left.value}")  // 字符串继续拼接
+      }
+      if (node.right != null) {
+        nodeQueue.offer(node.right)
+        strQueue.offer("$str -> ${node.right.value}")  // 字符串继续拼接
+      }
     }
   }
-  return results
+  strQueue.forEach { str -> print("$str, ")}
 }
 
 // 返回两个节点的最长公共先导节点, based on fun traverseToLeafs()

@@ -112,7 +112,7 @@ fun findPivotIndex(array: IntArray, left: Int, right: Int, pivot: Int): Int {  /
   if (left < right) {
     var i = if (left < 0) 0 else left
     var j = if (right >= array.size) array.size - 1 else right
-    val temp = array[i]
+    val pivot = array[i]
     while (i < j) {
       while ( i < j && array[j] > pivot) {
         j--
@@ -123,7 +123,7 @@ fun findPivotIndex(array: IntArray, left: Int, right: Int, pivot: Int): Int {  /
       }
       array[j] = array[i]
     }
-    array[i] = temp
+    array[i] = pivot
     return i
   } else
     return left

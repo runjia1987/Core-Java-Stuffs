@@ -2,27 +2,26 @@ package org.jackJew.interview.algo
 
 //获取数组的最长累加子串
 fun addSum(array: IntArray): Int {
-  var maxSum = array[0]
+  var result = array[0]
   var curSum = array[0]
   for (v in 1 until array.size) {
     curSum = Math.max(curSum + array[v], array[v])
-    if (curSum > maxSum)
-      maxSum = curSum
+    result = Math.max(curSum, result)
   }
-  return maxSum
+  return result
 }
 
 // 获取数组的最长累乘子串
 fun multipleSum(array: IntArray): Int {
-  var maxSum = array[0]
-  var minSum = array[0]
+  var curMax = array[0]
+  var curMin = array[0]
   var result = array[0]
   for (v in 1 until array.size) {
-    val curMax = maxSum * array[v]
-    val curMin = minSum * array[v]
-    maxSum = Math.max(Math.max(curMax, curMin), array[v])
-    minSum = Math.min(Math.min(curMax, curMin), array[v])
-    result = Math.max(Math.max(maxSum, minSum), result)
+    val tempMax = curMax * array[v]
+    val tempMin = curMin * array[v]
+    curMax = Math.max(Math.max(tempMax, tempMin), array[v])
+    curMin = Math.min(Math.min(tempMax, tempMin), array[v])
+    result = Math.max(Math.max(curMax, curMin), result)
   }
   return result
 }

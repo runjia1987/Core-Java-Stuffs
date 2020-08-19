@@ -36,24 +36,24 @@ class Dijkstra {
     matrix[4][3] = 3
   }
 
-  fun calc(source: Int): IntArray {
-    val distance = IntArray(num) { Int.MAX_VALUE }
+  fun calc(from: Int): IntArray {
+    val distances = IntArray(num) { Int.MAX_VALUE }
     val visited = BooleanArray(num) { false }
 
     // init
     for (index in 0 until num) {
-      distance[index] = matrix[source][index]
+      distances[index] = matrix[from][index]
     }
-    visited[source] = true
-    distance[source] = 0
+    visited[from] = true
+    distances[from] = 0
 
     for (index in 1 until num) {
       // get min from neighbours
       var k = 0
       var shortest = Int.MAX_VALUE
       for (j in 0 until num) {
-        if (!visited[j] && shortest > distance[j]) {
-          shortest = distance[j]
+        if (!visited[j] && shortest > distances[j]) {
+          shortest = distances[j]
           k = j
         }
       }
@@ -62,14 +62,14 @@ class Dijkstra {
       for (j in 0 until num) {
         if (!visited[j] && matrix[k][j] != Int.MAX_VALUE) { // not visited, reachable
           val length = shortest + matrix[k][j]
-          if (distance[j] > length) {
-            distance[j] = length
+          if (distances[j] > length) {
+            distances[j] = length
             pre[j] = k
           }
         }
       }
     }
-    return distance
+    return distances
   }
 }
 

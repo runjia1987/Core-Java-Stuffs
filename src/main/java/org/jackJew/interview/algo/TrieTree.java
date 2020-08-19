@@ -47,10 +47,10 @@ public class TrieTree {
       if (!found) {
         cur = cur.addChild(str.charAt(index));
       }
+      cur.prefix_num++;
       index++;
     }
     cur.isWord = true;
-    cur.prefix_num++;
   }
 
   public int search(String str) {
@@ -76,7 +76,7 @@ public class TrieTree {
 
   public int[] lps(String model) {
     final int length = model.length();
-    int lps[] = new int[length];
+    int[] lps = new int[length];
     lps[0] = 0;
     int k = 1, len = 0;
     while (k < length) {

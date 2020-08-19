@@ -12,7 +12,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * 声明式事务管理 (annotation style)
- * 
+ *
  * @author Jack
  *
  */
@@ -36,10 +36,10 @@ public class TestClient {
 		list.add(pojo);
 		pojo = new Pojo(2, "abcd", "xxxxxxx");
 		list.add(pojo);
-		ValidService validService = context.getBean("transactionValidService", ValidService.class);
+		IService validService = context.getBean("transactionValidService", IService.class);
 		validService.insert(list);
 		// normally executed, with subPath rollbacked.
-		
+
 		((AbstractApplicationContext)context).close();
 	}
 

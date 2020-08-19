@@ -84,7 +84,7 @@ public class TreeTraversing {
   /**
    * traverse in depth-first, by Stack
    */
-  public void depthTraverse() {
+  public void depthTraverse() {  //深度遍历即先根遍历
     Stack<Node> stack = new Stack<>();
     stack.push(root);
 
@@ -130,13 +130,14 @@ public class TreeTraversing {
     LinkedList<Node> list = new LinkedList<>();
     while (!stack.isEmpty()) {
       Node curr = stack.pop();
+      list.offerFirst(curr); // 类似链表翻转
+
       if (curr.left != null) {
         stack.push(curr.left);
       }
       if (curr.right != null) {
         stack.push(curr.right);
       }
-      list.offerFirst(curr); // 类似链表翻转
     }
     list.forEach(System.out::println);
   }

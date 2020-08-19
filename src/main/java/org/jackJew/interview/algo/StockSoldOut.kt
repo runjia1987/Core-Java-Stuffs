@@ -8,8 +8,10 @@ fun soldOut(array: IntArray): Int {
   var lowest = array[0] + 1
   for(index in array.indices) {
     val diff = array[index] - lowest
-    lowest = if (diff >= 0) lowest else array[index]
     profit = if (diff > profit ) diff else profit
+    if (lowest > array[index]) {
+      lowest = array[index]
+    }
   }
   return profit
 }

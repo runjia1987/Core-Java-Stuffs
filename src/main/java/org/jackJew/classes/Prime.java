@@ -26,25 +26,21 @@ public class Prime {
     throw new IllegalArgumentException("too large input " + s);
   }
 
-  static class A {
-    A() {
-      i = (j++ != 0) ? ++j : --j;
+  class Node<V> {
+    V value;
+    Node<V> next;
+  }
+
+  void remove(Node<Integer> cur) {
+    while (cur != null) {
+      Node<Integer> after = cur.next;
+      cur.value = after.value;
+      if (after.next == null) {
+        cur.next = null;
+        break;
+      }
+      cur = after;
     }
-
-    int i;
-    static int j;
   }
-
-  public static void main(String[] args) {
-    A a1 = new A();
-    System.out.println(a1.i);
-    System.out.println(a2.i);
-
-    System.out.println(getNextPrime(5));
-    System.out.println(getNextPrime(256));
-    System.out.println(getNextPrime(1024));
-  }
-
-  static A a2 = new A();
 
 }
